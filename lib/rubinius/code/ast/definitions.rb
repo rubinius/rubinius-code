@@ -344,6 +344,13 @@ module CodeTools
 
         process_fixed_arguments post, @post = [], names
 
+        if kwargs || kwrest
+          placeholder_var = local_placeholder
+          @locals << placeholder_var
+        end
+
+        kwrest = placeholder_var if kwrest == true
+
         if kwargs
           @keywords = KeywordParameters.new line, kwargs, kwrest
           names.concat @keywords.names
@@ -351,11 +358,7 @@ module CodeTools
           @keywords = KeywordParameters.new line, nil, kwrest
         end
 
-        if @keywords
-          var = local_placeholder
-          @keywords.value = LocalVariableAccess.new line, var
-          @locals << var
-        end
+        @keywords.value = LocalVariableAccess.new line, placeholder_var if @keywords
 
         @names = names
 
@@ -602,13 +605,14 @@ module CodeTools
           @names = []
         end
 
-        case kwrest
-        when Symbol
-          kwrest_name = :"**#{kwrest}"
+        if kwrest
+          if kwrest.to_s.start_with?("_:")
+            kwrest_name = :**
+          else
+            kwrest_name = :"**#{kwrest}"
+          end
+
           @kwrest = LocalVariableAssignment.new line, kwrest
-        when true
-          kwrest_name = :**
-          @kwrest = true
         end
 
         @names << kwrest_name if kwrest_name
@@ -628,9 +632,7 @@ module CodeTools
       def map_arguments(scope)
         @arguments.each { |var| scope.assign_local_reference var }
 
-        if @kwrest.kind_of? LocalVariableAssignment
-          scope.assign_local_reference @kwrest
-        end
+        scope.assign_local_reference @kwrest if @kwrest
       end
 
       def bytecode(g)
@@ -685,7 +687,7 @@ module CodeTools
           g.push @arguments.size
           g.gine extra_keys
 
-          if @kwrest.kind_of? LocalVariableAssignment
+          if @kwrest
             g.push_cpath_top
             g.find_const :Hash
             g.send :allocate, 0, true
@@ -733,9 +735,7 @@ module CodeTools
         end
 
         g.send :keywords_extra, 2, true
-        if @kwrest.kind_of? LocalVariableAssignment
-          @kwrest.variable.set_bytecode(g)
-        end
+        @kwrest.variable.set_bytecode(g) if @kwrest
         g.pop
 
         done.set!
@@ -751,6 +751,10 @@ module CodeTools
 
     module LocalVariable
       attr_accessor :variable
+
+      def placeholder?
+        name.to_s.start_with?("_:")
+      end
     end
 
     class BlockArgument < Node

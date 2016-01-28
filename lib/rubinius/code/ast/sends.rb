@@ -569,7 +569,7 @@ module CodeTools
       def assign_local_reference(var)
         if variable = variables[var.name]
           var.variable = variable.reference
-        elsif block_local?(var.name)
+        elsif block_local?(var.name) || var.placeholder?
           variable = new_local var.name
           var.variable = variable.reference
         elsif reference = @parent.search_local(var.name)
