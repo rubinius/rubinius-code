@@ -4,7 +4,7 @@ Gem::Specification.new do |spec|
   spec.name          = "rubinius-code"
   spec.version       = "2.0"
   spec.authors       = ["Brian Shirai"]
-  spec.email         = ["brian@rubinius.com"]
+  spec.email         = ["brixen@gmail.com"]
   spec.description   = %q{A suite of tools for working with code on the Rubinius language platform.}
   spec.summary       = %q{A suite of tools for working with code on the Rubinius language platform.}
   spec.homepage      = "https://github.com/rubinius/rubinius-code"

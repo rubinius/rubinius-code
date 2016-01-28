@@ -1,5 +1,5 @@
 # coding: utf-8
-require './lib/rubinius/toolset/version'
+require './lib/rubinius/code/toolset/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "rubinius-toolset"
@@ -15,8 +15,8 @@ ToolSets provide a mechanism for other languages to reuse as much of
 the Rubinius code tools as are suitable for that language.
   EOD
   spec.summary       = %q{A registry for Rubinius code tools}
-  spec.homepage      = "https://github.com/rubinius/rubinius-toolset"
-  spec.license       = "BSD"
+  spec.homepage      = "https://github.com/rubinius/rubinius-code"
+  spec.license       = "MPL-2.0"
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }

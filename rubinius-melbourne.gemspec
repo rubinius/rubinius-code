@@ -1,13 +1,13 @@
 # -*- encoding: utf-8 -*-
-require './lib/rubinius/melbourne/version'
+require './lib/rubinius/code/melbourne/version'
 
 Gem::Specification.new do |spec|
   spec.authors       = ["Brian Shirai"]
   spec.email         = ["brixen@gmail.com"]
   spec.description   = %q{Ruby parser extracted from MRI.}
   spec.summary       = %q{Rubinius Ruby Parser.}
-  spec.homepage      = "https://github.com/rubinius/rubinius-melbourne"
-  spec.license       = "BSD"
+  spec.homepage      = "https://github.com/rubinius/rubinius-code"
+  spec.license       = "MPL-2.0"
 
   spec.files         = `git ls-files`.split($\)
   spec.executables   = spec.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
