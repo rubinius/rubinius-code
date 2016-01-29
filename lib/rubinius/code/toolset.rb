@@ -1,4 +1,4 @@
-require "rubinius/toolset/version"
+require "rubinius/code/toolset/version"
 
 module Rubinius
   module ToolSets

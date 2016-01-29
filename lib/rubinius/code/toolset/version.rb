@@ -1,5 +1,5 @@
 module Rubinius
   module ToolSets
-    VERSION = "2.3.1"
+    VERSION = "3.0"
   end
 end
