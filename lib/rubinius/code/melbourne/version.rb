@@ -1,5 +1,5 @@
 module CodeTools
   class Melbourne
-    VERSION = "2.3.1.0"
+    VERSION = "3.0"
   end
 end

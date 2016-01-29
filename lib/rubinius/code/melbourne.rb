@@ -1,5 +1,5 @@
-require "rubinius/melbourne/version"
-require "rubinius/melbourne/melbourne"
+require "rubinius/code/melbourne/version"
+require "rubinius/code/melbourne/melbourne"
 
 module CodeTools
   class Melbourne

@@ -9,20 +9,13 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/rubinius/rubinius-code"
   spec.license       = "MPL-2.0"
 
-  spec.files         = `git ls-files`.split($\)
-  spec.executables   = spec.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
-  spec.extensions    = ["ext/rubinius/melbourne/extconf.rb"]
+  spec.files         = `git ls-files lib/rubinius/code/melbourne* ext/rubinius/code/melbourne*`.split($\)
+  spec.extensions    = ["ext/rubinius/code/melbourne/extconf.rb"]
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.name          = "rubinius-melbourne"
   spec.require_paths = ["lib"]
   spec.version       = CodeTools::Melbourne::VERSION
 
-  spec.required_ruby_version = ">= 1.9.2"
-
-  spec.add_development_dependency "rubinius-processor", "~> 2.0"
-  spec.add_development_dependency "rubinius-compiler", "~> 2.0"
-  spec.add_development_dependency "rubinius-ast", "~> 2.0"
-  spec.add_development_dependency "rubinius-bridge", "~> 1.0"
   spec.add_development_dependency "redcard", "~> 1.0"
   spec.add_development_dependency "mspec", "~> 1.5"
   spec.add_development_dependency "rake",  "~> 10.0"
