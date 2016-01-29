@@ -6,17 +6,14 @@ Gem::Specification.new do |spec|
   spec.version       = CodeTools::AST::VERSION
   spec.authors       = ["Brian Shirai"]
   spec.email         = ["brixen@gmail.com"]
-  spec.description   = %q{An Abstract Syntax Tree for Ruby.}
-  spec.summary       = %q{An Abstract Syntax Tree for Ruby.}
+  spec.description   = %q{An Abstract Syntax Tree for the Rubinius language platform.}
+  spec.summary       = %q{An Abstract Syntax Tree for the Rubinius language platform.}
   spec.homepage      = "https://github.com/rubinius/rubinius-code"
   spec.license       = "MPL-2.0"
 
-  spec.files         = `git ls-files`.split($/)
-  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  spec.files         = `git ls-files lib/rubinius/code/ast*`.split($/)
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
-
-  spec.required_ruby_version = ">= 1.9.2"
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake", "~> 10.0"
