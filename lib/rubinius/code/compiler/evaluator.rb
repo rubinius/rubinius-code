@@ -298,7 +298,7 @@ module CodeTools
       end
     end
 
-    class ActualArguments < Node
+    class Arguments < Node
       def execute(e)
         array = @array.map { |x| x.execute(e) }
         array << @splat.execute if @splat.kind_of? SplatValue

@@ -351,19 +351,6 @@ module CodeTools
       compiler.run
     end
 
-    def self.compile_test_bytecode_19(string, transforms)
-      compiler = new :string, :bytecode
-
-      parser = compiler.parser
-      parser.root AST::Snippet
-      parser.input string
-      transforms.each { |x| parser.enable_transform x }
-
-      compiler.generator.processor TestGenerator
-
-      compiler.run
-    end
-
     def initialize(from, to)
       @start = Stages[from].new self, to
     end

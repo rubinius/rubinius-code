@@ -6,12 +6,12 @@ Gem::Specification.new do |spec|
   spec.version       = CodeTools::Compiler::VERSION
   spec.authors       = ["Brian Shirai"]
   spec.email         = ["brixen@gmail.com"]
-  spec.description   = %q{Rubinius bytecode compiler.}
-  spec.summary       = %q{Rubinius bytecode compiler.}
+  spec.description   = %q{A Bytecode compiler for the Rubinius language platform.}
+  spec.summary       = %q{A Bytecode compiler for the Rubinius language platform.}
   spec.homepage      = "https://github.com/rubinius/rubinius-code"
   spec.license       = "MPL-2.0"
 
-  spec.files         = `git ls-files`.split($/)
+  spec.files         = `git ls-files lib/rubinius/code/compiler*`.split($/)
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 

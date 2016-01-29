@@ -269,6 +269,7 @@ module CodeTools
       @splat_index = nil
       @local_names = nil
       @block_index = nil
+      @keywords = nil
       @local_count = 0
 
       @state = []
@@ -286,7 +287,7 @@ module CodeTools
                   :required_args, :post_args, :total_args, :splat_index,
                   :local_count, :local_names, :primitive, :for_block, :for_module_body,
                   :current_block, :detected_args, :detected_locals,
-                  :block_index, :arity
+                  :block_index, :arity, :keywords
 
     def execute(node)
       node.bytecode self
@@ -328,6 +329,7 @@ module CodeTools
       code.arity          = @arity
       code.local_count    = @local_count
       code.local_names    = @local_names.to_tuple if @local_names
+      code.keywords       = @keywords.to_tuple if @keywords
 
       code.stack_size     = max_stack_size
       code.file           = @file
