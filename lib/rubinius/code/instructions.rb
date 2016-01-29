@@ -1,4 +1,4 @@
-require "rubinius/instructions/version"
+require "rubinius/code/instructions/version"
 
 module Rubinius
   module Instructions
