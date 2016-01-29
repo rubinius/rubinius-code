@@ -1,2 +1,2 @@
-require "rubinius/processor/version"
-require "rubinius/processor/processor"
+require "rubinius/code/processor/version"
+require "rubinius/code/processor/processor"

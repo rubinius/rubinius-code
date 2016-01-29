@@ -34,8 +34,8 @@ module CodeTools
       AST::And.new line, left, right
     end
 
-    def process_args(line, args, defaults, splat)
-      AST::FormalArguments.new line, args, defaults, splat
+    def process_args(line, required, optional, splat, post, kwargs, kwrest, block)
+      AST::Parameters.new line, required, optional, splat, post, kwargs, kwrest, block
     end
 
     def process_argscat(line, array, rest)
@@ -74,14 +74,8 @@ module CodeTools
       AST::BlockArgument.new line, name
     end
 
-    def process_block_pass(line, method_send, body)
-      node = AST::BlockPass.new line, body
-      if method_send
-        method_send.block = node
-        method_send
-      else
-        node
-      end
+    def process_block_pass(line, arguments, body)
+      AST::BlockPass19.new line, arguments, body
     end
 
     def process_break(line, value)
@@ -208,6 +202,10 @@ module CodeTools
       AST::DynamicExecuteString.new line, str, array
     end
 
+    def process_encoding(line, name)
+      AST::Encoding.new line, name
+    end
+
     def process_ensure(line, body, ensr)
       AST::Ensure.new line, body, ensr
     end
@@ -271,9 +269,9 @@ module CodeTools
     end
 
     def process_for(line, iter, arguments, body)
-      method_send = AST::Send.new line, iter, :each
-      method_send.block = AST::For.new line, arguments, body
-      method_send
+      send = AST::Send.new line, iter, :each
+      send.block = AST::For.new line, arguments, body
+      send
     end
 
     def process_gasgn(line, name, expr)
@@ -296,7 +294,35 @@ module CodeTools
       AST::If.new line, cond, body, else_body
     end
 
-    def process_iter(line, method_send, arguments, body)
+    def process_imaginary(line, value)
+      AST::ImaginaryLiteral.new line, value
+    end
+
+    def process_iter(line, method_send, scope)
+      ary = scope && scope.array || []
+      arguments = nil
+
+      if ary.first.kind_of? AST::Parameters
+        arguments = scope.array.shift
+      end
+
+      unless arguments
+        arguments = AST::Parameters.new line
+      end
+
+      case ary.size
+      when 0
+        body = nil
+      when 1
+        if scope.locals
+          body = scope
+        else
+          body = scope.array.shift
+        end
+      else
+        body = scope
+      end
+
       method_send.block = AST::Iter.new line, arguments, body
       method_send
     end
@@ -304,6 +330,22 @@ module CodeTools
     def process_ivar(line, name)
       AST::InstanceVariableAccess.new line, name
     end
+
+    def process_kw_arg(line, arguments)
+      AST::Block.new line, arguments
+    end
+
+    def process_lambda(line, scope)
+      arguments = scope.array.shift
+      if scope.array.size == 1
+        body = scope.array.shift
+      else
+        body = scope
+      end
+
+      AST::Lambda.new line, arguments, body
+    end
+
 
     def process_lasgn(line, name, value)
       AST::LocalVariableAssignment.new line, name, value
@@ -357,9 +399,7 @@ module CodeTools
       AST::NthRef.new line, ref
     end
 
-    # TODO: Fix the way 1.8 parser handles this
-    def process_number(line, base, str)
-      value = str.to_i base
+    def process_number(line, value)
       case value
       when Fixnum
         AST::FixnumLiteral.new line, value
@@ -384,18 +424,46 @@ module CodeTools
       AST::OpAssignOr.new line, var, value
     end
 
+    def process_op_cdecl(line, var, value, op)
+      op_value = case op
+      when :and
+        AST::And.new line, var, value
+      when :or
+        AST::Or.new line, var, value
+      else
+        args = AST::ArrayLiteral.new line, [value]
+        AST::SendWithArguments.new line, var, op, args
+      end
+      AST::ConstantAssignment.new line, var, op_value
+    end
+
+    def process_opt_arg(line, arguments)
+      AST::Block.new line, arguments
+    end
+
     def process_or(line, left, right)
       AST::Or.new line, left, right
     end
 
-    def process_postexe(line)
-      AST::Send.new line, AST::Self.new(line), :at_exit, true
+    def process_postarg(line, into, rest)
+      AST::PostArg.new line, into, rest
     end
 
-    def process_preexe(line)
-      node = AST::PreExe.new line
+    def process_postexe(line, body)
+      node = AST::Send.new line, AST::Self.new(line), :at_exit, true
+      node.block = AST::Iter.new line, nil, body
+      node
+    end
+
+    def process_preexe(line, body)
+      node = AST::PreExe19.new line
+      node.block = AST::Iter.new line, nil, body
       add_pre_exe node
       node
+    end
+
+    def process_rational(line, value)
+      AST::RationalLiteral.new line, value
     end
 
     def process_redo(line)
@@ -426,12 +494,33 @@ module CodeTools
       AST::SClass.new line, receiver, body
     end
 
-    def process_scope(line, body)
-      if body.kind_of? AST::Block
-        body
-      elsif body
-        AST::Block.new line, [body]
+    def process_scope(line, arguments, body, locals)
+      case body
+      when AST::Begin
+        if body.rescue.kind_of? AST::NilLiteral
+          return nil unless arguments
+        end
+        body = AST::Block.new line, [body.rescue]
+      when AST::Block
+        ary = body.array
+        if ary.size > 1 and
+           ary.first.kind_of?(AST::Begin) and
+           ary.first.rescue.kind_of?(AST::NilLiteral)
+          ary.shift
+        end
+      when nil
+        # Nothing
+      else
+        body = AST::Block.new line, [body]
       end
+
+      if arguments and body
+        body.array.unshift arguments
+      end
+
+      body.locals = locals if locals
+
+      body
     end
 
     def process_self(line)
@@ -447,7 +536,17 @@ module CodeTools
     end
 
     def process_super(line, arguments)
-      AST::Super.new line, arguments
+      if arguments.kind_of? AST::BlockPass
+        block = arguments
+        arguments = block.arguments
+        block.arguments = nil
+      else
+        block = nil
+      end
+
+      node = AST::Super.new line, arguments
+      node.block = block
+      node
     end
 
     def process_svalue(line, expr)
