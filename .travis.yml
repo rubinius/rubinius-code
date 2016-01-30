@@ -1,0 +1,6 @@
+language: ruby
+env:
+- MELBOURNE_SPEC_VERSION=1 RUBYLIB=lib:.
+script: bundle exec rake
+rvm:
+- rbx-3
