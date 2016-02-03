@@ -1,17 +1,8 @@
 require 'rbconfig' unless defined?(RbConfig)
 
-require File.expand_path("../../../../../lib/rubinius/code/melbourne/version", __FILE__)
-
 path = File.expand_path "../namespace.h", __FILE__
 File.open path, "wb" do |f|
-  version = CodeTools::Melbourne::VERSION
-
-  if ENV["MELBOURNE_SPEC_VERSION"]
-    # Alter the version to not match any possible loaded version
-    version << ".spec"
-  end
-
-  melbourne = "melbourne_#{version.gsub(/\./, "_")}"
+  melbourne = "melbourne_#{Time.now.to_i}"
 
   f.puts "#define MELBOURNE                 #{melbourne}"
   f.puts "#define MELBOURNE_FILE_TO_AST     #{melbourne}_file_to_ast"
