@@ -111,6 +111,7 @@ static NODE *parser_negate_lit(rb_parser_state*, NODE*);
 static NODE *parser_ret_args(rb_parser_state*, NODE*);
 static NODE *arg_blk_pass(NODE*,NODE*);
 static NODE *parser_new_yield(rb_parser_state*, NODE*);
+static NODE *parser_dsym_node(rb_parser_state*, NODE*);
 
 static NODE *parser_gettable(rb_parser_state*,ID);
 #define gettable(i) parser_gettable((rb_parser_state*)parser_state, i)
@@ -332,6 +333,7 @@ static int scan_hex(const char *start, size_t len, size_t *retlen);
 #define attrset(a, b)             parser_attrset(parser_state, a, b)
 #define match_op(a, b)            parser_match_op(parser_state, a, b)
 #define new_yield(n)              parser_new_yield(parser_state, n)
+#define dsym_node(n)              parser_dsym_node(parser_state, n)
 #define evstr2dstr(n)             parser_evstr2dstr(parser_state, n)
 #define literal_concat(a, b)      parser_literal_concat(parser_state, a, b)
 #define literal_concat0(a, b)     parser_literal_concat0(parser_state, a, b)
@@ -542,7 +544,7 @@ static int scan_hex(const char *start, size_t len, size_t *retlen);
 %token tAMPER           /* & */
 %token tLAMBDA          /* -> */
 %token tSYMBEG tSTRING_BEG tXSTRING_BEG tREGEXP_BEG tWORDS_BEG tQWORDS_BEG tSYMBOLS_BEG tQSYMBOLS_BEG
-%token tSTRING_DBEG tSTRING_DEND tSTRING_DVAR tSTRING_END tLAMBEG
+%token tSTRING_DBEG tSTRING_DEND tSTRING_DVAR tSTRING_END tLAMBEG tLABEL_END
 
 /*
  *      precedence table
@@ -2755,26 +2757,7 @@ sym             : fname
 dsym            : tSYMBEG xstring_contents tSTRING_END
                   {
                     lex_state = EXPR_END;
-                    // TODO dsym_node($2);
-                    if(!($$ = $2)) {
-                      $$ = NEW_LIT(ID2SYM(parser_intern("")));
-                    } else {
-                      VALUE lit;
-
-                      switch(nd_type($$)) {
-                      case NODE_DSTR:
-                        nd_set_type($$, NODE_DSYM);
-                        break;
-                      case NODE_STR:
-                        lit = $$->nd_lit;
-                        $$->nd_lit = ID2SYM(parser_intern_str(lit));
-                        nd_set_type($$, NODE_LIT);
-                        break;
-                      default:
-                        $$ = NEW_NODE(NODE_DSYM, REF(STR_NEW0()), 1, NEW_LIST($$));
-                        break;
-                      }
-                    }
+                    $$ = dsym_node($2);
                   }
                 ;
 
@@ -3232,6 +3215,10 @@ assoc           : arg_value tASSOC arg_value
                   {
                     $$ = list_append(NEW_LIST(NEW_LIT(ID2SYM($1))), $2);
                   }
+                | tSTRING_BEG string_contents tLABEL_END arg_value
+                  {
+                    $$ = list_append(NEW_LIST(dsym_node($2)), $4);
+                  }
                 | tDSTAR arg_value
                   {
                     $$ = list_append(NEW_LIST(0), $2);
@@ -3551,6 +3538,7 @@ file_to_ast(VALUE ptp, const char *f, int fd, int start)
 #define STR_FUNC_QWORDS 0x08
 #define STR_FUNC_SYMBOL 0x10
 #define STR_FUNC_INDENT 0x20
+#define STR_FUNC_LABEL  0x40
 
 enum string_type {
   str_squote = (0),
@@ -3561,6 +3549,7 @@ enum string_type {
   str_dword  = (STR_FUNC_QWORDS|STR_FUNC_EXPAND),
   str_ssym   = (STR_FUNC_SYMBOL),
   str_dsym   = (STR_FUNC_SYMBOL|STR_FUNC_EXPAND),
+  str_label  = (STR_FUNC_LABEL),
 };
 
 static VALUE
@@ -4874,6 +4863,7 @@ parser_yylex(rb_parser_state *parser_state)
   int c;
   int space_seen = 0;
   int cmd_state;
+  int label;
   enum lex_state_e last_state;
   rb_encoding *enc;
   int mb;
@@ -4888,9 +4878,15 @@ parser_yylex(rb_parser_state *parser_state)
       }
     } else {
       token = parse_string(lex_strterm);
-      if(token == tSTRING_END || token == tREGEXP_END) {
+      if(token == tSTRING_END && (lex_strterm->nd_func & STR_FUNC_LABEL)) {
+        if(((lex_state_p(EXPR_BEG | EXPR_ENDFN) && !COND_P()) || IS_ARG()) && IS_LABEL_SUFFIX(0)) {
+          nextc();
+          token = tLABEL_END;
+        }
+      }
+      if(token == tSTRING_END || token == tREGEXP_END || token == tLABEL_END) {
         lex_strterm = 0;
-        lex_state = EXPR_END;
+        lex_state = token == tLABEL_END ? EXPR_BEG : EXPR_END;
       }
     }
     return token;
@@ -5105,7 +5101,8 @@ retry:
     return '>';
 
   case '"':
-    lex_strterm = NEW_STRTERM(str_dquote, '"', 0);
+    label = IS_LABEL_POSSIBLE() ? str_label : 0;
+    lex_strterm = NEW_STRTERM(str_dquote | label, '"', 0);
     return tSTRING_BEG;
 
   case '`':
@@ -5125,7 +5122,8 @@ retry:
     return tXSTRING_BEG;
 
   case '\'':
-    lex_strterm = NEW_STRTERM(str_squote, '\'', 0);
+    label = IS_LABEL_POSSIBLE() ? str_label : 0;
+    lex_strterm = NEW_STRTERM(str_squote | label, '\'', 0);
     return tSTRING_BEG;
 
   case '?':
@@ -7296,6 +7294,32 @@ parser_new_yield(rb_parser_state* parser_state, NODE *node)
     state = Qfalse;
   }
   return NEW_YIELD(node, state);
+}
+
+
+static NODE *
+parser_dsym_node(rb_parser_state* parser_state, NODE *node)
+{
+  if(!node) {
+    node = NEW_LIT(ID2SYM(parser_intern("")));
+  } else {
+    VALUE lit;
+
+    switch(nd_type(node)) {
+    case NODE_DSTR:
+      nd_set_type(node, NODE_DSYM);
+      break;
+    case NODE_STR:
+      lit = node->nd_lit;
+      node->nd_lit = ID2SYM(parser_intern_str(lit));
+      nd_set_type(node, NODE_LIT);
+      break;
+    default:
+      node = NEW_NODE(NODE_DSYM, REF(STR_NEW0()), 1, NEW_LIST(node));
+      break;
+    }
+  }
+  return node;
 }
 
 static NODE*

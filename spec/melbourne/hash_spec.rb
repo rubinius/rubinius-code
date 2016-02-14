@@ -71,4 +71,11 @@ describe "A Hash node" do
      [:lit, :c],
      [:lit, 3]]
   end
+
+  parse <<-ruby  do
+      {"a": 1, 'b': 2}
+    ruby
+
+    [:hash, [:lit, :a], [:lit, 1], [:lit, :b], [:lit, 2]]
+  end
 end
