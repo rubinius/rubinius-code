@@ -1,4 +1,4 @@
-require 'rbconfig'
+require 'rbconfig' unless defined?(RbConfig)
 
 require File.expand_path("../../../../../lib/rubinius/code/melbourne/version", __FILE__)
 
