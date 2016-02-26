@@ -729,4 +729,40 @@ describe "A Defn node" do
       end
     end
   end
+
+  relates <<-ruby do
+      def meth
+        class << self
+          return
+        end
+        :unreachable
+      end
+    ruby
+
+    compile do |g|
+      in_method :meth do |d|
+        d.push :self
+        d.push_type
+        d.swap
+        d.send :object_singleton_class, 1
+
+        b = new_generator(g)
+        d.create_block(b)
+
+        b.push_self
+        b.add_scope
+        b.push :nil
+        b.raise_return
+        b.ret
+
+        d.swap
+        d.push_scope
+        d.push_true
+        d.send :call_under, 3
+        d.pop
+
+        d.push_literal :unreachable
+      end
+    end
+  end
 end
