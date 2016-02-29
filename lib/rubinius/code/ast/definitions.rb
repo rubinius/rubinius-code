@@ -90,16 +90,12 @@ module CodeTools
       end
 
       def bytecode(g)
-        g.state.push_block
-
         count = @array.size - 1
         @array.each_with_index do |x, i|
           start_ip = g.ip
           x.bytecode(g)
           g.pop unless start_ip == g.ip or i == count
         end
-
-        g.state.pop_block
       end
 
       def to_sexp
