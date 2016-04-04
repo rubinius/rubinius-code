@@ -165,7 +165,9 @@ describe "A Case node" do
     [:case,
      [:call, nil, :a, [:arglist]],
      [:when,
-      [:array, [:lit, :b], [:when, [:call, nil, :c, [:arglist]], nil]],
+      [[:when,
+        [:argscat, [:array, [:lit, :b]], [:call, nil, :c, [:arglist]]],
+        nil]],
       [:call, nil, :d, [:arglist]]],
      [:call, nil, :e, [:arglist]]]
   end
