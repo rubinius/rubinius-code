@@ -95,10 +95,10 @@ module CodeTools
         g.push_rubinius
         g.push_scope
         g.send :active_path, 0
-        g.push @line
+        g.push_int @line
         g.send :unrecognized_defined, 2
         g.pop
-        g.push :nil
+        g.push_nil
       end
 
       def value_defined(g, f)
@@ -128,7 +128,7 @@ module CodeTools
         found = g.new_label
         bytecode(g)
         g.dup
-        g.git found
+        g.goto_if_true found
         g.pop
         yield
         found.set!

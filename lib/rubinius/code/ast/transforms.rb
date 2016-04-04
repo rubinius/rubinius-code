@@ -271,7 +271,7 @@ module CodeTools
         else
           g.check_serial :new, Rubinius::CompiledCode::KernelMethodSerial
         end
-        g.gif slow
+        g.goto_if_false slow
 
         # fast path
         g.send :allocate, 0, true
@@ -354,7 +354,7 @@ module CodeTools
           const.bytecode(g)
           g.swap
           g.kind_of
-          g.git done
+          g.goto_if_true done
           g.pop
           super(g)
 

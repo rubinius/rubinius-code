@@ -42,8 +42,7 @@ module CodeTools
         done = g.new_label
 
         g.last_match mode, 0
-        g.is_nil
-        g.git f
+        g.goto_if_nil f
 
         g.push_literal "global-variable"
         g.string_dup
@@ -51,7 +50,7 @@ module CodeTools
         g.goto done
 
         f.set!
-        g.push :nil
+        g.push_nil
 
         done.set!
       end
@@ -84,8 +83,7 @@ module CodeTools
         done = g.new_label
 
         g.last_match Mode, @which - 1
-        g.is_nil
-        g.git f
+        g.goto_if_nil f
 
         g.push_literal "global-variable"
         g.string_dup
@@ -93,7 +91,7 @@ module CodeTools
         g.goto done
 
         f.set!
-        g.push :nil
+        g.push_nil
 
         done.set!
       end
@@ -149,7 +147,7 @@ module CodeTools
         # Ok, we know the value exists, get it.
         bytecode(g)
         g.dup
-        g.git done
+        g.goto_if_true done
         g.pop
 
         # yield to generate the code for when it's not found
@@ -168,7 +166,7 @@ module CodeTools
 
       def push_scope(g)
         if g.state.scope.module?
-          g.push :self
+          g.push_self
         else
           g.push_scope
         end
@@ -178,7 +176,7 @@ module CodeTools
       def variable_defined(g, f)
         push_scope(g)
         g.send :class_variable_defined?, 1
-        g.gif f
+        g.goto_if_false f
       end
 
       def defined(g)
@@ -190,7 +188,7 @@ module CodeTools
         g.goto done
 
         f.set!
-        g.push :nil
+        g.push_nil
 
         done.set!
       end
@@ -205,7 +203,7 @@ module CodeTools
         pos(g)
 
         if g.state.scope.module?
-          g.push :self
+          g.push_self
         else
           g.push_scope
         end
@@ -287,7 +285,7 @@ module CodeTools
         g.find_const :Globals
         g.push_literal @name
         g.send :key?, 1
-        g.gif f
+        g.goto_if_false f
       end
 
       def defined(g)
@@ -299,7 +297,7 @@ module CodeTools
         g.goto done
 
         f.set!
-        g.push :nil
+        g.push_nil
 
         done.set!
       end
@@ -391,7 +389,7 @@ module CodeTools
         g.find_const :Array
         g.swap
         g.kind_of
-        g.git assign
+        g.goto_if_true assign
         g.make_array 1
 
         assign.set!
@@ -430,10 +428,10 @@ module CodeTools
       end
 
       def variable_defined(g, f)
-        g.push :self
+        g.push_self
         g.push_literal @name
         g.send :__instance_variable_defined_p__, 1
-        g.gif f
+        g.goto_if_false f
       end
 
       def defined(g)
@@ -445,7 +443,7 @@ module CodeTools
         g.goto done
 
         f.set!
-        g.push :nil
+        g.push_nil
 
         done.set!
       end
@@ -635,7 +633,7 @@ module CodeTools
         g.pop
 
         index = g.new_stack_local
-        g.push 0
+        g.push_int 0
         g.set_stack_local index
         g.pop
 
@@ -651,7 +649,7 @@ module CodeTools
 
           if @post
             g.push_stack_local size
-            g.push @post.body.size
+            g.push_int @post.body.size
             g.send :-, 1, true
 
             g.push_stack_local index
@@ -677,9 +675,9 @@ module CodeTools
 
           check_count.set!
           g.dup
-          g.push 0
+          g.push_int 0
           g.send :<, 1, true
-          g.git underflow
+          g.goto_if_true underflow
 
           g.dup
           g.push_stack_local index
@@ -720,9 +718,9 @@ module CodeTools
 
         g.dup
         g.push_literal :to_ary
-        g.push :true
+        g.push_true
         g.send :respond_to?, 2, true
-        g.git coerce
+        g.goto_if_true coerce
 
         make_array.set!
         g.make_array 1
@@ -745,8 +743,7 @@ module CodeTools
         check_array = g.new_label
 
         g.dup
-        g.is_nil
-        g.gif check_array
+        g.goto_if_not_nil check_array
 
         g.pop
         g.goto make_array
@@ -775,7 +772,7 @@ module CodeTools
         g.find_const :Array
         g.swap
         g.instance_of
-        g.git label
+        g.goto_if_true label
       end
 
       def kind_of_array(g, label)
@@ -784,7 +781,7 @@ module CodeTools
         g.find_const :Array
         g.swap
         g.kind_of
-        g.git label
+        g.goto_if_true label
       end
 
       def get_element(g, index)
@@ -792,7 +789,7 @@ module CodeTools
         g.push_stack_local index
 
         g.dup
-        g.push 1
+        g.push_int 1
         g.send :+, 1, true
         g.set_stack_local index
         g.pop

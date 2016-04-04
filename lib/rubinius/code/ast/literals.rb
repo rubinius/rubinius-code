@@ -25,7 +25,7 @@ module CodeTools
         done = g.new_label
         @body.each do |x|
           x.defined(g)
-          g.gif not_found
+          g.goto_if_false not_found
         end
         g.push_literal "expression"
         g.goto done
@@ -61,7 +61,7 @@ module CodeTools
       def bytecode(g)
         pos(g)
 
-        g.push :false
+        g.push_false
       end
 
       def defined(g)
@@ -77,7 +77,7 @@ module CodeTools
       def bytecode(g)
         pos(g)
 
-        g.push :true
+        g.push_true
       end
 
       def defined(g)
@@ -100,7 +100,7 @@ module CodeTools
       def bytecode(g)
         pos(g)
 
-        g.push_unique_literal @value
+        g.push_literal @value
       end
 
       def defined(g)
@@ -128,7 +128,7 @@ module CodeTools
 
         g.push_cpath_top
         g.find_const :Hash
-        g.push count / 2
+        g.push_int count / 2
         g.send :new_from_literal, 1
 
         while i < count
@@ -225,7 +225,7 @@ module CodeTools
       def bytecode(g)
         pos(g)
 
-        g.push :nil
+        g.push_nil
       end
 
       def defined(g)
@@ -248,7 +248,7 @@ module CodeTools
       def bytecode(g)
         pos(g)
 
-        g.push_unique_literal @value
+        g.push_literal @value
       end
 
       def defined(g)
@@ -269,7 +269,7 @@ module CodeTools
       def bytecode(g)
         pos(g)
 
-        g.push @value
+        g.push_int @value
       end
 
       def defined(g)
@@ -340,7 +340,7 @@ module CodeTools
         g.dup
         @start.bytecode(g)
         @finish.bytecode(g)
-        g.push :true
+        g.push_true
         g.send :initialize, 3, true
         g.pop
       end
@@ -370,14 +370,13 @@ module CodeTools
         build.set!
         g.push_memo nil
         g.dup
-        g.is_nil
-        g.gif done
+        g.goto_if_not_nil done
 
         g.pop
         g.push_cpath_top
         g.find_const :Regexp
         g.push_literal @source
-        g.push @options
+        g.push_int @options
         g.send :new, 2
         g.goto build
 
@@ -404,7 +403,6 @@ module CodeTools
       def bytecode(g)
         pos(g)
 
-        # TODO: change to push_unique_literal
         g.push_literal @string
         g.string_dup
       end
@@ -533,7 +531,7 @@ module CodeTools
 
     class DynamicExecuteString < DynamicString
       def bytecode(g)
-        g.push :self
+        g.push_self
         super(g)
         g.send :`, 1, true #`
       end
@@ -553,7 +551,7 @@ module CodeTools
         g.push_cpath_top
         g.find_const :Regexp
         super(g)
-        g.push @options
+        g.push_int @options
         g.send :new, 2
       end
 
@@ -580,9 +578,9 @@ module CodeTools
         build.set!
         g.push_memo nil
         g.dup
-        g.is_nil
-        g.gif done
+        g.goto_if_not_nil done
 
+        g.pop
         super(g)
         g.goto build
 
@@ -598,7 +596,7 @@ module CodeTools
       def bytecode(g)
         pos(g)
 
-        g.push :self
+        g.push_self
         super(g)
         g.send :`, 1, true # ` (silly vim/emacs)
       end

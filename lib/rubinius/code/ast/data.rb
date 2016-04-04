@@ -19,7 +19,7 @@ module CodeTools
         g.push_rubinius
         g.push_scope
         g.send :data_path, 0
-        g.push_literal @offset
+        g.push_int @offset
         g.send :set_data, 2
         g.pop
 

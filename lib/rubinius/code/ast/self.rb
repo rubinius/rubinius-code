@@ -6,7 +6,7 @@ module CodeTools
       def bytecode(g)
         pos(g)
 
-        g.push :self
+        g.push_self
       end
 
       def defined(g)
@@ -14,7 +14,7 @@ module CodeTools
       end
 
       def value_defined(g, f)
-        g.push :self
+        g.push_self
       end
 
       def to_sexp

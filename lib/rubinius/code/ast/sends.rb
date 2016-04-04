@@ -23,11 +23,13 @@ module CodeTools
       def bytecode(g)
         pos(g)
 
-        if @vcall_style and reference = check_local_reference(g)
-          return reference.get_bytecode(g)
+        if @vcall_style
+          if reference = check_local_reference(g)
+            return reference.get_bytecode(g)
+          end
+        else
+          @receiver.bytecode(g)
         end
-
-        @receiver.bytecode(g)
 
         if @block
           @block.bytecode(g)
@@ -83,18 +85,18 @@ module CodeTools
         g.push_literal @name
 
         if @vcall_style or @privately
-          g.push :true
+          g.push_true
           g.send :__respond_to_p__, 2
         else
           g.push_self
           g.invoke_primitive :vm_check_callable, 3
         end
-        g.gif f
+        g.goto_if_false f
         g.push_literal "method"
         g.goto done
 
         f.set!
-        g.push :nil
+        g.push_nil
 
         done.set!
       end
@@ -141,7 +143,7 @@ module CodeTools
         pos(g)
 
         if @arguments.splat?
-          @block ? @block.bytecode(g) : g.push(:nil)
+          @block ? @block.bytecode(g) : g.push_nil
           g.send_with_splat @name, @arguments.size, @privately, false
         elsif @block
           @block.bytecode(g)
@@ -190,7 +192,7 @@ module CodeTools
           if @arguments.splat?
             g.move_down @arguments.size + 2
             g.swap
-            g.push :nil
+            g.push_nil
             g.send_with_splat @name, @arguments.size, @privately, true
           else
             g.move_down @arguments.size + 1
@@ -252,7 +254,7 @@ module CodeTools
             flag = false
           end
 
-          g.push :nil
+          g.push_nil
           g.send_with_splat @name, @arguments.size, @privately, flag
         else
           g.move_down @arguments.size + 1
@@ -343,8 +345,7 @@ module CodeTools
       def convert(g)
         nil_block = g.new_label
         g.dup
-        g.is_nil
-        g.git nil_block
+        g.goto_if_nil nil_block
 
         g.push_cpath_top
         g.find_const :Proc
@@ -410,7 +411,7 @@ module CodeTools
         g.find_const :Hash
         g.swap
         g.kind_of
-        g.gif not_hash
+        g.goto_if_false not_hash
 
         g.make_array 1
         g.goto done
@@ -909,8 +910,10 @@ module CodeTools
       def bytecode(g)
         pos(g)
 
-        if @value.kind_of? NumberLiteral
-          g.push(-@value.value)
+        if @value.kind_of? FixnumLiteral
+          g.push_int(-@value.value)
+        elsif @value.kind_of? NumberLiteral
+          g.push_literal(-@value.value)
         else
           @value.bytecode(g)
           g.send :"-@", 0
@@ -962,14 +965,14 @@ module CodeTools
 
         g.invoke_primitive :vm_check_super_callable, 0
 
-        g.gif nope
+        g.goto_if_false nope
 
         g.push_literal "super"
         g.string_dup
         g.goto done
 
         nope.set!
-        g.push :nil
+        g.push_nil
 
         done.set!
       end
@@ -1020,8 +1023,8 @@ module CodeTools
         f = g.new_label
 
         g.push_block
-        g.git t
-        g.push :nil
+        g.goto_if_true t
+        g.push_nil
         g.goto f
 
         t.set!

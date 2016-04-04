@@ -17,9 +17,9 @@ module CodeTools
         lbl = g.new_label
 
         if use_gif
-          g.gif lbl
+          g.goto_if_false lbl
         else
-          g.git lbl
+          g.goto_if_true lbl
         end
 
         g.pop
@@ -64,13 +64,13 @@ module CodeTools
         end_label = g.new_label
 
         @value.bytecode(g)
-        g.git true_label
+        g.goto_if_true true_label
 
-        g.push :true
+        g.push_true
         g.goto end_label
 
         true_label.set!
-        g.push :false
+        g.push_false
         end_label.set!
       end
 
@@ -92,7 +92,7 @@ module CodeTools
         g.goto done
 
         f.set!
-        g.push :nil
+        g.push_nil
 
         done.set!
       end
@@ -134,7 +134,7 @@ module CodeTools
         # @arguments.size will be 1
 
         if @arguments.splat?
-          g.push :nil
+          g.push_nil
           g.send_with_splat :[], @arguments.size
         else
           g.send :[], @arguments.size
@@ -153,9 +153,9 @@ module CodeTools
 
           g.dup
           if @op == :or
-            g.git fnd
+            g.goto_if_true fnd
           else
-            g.gif fnd
+            g.goto_if_false fnd
           end
 
           # Ok, take the extra copy off and pull the value onto the stack
@@ -174,7 +174,7 @@ module CodeTools
           new_break.set!
           if old_break
             g.pop_many recv_stack + 1
-            g.push :nil
+            g.push_nil
             g.goto old_break
           end
 
@@ -188,7 +188,7 @@ module CodeTools
 
           if @arguments.splat?
             g.send :push, 1
-            g.push :nil
+            g.push_nil
             g.send_with_splat :[]=, @arguments.size
           else
             g.send :[]=, @arguments.size + 1
@@ -222,7 +222,7 @@ module CodeTools
           new_break.set!
           if old_break
             g.pop_many recv_stack + 2
-            g.push :nil
+            g.push_nil
             g.goto old_break
           end
 
@@ -247,7 +247,7 @@ module CodeTools
           # X: Call []=(:a, 5) on h
           if @arguments.splat?
             g.send :push, 1
-            g.push :nil
+            g.push_nil
             g.send_with_splat :[]=, @arguments.size
           else
             g.send :[]=, @arguments.size + 1
@@ -307,9 +307,9 @@ module CodeTools
 
           g.dup
           if @op == :or
-            g.git fnd
+            g.goto_if_true fnd
           else
-            g.gif fnd
+            g.goto_if_false fnd
           end
 
           # Remove the copy of 2 and push @value on the stack
@@ -326,7 +326,7 @@ module CodeTools
           new_break.set!
           if old_break
             g.pop_many 2
-            g.push :nil
+            g.push_nil
             g.goto old_break
           end
 
@@ -365,7 +365,7 @@ module CodeTools
           new_break.set!
           if old_break
             g.pop_many 3
-            g.push :nil
+            g.push_nil
             g.goto old_break
           end
 
@@ -417,7 +417,7 @@ module CodeTools
         @left.bytecode(g)
         lbl = g.new_label
         g.dup
-        g.gif lbl
+        g.goto_if_false lbl
         g.pop
         @right.bytecode(g)
         lbl.set!

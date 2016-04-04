@@ -69,7 +69,7 @@ module CodeTools
         g.goto done
 
         f.set!
-        g.push :nil
+        g.push_nil
 
         done.set!
       end
@@ -87,7 +87,11 @@ module CodeTools
 
         @parent.bytecode(g)
         g.push_literal @name
-        g.push(const_missing ? :true : :false)
+        if const_missing
+          g.push_true
+        else
+          g.push_false
+        end
         g.invoke_primitive :vm_const_defined_under, 3
 
         g.pop_unwind
@@ -151,7 +155,7 @@ module CodeTools
         g.goto done
 
         f.set!
-        g.push :nil
+        g.push_nil
 
         done.set!
       end
@@ -169,7 +173,7 @@ module CodeTools
 
         g.push_cpath_top
         g.push_literal @name
-        g.push :false
+        g.push_false
         g.invoke_primitive :vm_const_defined_under, 3
 
         g.pop_unwind
@@ -246,7 +250,7 @@ module CodeTools
         g.goto done
 
         f.set!
-        g.push :nil
+        g.push_nil
 
         done.set!
       end

@@ -77,7 +77,7 @@ module CodeTools
           new_break.set!
           g.pop_unwind
 
-          g.push :true
+          g.push_true
           g.set_stack_local used_break_local
           g.pop
 
@@ -93,7 +93,7 @@ module CodeTools
           new_next.set!
           g.pop_unwind
 
-          g.push :true
+          g.push_true
           g.set_stack_local used_next_local
           g.pop
 
@@ -123,7 +123,7 @@ module CodeTools
         ok.set!
 
         if check_break
-          g.push :false
+          g.push_false
           g.set_stack_local used_break_local
           g.pop
 
@@ -131,7 +131,7 @@ module CodeTools
         end
 
         if check_next
-          g.push :false
+          g.push_false
           g.set_stack_local used_next_local
           g.pop
 
@@ -147,7 +147,7 @@ module CodeTools
           post = g.new_label
 
           g.push_stack_local used_break_local
-          g.gif post
+          g.goto_if_false post
 
           if g.break
             g.goto g.break
@@ -161,7 +161,7 @@ module CodeTools
           post = g.new_label
 
           g.push_stack_local used_next_local
-          g.gif post
+          g.goto_if_false post
 
           g.next ? g.goto(g.next) : g.ret
           post.set!
@@ -193,7 +193,7 @@ module CodeTools
         if @body.nil?
           if @else.nil?
             # Stupid. No body and no else.
-            g.push :nil
+            g.push_nil
           else
             # Only an else, run it.
             @else.bytecode(g)
@@ -431,7 +431,7 @@ module CodeTools
             c.bytecode(g)
             g.swap
             g.send :===, 1
-            g.git body
+            g.goto_if_true body
           end
         end
 
@@ -553,7 +553,7 @@ module CodeTools
         g.cast_array
         g.swap
         g.send :__rescue_match__, 1
-        g.git body
+        g.goto_if_true body
       end
 
       def to_sexp

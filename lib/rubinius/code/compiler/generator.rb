@@ -7,13 +7,13 @@ module CodeTools
     ##
     # Jump label for the branch instructions. The use scenarios for labels:
     #   1. Used and then set
-    #        g.gif label
+    #        g.goto_if_false label
     #        ...
     #        label.set!
     #   2. Set and then used
     #        label.set!
     #        ...
-    #        g.git label
+    #        g.goto_if_true label
     #   3. 1, 2
     #
     # Many labels are only used once. This class employs two small
@@ -119,62 +119,60 @@ module CodeTools
       SEPARATOR_SIZE = 40
 
       def invalid(message)
-        if $DEBUG
-          puts message
-          name = @generator.name.inspect
-          size = (SEPARATOR_SIZE - name.size - 2) / 2
-          size = 1 if size <= 0
-          puts "\n#{"=" * size} #{name} #{"=" * (size + name.size % 2)}"
+        puts message
+        name = @generator.name.inspect
+        size = (SEPARATOR_SIZE - name.size - 2) / 2
+        size = 1 if size <= 0
+        puts "\n#{"=" * size} #{name} #{"=" * (size + name.size % 2)}"
 
-          literals = @generator.literals
-          names = @generator.local_names
-          stream = @generator.stream
-          i = 0
-          n = stream.size
-          stack = 0
+        literals = @generator.literals
+        names = @generator.local_names
+        stream = @generator.stream
+        i = 0
+        n = stream.size
+        stack = 0
 
-          while i < n
-            insn = Rubinius::InstructionSet[stream[i]]
-            printf "[%3d] %04d  %-28s" % [stack, i, insn.opcode.inspect]
+        while i < n
+          insn = Rubinius::InstructionSet[stream[i]]
+          printf "[%3d] %04d  %-28s" % [stack, i, insn.opcode.inspect]
 
-            args = stream[i+1, insn.size-1]
-            if insn.size > 1
-              insn.args.each_with_index do |kind, index|
-                arg = args[index]
-                case kind
-                when :literal
-                  printf "%s " % literals[arg].inspect
-                when :local
-                  printf "%s " % (names ? names[arg] : arg)
-                else
-                  printf "%d " % arg
-                end
+          args = stream[i+1, insn.size-1]
+          if insn.size > 1
+            insn.args.each_with_index do |kind, index|
+              arg = args[index]
+              case kind
+              when :literal
+                printf "%s " % literals[arg].inspect
+              when :local
+                printf "%s " % (names ? names[arg] : arg)
+              else
+                printf "%d " % arg
               end
             end
-
-            puts
-
-            if insn.variable_stack?
-              use = insn.stack_consumed
-              if use.kind_of? Array
-                use = args[use[1] - 1] + use[0]
-              end
-
-              pro = insn.stack_produced
-              if pro.kind_of? Array
-                pro = (args[pro[1] - 1] * pro[2]) + pro[0]
-              end
-
-              stack += pro - use
-            else
-              stack += insn.stack_difference
-            end
-
-            i += insn.size
           end
 
-          puts "-" * SEPARATOR_SIZE
+          puts
+
+          if insn.variable_stack?
+            use = insn.stack_consumed
+            if use.kind_of? Array
+              use = args[use[1] - 1] + use[0]
+            end
+
+            pro = insn.stack_produced
+            if pro.kind_of? Array
+              pro = (args[pro[1] - 1] * pro[2]) + pro[0]
+            end
+
+            stack += pro - use
+          else
+            stack += insn.stack_difference
+          end
+
+          i += insn.size
         end
+
+        puts "-" * SEPARATOR_SIZE
 
         raise CompileError, message
       end
@@ -447,19 +445,6 @@ module CodeTools
       Label.new(self)
     end
 
-    # Aliases
-
-    alias_method :dup,  :dup_top
-    alias_method :git,  :goto_if_true
-    alias_method :gif,  :goto_if_false
-    alias_method :gin,  :goto_if_nil
-    alias_method :ginn, :goto_if_not_nil
-    alias_method :giu,  :goto_if_undefined
-    alias_method :ginu, :goto_if_not_undefined
-    alias_method :gie,  :goto_if_equal
-    alias_method :gine, :goto_if_not_equal
-    alias_method :swap, :swap_stack
-
     # Helpers
 
     def new_basic_block
@@ -482,82 +467,27 @@ module CodeTools
       return idx
     end
 
-    def push(what)
-      case what
-      when :true
-        push_true
-      when :false
-        push_false
-      when :self
-        push_self
-      when :nil
-        push_nil
-      when Integer
-        push_int what
-      else
-        raise CompileError, "Unknown push argument '#{what.inspect}'"
-      end
-    end
-
     def push_generator(generator)
-      index = push_literal generator
+      index = @literals.size
+      push_literal generator
       @generators << index
       index
     end
 
-    # Find the index for the specified literal, or create a new slot if the
-    # literal has not been encountered previously.
+    def add_generator(generator)
+      index = add_literal generator
+      @generators << index
+      index
+    end
+
     def find_literal(literal)
       @literals_map[literal]
     end
 
-    # Add literal exists to allow RegexLiteral's to create a new regex literal
-    # object at run-time. All other literals should be added via find_literal,
-    # which re-use an existing matching literal if one exists.
     def add_literal(literal)
       index = @literals.size
       @literals << literal
-      return index
-    end
-
-    # Pushes the specified literal value into the literal's tuple
-    def push_literal(literal)
-      index = find_literal literal
-      emit_push_literal index
-      return index
-    end
-
-    # Puts +what+ is the literals tuple without trying to see if
-    # something that is like +what+ is already there.
-    def push_unique_literal(literal)
-      index = add_literal literal
-      emit_push_literal index
-      return index
-    end
-
-    # Pushes the literal value on the stack into the specified position in the
-    # literals tuple. Most timees, push_literal should be used instead; this
-    # method exists to support RegexLiteral, where the compiled literal value
-    # (a Regex object) does not exist until runtime.
-    def push_literal_at(index)
-      emit_push_literal index
-      return index
-    end
-
-    # The push_const instruction itself is unused right now. The instruction
-    # parser does not emit a GeneratorMethods#push_const. This method/opcode
-    # was used in the compiler before the push_const_fast instruction. Rather
-    # than changing the compiler code, this helper was used.
-    def push_const(name)
-      push_const_fast find_literal(name)
-    end
-
-    # The find_const instruction itself is unused right now. The instruction
-    # parser does not emit a GeneratorMethods#find_const. This method/opcode
-    # was used in the compiler before the find_const_fast instruction. Rather
-    # than changing the compiler code, this helper was used.
-    def find_const(name)
-      find_const_fast find_literal(name)
+      index
     end
 
     def push_local(idx)
@@ -601,18 +531,11 @@ module CodeTools
         raise CompileError, "count must be a number"
       end
 
-      idx = find_literal(meth)
-
-      # Don't use send_method, it's only for when the syntax
-      # specified no arguments and no parens.
-      send_stack idx, count
-    end
-
-    # Do a private send to self with no arguments specified, ie, a vcall
-    # style send.
-    def send_vcall(meth)
-      idx = find_literal(meth)
-      send_method idx
+      if count == 0
+        send_method meth
+      else
+        send_stack meth, count
+      end
     end
 
     def send_with_block(meth, count, priv=false)
@@ -622,9 +545,7 @@ module CodeTools
         raise CompileError, "count must be a number"
       end
 
-      idx = find_literal(meth)
-
-      send_stack_with_block idx, count
+      send_stack_with_block meth, count
     end
 
     def send_with_splat(meth, args, priv=false, concat=false)
@@ -634,23 +555,15 @@ module CodeTools
 
       allow_private if priv
 
-      idx = find_literal(meth)
-      send_stack_with_splat idx, args
+      send_stack_with_splat meth, args
     end
 
     def send_super(meth, args, splat=false)
-      idx = find_literal(meth)
-
       if splat
-        send_super_stack_with_splat idx, args
+        send_super_stack_with_splat meth, args
       else
-        send_super_stack_with_block idx, args
+        send_super_stack_with_block meth, args
       end
-    end
-
-    def meta_to_s(name=:to_s, priv=true)
-      allow_private if priv
-      super find_literal(name)
     end
   end
 end

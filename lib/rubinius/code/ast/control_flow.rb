@@ -129,12 +129,12 @@ module CodeTools
 
         if @single
           condition_bytecode(g, @single)
-          g.gif nxt
+          g.goto_if_false nxt
         else
           if @conditions
             @conditions.body.each do |c|
               condition_bytecode(g, c)
-              g.git body
+              g.goto_if_true body
             end
           end
 
@@ -159,12 +159,12 @@ module CodeTools
 
         if @single
           @single.bytecode(g)
-          g.gif nxt
+          g.goto_if_false nxt
         else
           if @conditions
             @conditions.body.each do |condition|
               condition.bytecode(g)
-              g.git body
+              g.goto_if_true body
             end
           end
 
@@ -209,7 +209,7 @@ module CodeTools
         g.find_const :Runtime
         g.rotate(3)
         g.send :matches_when, 2
-        g.git body
+        g.goto_if_true body
       end
 
       def bytecode(g, body, nxt)
@@ -243,11 +243,11 @@ module CodeTools
         g.state.push_flip_flop
 
         get_flip_flop(g, index)
-        g.git on_label
+        g.goto_if_true on_label
 
         @start.bytecode(g)
         g.dup
-        g.gif done
+        g.goto_if_false done
         g.pop
         set_flip_flop(g, index, true)
 
@@ -258,9 +258,9 @@ module CodeTools
         end
 
         on_label.set!
-        g.push_literal true
+        g.push_true
         @finish.bytecode(g)
-        g.gif done
+        g.goto_if_false done
         set_flip_flop(g, index, false)
         g.pop
 
@@ -271,7 +271,7 @@ module CodeTools
         g.push_rubinius
         g.find_const :Runtime
         g.push_scope
-        g.push_literal index
+        g.push_int index
         g.send(:get_flip_flop, 2)
       end
 
@@ -279,8 +279,12 @@ module CodeTools
         g.push_rubinius
         g.find_const :Runtime
         g.push_scope
-        g.push_literal index
-        g.push_literal value
+        g.push_int index
+        if value
+          g.push_true
+        else
+          g.push_false
+        end
         g.send(:set_flip_flop, 3)
       end
 
@@ -316,7 +320,7 @@ module CodeTools
         else_label = g.new_label
 
         @condition.bytecode(g)
-        g.gif else_label
+        g.goto_if_false else_label
 
         @body.bytecode(g)
         g.goto done
@@ -354,9 +358,9 @@ module CodeTools
       def condition_bytecode(g, bottom, use_gif)
         @condition.bytecode(g)
         if use_gif
-          g.gif bottom
+          g.goto_if_false bottom
         else
-          g.git bottom
+          g.goto_if_true bottom
         end
       end
 
@@ -406,7 +410,7 @@ module CodeTools
         g.set_line 0
 
         bottom.set!
-        g.push :nil
+        g.push_nil
         g.break.set!
 
         g.pop_modifiers
@@ -606,7 +610,7 @@ module CodeTools
         if @value
           @value.bytecode(g)
         else
-          g.push :nil
+          g.push_nil
         end
 
         if g.state.loop?
@@ -697,7 +701,7 @@ module CodeTools
         elsif @value
           @value.bytecode(g)
         else
-          g.push :nil
+          g.push_nil
         end
 
         if lcl = g.state.rescue?

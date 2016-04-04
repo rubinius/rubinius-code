@@ -565,7 +565,7 @@ module CodeTools
           done = g.new_label
 
           arg.variable.get_bytecode(g)
-          g.ginu done
+          g.goto_if_not_undefined done
           arg.bytecode(g)
           g.pop
 
@@ -658,7 +658,7 @@ module CodeTools
           g.send :find_item, 1, true
 
           g.dup
-          g.gif missing_value
+          g.goto_if_false missing_value
 
           g.send :value, 0, true
 
@@ -684,8 +684,8 @@ module CodeTools
         if @defaults.empty?
           g.dup
           g.send :size, 0, true
-          g.push @arguments.size
-          g.gine extra_keys
+          g.push_int @arguments.size
+          g.goto_if_not_equal extra_keys
 
           if @kwrest
             g.push_cpath_top
@@ -706,7 +706,7 @@ module CodeTools
             g.send :find_item, 1, true
 
             g.dup
-            g.gif default_value
+            g.goto_if_false default_value
 
             g.send :value, 0, true
             arg.variable.set_bytecode(g)
@@ -729,9 +729,9 @@ module CodeTools
         g.swap
 
         if @kwrest
-          g.push :true
+          g.push_true
         else
-          g.push :false
+          g.push_false
         end
 
         g.send :keywords_extra, 2, true
@@ -941,7 +941,7 @@ module CodeTools
     class EmptyBody < Node
       def bytecode(g)
         g.pop
-        g.push :nil
+        g.push_nil
       end
 
       def to_sexp
@@ -1079,7 +1079,7 @@ module CodeTools
           attach_and_call g, :__metaclass_init__, true, true
         else
           g.pop
-          g.push :nil
+          g.push_nil
         end
       end
     end
@@ -1225,7 +1225,7 @@ module CodeTools
         container_bytecode(g) do
           @body.bytecode(g)
           g.pop
-          g.push :true
+          g.push_true
           g.ret
         end
       end

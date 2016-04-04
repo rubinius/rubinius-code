@@ -23,9 +23,9 @@ module CodeTools
 
         g.dup
         g.push_literal :to_a
-        g.push :true
+        g.push_true
         g.send :respond_to?, 2, true
-        g.git coerce
+        g.goto_if_true coerce
 
         make_array.set!
         g.make_array 1
@@ -48,8 +48,7 @@ module CodeTools
         check_array = g.new_label
 
         g.dup
-        g.is_nil
-        g.gif check_array
+        g.goto_if_not_nil check_array
 
         g.pop
         g.goto make_array
@@ -78,7 +77,7 @@ module CodeTools
         g.find_const :Array
         g.swap
         g.instance_of
-        g.git label
+        g.goto_if_true label
       end
 
       def kind_of_array(g, label)
@@ -87,7 +86,7 @@ module CodeTools
         g.find_const :Array
         g.swap
         g.kind_of
-        g.git label
+        g.goto_if_true label
       end
 
       def to_sexp
@@ -127,9 +126,9 @@ module CodeTools
 
         g.dup
         g.push_literal :to_a
-        g.push :true
+        g.push_true
         g.send :respond_to?, 2, true
-        g.git coerce
+        g.goto_if_true coerce
 
         make_array.set!
         g.make_array 1
@@ -143,8 +142,7 @@ module CodeTools
         check_array = g.new_label
 
         g.dup
-        g.is_nil
-        g.gif check_array
+        g.goto_if_not_nil check_array
 
         g.pop
         g.goto make_array
@@ -173,7 +171,7 @@ module CodeTools
         g.find_const :Array
         g.swap
         g.kind_of
-        g.git label
+        g.goto_if_true label
       end
 
       # Dive down and try to find an array of regular values
@@ -246,11 +244,11 @@ module CodeTools
 
           g.dup
           g.send :size, 0
-          g.push 1
+          g.push_int 1
           g.send :>, 1
-          g.git done
+          g.goto_if_true done
 
-          g.push 0
+          g.push_int 0
           g.send :at, 1
 
           done.set!
@@ -294,7 +292,7 @@ module CodeTools
         pos(g)
 
         @value.bytecode(g)
-        g.meta_to_s
+        g.object_to_s :to_s
       end
 
       def value_defined(g, f)
