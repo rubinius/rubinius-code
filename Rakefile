@@ -58,7 +58,6 @@ namespace :toolset do
 end
 
 task :spec do
-  sh "bundle exec rake compiler:spec"
   sh "bundle exec rake melbourne:spec"
   sh "bundle exec rake toolset:spec"
 end
