@@ -362,25 +362,26 @@ module CodeTools
       def bytecode(g)
         pos(g)
 
-        # A regex literal should only be converted to a Regexp the first time it
-        # is encountered. We push a literal nil here, and then overwrite the
-        # literal value with the created Regexp if it is nil, i.e. the first time
-        # only. Subsequent encounters will use the previously created Regexp
-        idx = g.add_literal(nil)
-        g.push_literal_at idx
+        build = g.new_label
+        done = g.new_label
+
+        g.push_nil
+
+        build.set!
+        g.push_memo nil
         g.dup
         g.is_nil
+        g.gif done
 
-        lbl = g.new_label
-        g.gif lbl
         g.pop
         g.push_cpath_top
         g.find_const :Regexp
         g.push_literal @source
         g.push @options
         g.send :new, 2
-        g.set_literal idx
-        lbl.set!
+        g.goto build
+
+        done.set!
       end
 
       def defined(g)
@@ -571,19 +572,21 @@ module CodeTools
       def bytecode(g)
         pos(g)
 
-        idx = g.add_literal(nil)
-        g.push_literal_at idx
+        build = g.new_label
+        done = g.new_label
+
+        g.push_nil
+
+        build.set!
+        g.push_memo nil
         g.dup
         g.is_nil
-
-        lbl = g.new_label
-        g.gif lbl
-        g.pop
+        g.gif done
 
         super(g)
+        g.goto build
 
-        g.set_literal idx
-        lbl.set!
+        done.set!
       end
 
       def sexp_name
