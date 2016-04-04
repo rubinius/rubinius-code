@@ -9,7 +9,7 @@ end
 
 namespace :melbourne do
   def extension_dir
-    Dir.chdir "ext/rubinius/melbourne" do
+    Dir.chdir "ext/rubinius/code/melbourne" do
       yield
     end
   end
