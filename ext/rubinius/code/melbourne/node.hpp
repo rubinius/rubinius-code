@@ -78,7 +78,7 @@ namespace MELBOURNE {
 #define NODE_LMASK  (((intptr_t)1<<(sizeof(VALUE)*CHAR_BIT-NODE_LSHIFT))-1)
 #define nd_line(n) (int)(RNODE(n)->flags>>NODE_LSHIFT)
 #define nd_set_line(n,l) \
-    RNODE(n)->flags=((RNODE(n)->flags&~(-1<<NODE_LSHIFT))|(((l)&NODE_LMASK)<<NODE_LSHIFT))
+    RNODE(n)->flags=((RNODE(n)->flags&~((0UL-1L)<<NODE_LSHIFT))|(((l)&NODE_LMASK)<<NODE_LSHIFT))
 
 #define nd_head  u1.node
 #define nd_alen  u2.argc
