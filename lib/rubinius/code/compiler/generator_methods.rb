@@ -52,8 +52,7 @@ module CodeTools
         @instruction = 6
       end
 
-      def push_literal(arg1)
-        arg1 = find_literal(arg1)
+      def emit_push_literal(arg1)
         @stream << 7 << arg1
         @ip += 2
         @current_block.add_stack(0, 1)

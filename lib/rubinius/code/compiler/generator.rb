@@ -490,6 +490,14 @@ module CodeTools
       index
     end
 
+    def push_float(float)
+      emit_push_literal add_literal(float)
+    end
+
+    def push_literal(literal)
+      emit_push_literal find_literal(literal)
+    end
+
     def push_local(idx)
       if @detected_locals <= idx
         @detected_locals = idx + 1

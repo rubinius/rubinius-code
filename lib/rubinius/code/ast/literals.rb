@@ -100,7 +100,7 @@ module CodeTools
       def bytecode(g)
         pos(g)
 
-        g.push_literal @value
+        g.push_float @value
       end
 
       def defined(g)
