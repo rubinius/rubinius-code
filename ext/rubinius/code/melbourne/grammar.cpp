@@ -9985,6 +9985,11 @@ parser_heredoc_identifier(rb_parser_state* parser_state)
     c = nextc();
     func = STR_FUNC_INDENT;
   }
+  if(c == '~') {
+    c = nextc();
+    func = STR_FUNC_INDENT;
+  }
+  // HERE - tomkad
   switch(c) {
   case '\'':
     func |= str_squote; goto quoted;
