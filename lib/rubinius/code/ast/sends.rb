@@ -547,7 +547,7 @@ module CodeTools
         if variable = variables[name]
           variable.nested_reference
         elsif block_local?(name)
-          new_local name
+          new_nested_local name
         elsif reference = @parent.search_local(name)
           reference.depth += 1
           reference
