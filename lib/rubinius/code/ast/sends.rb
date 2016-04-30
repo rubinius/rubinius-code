@@ -529,6 +529,10 @@ module CodeTools
         @locals.include?(name) if @locals
       end
 
+      def block_parameter?(name)
+        @arguments.block_arg.name == name if @arguments.block_arg
+      end
+
       def module?
         false
       end
@@ -570,7 +574,7 @@ module CodeTools
       def assign_local_reference(var)
         if variable = variables[var.name]
           var.variable = variable.reference
-        elsif block_local?(var.name) || var.placeholder?
+        elsif block_local?(var.name) || var.placeholder? || block_parameter?(var.name)
           variable = new_local var.name
           var.variable = variable.reference
         elsif reference = @parent.search_local(var.name)
