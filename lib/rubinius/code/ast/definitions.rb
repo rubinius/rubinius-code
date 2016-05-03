@@ -302,7 +302,7 @@ module CodeTools
     class Parameters < Node
       attr_accessor :names, :required, :optional, :defaults, :splat,
                     :post, :keywords, :kwrest
-      attr_reader :block_arg, :block_index
+      attr_reader :block_arg, :block_index, :kwrest_index
 
       def initialize(line, required=nil, optional=nil, splat=nil,
                      post=nil, kwargs=nil, kwrest=nil, block=nil)
@@ -312,6 +312,7 @@ module CodeTools
         @block_arg = nil
         @splat_index = nil
         @block_index = nil
+        @kwrest_index = nil
         @locals = []
         @local_index = 0
 
@@ -360,6 +361,11 @@ module CodeTools
 
         @keywords.value = LocalVariableAccess.new line, placeholder_var if @keywords
 
+        if kwrest
+          @kwrest_index = total_args + @keywords.arguments.length + 1
+          @kwrest_index += 1 if block
+        end
+
         @names = names
 
         self.block_arg = block
@@ -403,10 +409,7 @@ module CodeTools
           @block_arg = BlockArgument.new @line, block
         end
 
-        if @locals.last.kind_of? BlockArgument
-          @block_index -= 1
-          @locals.pop
-        end
+        @locals.pop if @locals.last.kind_of? BlockArgument
         @names.pop if @names.last.kind_of? BlockArgument
 
         @block_index = @locals.size
@@ -443,12 +446,7 @@ module CodeTools
 
         if @splat or not @optional.empty? or
             (@keywords and not @keywords.required?)
-          arity += 1
-        end
-
-        if @splat or not @optional.empty? or
-            (@keywords and not @keywords.required?)
-          arity = -arity
+          arity = -arity - 1
         end
 
         arity
