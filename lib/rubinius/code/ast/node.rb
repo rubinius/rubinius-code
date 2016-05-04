@@ -66,6 +66,7 @@ module CodeTools
         blk.block_index = arguments.block_index
         blk.arity = arguments.arity
         blk.keywords = arguments.keywords.entries if arguments.keywords
+        blk.kwrest_index = arguments.kwrest_index
 
         blk
       end
@@ -83,6 +84,7 @@ module CodeTools
           meth.block_index = arguments.block_index
           meth.arity = arguments.arity
           meth.keywords = arguments.keywords.entries if arguments.keywords
+          meth.kwrest_index = arguments.kwrest_index
         end
 
         meth

@@ -622,6 +622,7 @@ module CodeTools
         blk.pop_state
 
         blk.splat_index = @arguments.splat_index
+        blk.kwrest_index = @arguments.kwrest_index
         blk.local_count = local_count
         blk.local_names = local_names
 
@@ -643,7 +644,7 @@ module CodeTools
 
     class IterArguments < Node
       attr_accessor :prelude, :arity, :optional, :arguments, :splat_index, :block_index
-      attr_accessor :required_args, :keywords
+      attr_accessor :required_args, :keywords, :kwrest_index
 
       def initialize(line, arguments)
         @line = line
@@ -652,6 +653,7 @@ module CodeTools
 
         @splat_index = -1
         @block_index = nil
+        @kwrest_index = nil
         @required_args = 0
         @splat = nil
         @block = nil
@@ -843,7 +845,7 @@ module CodeTools
 
     class ForParameters < Node
       attr_accessor :assignments, :required_args, :splat_index,
-                    :post_args, :keywords, :block_index
+                    :post_args, :keywords, :block_index, :kwrest_index
 
       def initialize(line, assignments)
         @line = line
@@ -853,6 +855,7 @@ module CodeTools
         @post_args = 0
         @keywords = nil
         @block_index = nil
+        @kwrest_index = nil
       end
 
       alias_method :total_args, :required_args
