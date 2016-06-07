@@ -1,4 +1,6 @@
+#include <ostream>
 #include <sstream>
+#include <string>
 
 #include "namespace.h"
 #include "melbourne.hpp"
