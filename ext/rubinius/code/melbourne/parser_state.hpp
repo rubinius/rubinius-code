@@ -23,7 +23,9 @@ namespace MELBOURNE {
     EXPR_FNAME_BIT,     /* ignore newline, no reserved words. */
     EXPR_DOT_BIT,       /* right after `.' or `::', no reserved words. */
     EXPR_CLASS_BIT,     /* immediate after `class', no here document. */
-    EXPR_VALUE_BIT,     /* like EXPR_BEG but label is disallowed. */
+    EXPR_LABEL_BIT,     /* flag bit, label is allowed. */
+    EXPR_LABELED_BIT,   /* flag bit, just after a label. */
+    EXPR_FITEM_BIT,     /* symbol literal as FNAME. */
     EXPR_MAX_STATE
   };
 
@@ -39,14 +41,19 @@ namespace MELBOURNE {
     EXPR(FNAME),
     EXPR(DOT),
     EXPR(CLASS),
-    EXPR(VALUE),
-    EXPR_BEG_ANY  = (EXPR_BEG | EXPR_VALUE | EXPR_MID | EXPR_CLASS),
+    EXPR(LABEL),
+    EXPR(LABELED),
+    EXPR(FITEM),
+    EXPR_VALUE    = EXPR_BEG,
+    EXPR_BEG_ANY  = (EXPR_BEG | EXPR_MID | EXPR_CLASS),
     EXPR_ARG_ANY  = (EXPR_ARG | EXPR_CMDARG),
     EXPR_END_ANY  = (EXPR_END | EXPR_ENDARG | EXPR_ENDFN)
   };
 
-#define lex_state_of_p(x, s)  ((x) & (s))
-#define lex_state_p(s)        lex_state_of_p(lex_state, s)
+#define lex_state_of_all_p(x, s)  (((x) & (s)) == (s))
+#define lex_state_of_p(x, s)      ((x) & (s))
+#define lex_state_p(s)            lex_state_of_p(lex_state, s)
+#define lex_state_all_p(s)        lex_state_of_all_p(lex_state, s)
 
 typedef VALUE stack_type;
 
@@ -63,18 +70,22 @@ typedef VALUE stack_type;
   typedef struct rb_parser_state {
     int ruby__end__seen;
     int debug_lines;
-    int heredoc_end;
     int command_start;
     NODE *lex_strterm;
     int paren_nest;
     int lpar_beg;
     int class_nest;
     int in_single;
+    int in_kwarg;
     int in_def;
     int brace_nest;
     int compile_for_eval;
     ID cur_mid;
+    int heredoc_end;
+    int heredoc_indent;
+    int heredoc_line_indent;
     char *token_buffer;
+    int token_seen;
     int tokidx;
     int toksiz;
     int tokline;
@@ -147,6 +158,8 @@ typedef VALUE stack_type;
     char *sourcefile;
     int sourceline;
 
+    ID current_arg;
+
     rb_encoding *enc;
     rb_encoding *utf8;
   } rb_parser_state;
@@ -165,11 +178,16 @@ typedef VALUE stack_type;
 #define lpar_beg            PARSER_VAR(lpar_beg)
 #define class_nest          PARSER_VAR(class_nest)
 #define in_single           PARSER_VAR(in_single)
+#define in_kwarg            PARSER_VAR(in_kwarg)
 #define in_def              PARSER_VAR(in_def)
 #define brace_nest          PARSER_VAR(brace_nest)
 #define compile_for_eval    PARSER_VAR(compile_for_eval)
 #define cur_mid             PARSER_VAR(cur_mid)
+#define heredoc_end         PARSER_VAR(heredoc_end)
+#define heredoc_indent      PARSER_VAR(heredoc_indent)
+#define heredoc_line_indent PARSER_VAR(heredoc_line_indent)
 #define tokenbuf            PARSER_VAR(token_buffer)
+#define token_seen          PARSER_VAR(token_seen)
 #define tokidx              PARSER_VAR(tokidx)
 #define toksiz              PARSER_VAR(toksiz)
 #define tokline             PARSER_VAR(tokline)
@@ -214,6 +232,7 @@ typedef VALUE stack_type;
 #define start_lines         PARSER_VAR(start_lines)
 #define sourcefile          PARSER_VAR(sourcefile)
 #define sourceline          PARSER_VAR(sourceline)
+#define current_arg         PARSER_VAR(current_arg)
 
 #define node_newnode(t, a, b, c)  \
   parser_node_newnode((rb_parser_state*)parser_state, t, a, b, c)

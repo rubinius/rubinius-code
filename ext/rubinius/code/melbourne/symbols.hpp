@@ -8,6 +8,7 @@ extern "C" {
 namespace MELBOURNE {
   extern ID rb_sAlias;
   extern ID rb_sAnd;
+  extern ID rb_sAndAttrAsgn;
   extern ID rb_sArgs;
   extern ID rb_sArgsCat;
   extern ID rb_sArgsPush;
@@ -85,6 +86,7 @@ namespace MELBOURNE {
   extern ID rb_sPostExe;
   extern ID rb_sPostArg;
   extern ID rb_sPreExe;
+  extern ID rb_sQCall;
   extern ID rb_sRational;
   extern ID rb_sRedo;
   extern ID rb_sRegex;

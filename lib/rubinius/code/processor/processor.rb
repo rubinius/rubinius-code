@@ -34,6 +34,10 @@ module CodeTools
       AST::And.new line, left, right
     end
 
+    def process_andattrasgn(line, receiver, name, arguments)
+      AST::AttributeAssignment.new line, receiver, name, arguments
+    end
+
     def process_args(line, required, optional, splat, post, kwargs, kwrest, block)
       AST::Parameters.new line, required, optional, splat, post, kwargs, kwrest, block
     end
@@ -100,6 +104,30 @@ module CodeTools
         node = AST::SendWithArguments.new line, receiver, name, arguments
       else
         node = AST::Send.new line, receiver, name
+      end
+
+      node.block = block
+      node
+    end
+
+    def process_qcall(line, receiver, name, arguments)
+      if arguments.kind_of? AST::BlockPass
+        block = arguments
+        arguments = block.arguments
+        block.arguments = nil
+      else
+        block = nil
+      end
+
+      if node = process_transforms(line, receiver, name, arguments)
+        node.block = block if block
+        return node
+      end
+
+      if arguments
+        node = AST::AndSendWithArguments.new line, receiver, name, arguments
+      else
+        node = AST::AndSend.new line, receiver, name
       end
 
       node.block = block
@@ -412,8 +440,12 @@ module CodeTools
       AST::OpAssignElement.new line, receiver, index, op, value
     end
 
-    def process_op_asgn2(line, receiver, name, op, value)
-      AST::OpAssignAttribute.new line, receiver, name, op, value
+    def process_op_asgn2(line, receiver, anddot, name, op, value)
+      if anddot
+        AST::AndOpAssignAttribute.new line, receiver, name, op, value
+      else
+        AST::OpAssignAttribute.new line, receiver, name, op, value
+      end
     end
 
     def process_op_asgn_and(line, var, value)

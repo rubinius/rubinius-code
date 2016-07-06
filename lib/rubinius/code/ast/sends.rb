@@ -20,14 +20,14 @@ module CodeTools
         end
       end
 
-      def bytecode(g)
+      def bytecode(g, anddot=false)
         pos(g)
 
         if @vcall_style
           if reference = check_local_reference(g)
             return reference.get_bytecode(g)
           end
-        else
+        elsif !anddot
           @receiver.bytecode(g)
         end
 
@@ -127,6 +127,25 @@ module CodeTools
       end
     end
 
+    class AndSend < Send
+      def bytecode(g)
+        done = g.new_label
+
+        @receiver.bytecode(g)
+
+        g.dup
+        g.goto_if_nil done
+
+        super(g, true)
+
+        done.set!
+      end
+
+      def sexp_name
+        :and_call
+      end
+    end
+
     class SendWithArguments < Send
       attr_accessor :arguments
 
@@ -136,8 +155,8 @@ module CodeTools
         @arguments = Arguments.new line, arguments
       end
 
-      def bytecode(g)
-        @receiver.bytecode(g)
+      def bytecode(g, anddot=false)
+        @receiver.bytecode(g) unless anddot
         @arguments.bytecode(g)
 
         pos(g)
@@ -168,6 +187,25 @@ module CodeTools
       end
     end
 
+    class AndSendWithArguments < SendWithArguments
+      def bytecode(g)
+        done = g.new_label
+
+        @receiver.bytecode(g)
+
+        g.dup
+        g.goto_if_nil done
+
+        super(g, true)
+
+        done.set!
+      end
+
+      def sexp_name
+        :and_call
+      end
+    end
+
     class AttributeAssignment < SendWithArguments
       def initialize(line, receiver, name, arguments)
         @line = line
@@ -180,8 +218,8 @@ module CodeTools
         @arguments = Arguments.new line, arguments
       end
 
-      def bytecode(g)
-        @receiver.bytecode(g)
+      def bytecode(g, anddot=false)
+        @receiver.bytecode(g) unless anddot
         if g.state.masgn?
           g.swap
           g.send @name, 1, @privately
@@ -205,6 +243,25 @@ module CodeTools
 
       def sexp_name
         :attrasgn
+      end
+    end
+
+    class AndAttributeAssignment < AttributeAssignment
+      def bytecode(g)
+        done = g.new_label
+
+        @receiver.bytecode(g)
+
+        g.dup
+        g.goto_if_nil done
+
+        super(g, true)
+
+        done.set!
+      end
+
+      def sexp_name
+        :and_attrasgn
       end
     end
 

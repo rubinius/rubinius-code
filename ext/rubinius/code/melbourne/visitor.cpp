@@ -416,6 +416,16 @@ namespace MELBOURNE {
       tree = rb_funcall(ptp, rb_sCall, 4, line, recv, ID2SYM(node->nd_mid), args);
       break;
     }
+    case NODE_QCALL: {
+      VALUE args = Qnil;
+
+      VALUE recv = process_parse_tree(parser_state, ptp, node->nd_recv, locals);
+      if (node->nd_args) {
+        args = process_parse_tree(parser_state, ptp, node->nd_args, locals);
+      }
+      tree = rb_funcall(ptp, rb_sQCall, 4, line, recv, ID2SYM(node->nd_mid), args);
+      break;
+    }
     case NODE_FCALL: {
       VALUE args = Qnil;
 
@@ -484,8 +494,9 @@ namespace MELBOURNE {
           op = ID2SYM(node->nd_next->nd_mid);
       }
       VALUE value = process_parse_tree(parser_state, ptp, node->nd_value, locals);
-      tree = rb_funcall(ptp, rb_sOpAsgn2, 5, line,
-          recv, ID2SYM(node->nd_next->nd_aid), op, value);
+      tree = rb_funcall(ptp, rb_sOpAsgn2, 6, line,
+          recv, node->nd_next->nd_aid ? Qtrue : Qfalse,
+          ID2SYM(node->nd_next->nd_oid), op, value);
       break;
     }
     case NODE_OP_ASGN_AND: {
@@ -969,6 +980,20 @@ namespace MELBOURNE {
     case NODE_TO_ARY: {
       VALUE expr = process_parse_tree(parser_state, ptp, node->nd_head, locals);
       tree = rb_funcall(ptp, rb_sToAry, 2, line, expr);
+      break;
+    }
+    case NODE_ANDATTRASGN: {         /* literal.meth = y u1 u2 u3 */
+      VALUE recv;
+
+      /* node id node */
+      if (node->nd_1st == RNODE(1)) {
+        recv = process_parse_tree(parser_state, ptp, NEW_SELF(), locals);
+      } else {
+        recv = process_parse_tree(parser_state, ptp, node->nd_1st, locals);
+      }
+      VALUE value = process_parse_tree(parser_state, ptp, node->nd_3rd, locals);
+      tree = rb_funcall(ptp, rb_sAndAttrAsgn, 4, line,
+          recv, ID2SYM(node->u2.id), value);
       break;
     }
     case NODE_ATTRASGN: {         /* literal.meth = y u1 u2 u3 */

@@ -290,11 +290,11 @@ module CodeTools
         @assign = name.to_s[-1] == ?= ? name : :"#{name}="
       end
 
-      def bytecode(g)
+      def bytecode(g, anddot=false)
         pos(g)
 
         # X: h.a += 3, given h.a == 2
-        @receiver.bytecode(g)
+        @receiver.bytecode(g) unless anddot
         # X: TOS = h
         g.dup
         g.send @name, 0
@@ -389,6 +389,10 @@ module CodeTools
         end
       end
 
+      def sexp_name
+        :op_asgn2
+      end
+
       def to_sexp
         case @op
         when :or
@@ -398,7 +402,26 @@ module CodeTools
         else
           op = @op
         end
-        [:op_asgn2, @receiver.to_sexp, :"#{@name}=", op, @value.to_sexp]
+        [sexp_name, @receiver.to_sexp, :"#{@name}=", op, @value.to_sexp]
+      end
+    end
+
+    class AndOpAssignAttribute < OpAssignAttribute
+      def bytecode(g)
+        done = g.new_label
+
+        @receiver.bytecode(g)
+
+        g.dup
+        g.goto_if_nil done
+
+        super(g, true)
+
+        done.set!
+      end
+
+      def sexp_name
+        :and_op_asgn2
       end
     end
 

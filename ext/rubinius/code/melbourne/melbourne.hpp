@@ -17,4 +17,12 @@
 
 #define RSTRING_NOT_MODIFIED 1
 
+#ifndef native_int
+  typedef intptr_t native_int;
+#endif
+
+#ifndef native_uint
+  typedef uintptr_t native_uint;
+#endif
+
 #include "ruby.h"

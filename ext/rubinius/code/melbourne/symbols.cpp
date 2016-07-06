@@ -9,6 +9,7 @@ extern "C" {
 namespace MELBOURNE {
   ID rb_sAlias;
   ID rb_sAnd;
+  ID rb_sAndAttrAsgn;
   ID rb_sArgs;
   ID rb_sArgsCat;
   ID rb_sArgsPush;
@@ -86,6 +87,7 @@ namespace MELBOURNE {
   ID rb_sPostExe;
   ID rb_sPostArg;
   ID rb_sPreExe;
+  ID rb_sQCall;
   ID rb_sRational;
   ID rb_sRedo;
   ID rb_sRegex;
@@ -125,6 +127,7 @@ namespace MELBOURNE {
   void init_symbols() {
     rb_sAlias       = rb_intern("process_alias");
     rb_sAnd         = rb_intern("process_and");
+    rb_sAndAttrAsgn = rb_intern("process_andattrasgn");
     rb_sArgs        = rb_intern("process_args");
     rb_sArgsCat     = rb_intern("process_argscat");
     rb_sArgsPush    = rb_intern("process_argspush");
@@ -202,6 +205,7 @@ namespace MELBOURNE {
     rb_sPostExe     = rb_intern("process_postexe");
     rb_sPostArg     = rb_intern("process_postarg");
     rb_sPreExe      = rb_intern("process_preexe");
+    rb_sQCall       = rb_intern("process_qcall");
     rb_sRational    = rb_intern("process_rational");
     rb_sRedo        = rb_intern("process_redo");
     rb_sRegex       = rb_intern("process_regex");

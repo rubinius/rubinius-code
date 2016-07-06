@@ -37,6 +37,7 @@ node_types = %w[
   call
   fcall
   vcall
+  qcall
   super
   zsuper
   array
@@ -101,6 +102,7 @@ node_types = %w[
   memo
   ifunc
   dsym
+  andattrasgn
   attrasgn
   prelude
   lambda
