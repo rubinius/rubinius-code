@@ -1,4 +1,5 @@
 language: ruby
+dist: trusty
 env:
 - RUBYLIB=lib:.
 script: bundle exec rake
