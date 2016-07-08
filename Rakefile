@@ -14,10 +14,6 @@ namespace :melbourne do
     end
   end
 
-  def spec_ruby_version
-    ".spec_ruby_version"
-  end
-
   desc "Generate the parser"
   task :generate do
     extension_dir { sh "bison -o grammar.cpp grammar.y" }
@@ -27,11 +23,7 @@ namespace :melbourne do
     desc "Clean the parser extension"
     task :clean do
       extension_dir do
-        unless File.exist? spec_ruby_version and
-               File.read(spec_ruby_version) == RUBY_DESCRIPTION
-          sh "make distclean" if File.exist? "Makefile"
-          File.open(spec_ruby_version, "w") { |f| f.write RUBY_DESCRIPTION }
-        end
+        sh "rm -f *.o namespace.h *.bundle *.so"
       end
     end
 
