@@ -9,6 +9,16 @@ describe "An Attrasgn node" do
      [:attrasgn, [:lit, 42], :method=, [:arglist, [:lvar, :y]]]]
   end
 
+  parse <<-ruby do
+      a = 1
+      a&.m = 2
+    ruby
+
+    [:block,
+     [:lasgn, :a, [:lit, 1]],
+     [:attrasgn, [:lvar, :a], :m=, [:arglist, [:lit, 2]]]]
+  end
+
   parse "a.m = *[1]" do
     [:attrasgn,
      [:call, nil, :a, [:arglist]],

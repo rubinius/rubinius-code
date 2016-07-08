@@ -97,6 +97,18 @@ describe "An Op_asgn2 node" do
       :"Bag=", :"||", [:call, [:const, :Bag], :new, [:arglist]]]
   end
 
+  parse "a&.m += 2" do
+    [:op_asgn2, [:call, nil, :a, [:arglist]], :m=, :+, [:lit, 2]]
+  end
+
+  parse "a&.m ||= 2" do
+    [:op_asgn2, [:call, nil, :a, [:arglist]], :m=, :"||", [:lit, 2]]
+  end
+
+  parse "a&.m &&= 2" do
+    [:op_asgn2, [:call, nil, :a, [:arglist]], :m=, :"&&", [:lit, 2]]
+  end
+
   parse <<-ruby do
       s = Struct.new(:var)
       c = s.new(nil)
