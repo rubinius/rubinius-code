@@ -12167,6 +12167,10 @@ retry:
     if(c == '\n') {
       space_seen = 1;
       goto retry; /* skip \\n */
+    } else if(c == '(' || c == '{') {
+      pushback(c);
+      SET_LEX_STATE(EXPR_ENDFN);
+      return tLAMBDA;
     }
     pushback(c);
     return '\\';
