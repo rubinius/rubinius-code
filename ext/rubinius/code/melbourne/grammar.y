@@ -451,6 +451,9 @@ static int scan_hex(const char *start, size_t len, size_t *retlen);
   keyword_class
   keyword_module
   keyword_def
+  keyword_defm
+  keyword_fun
+  keyword_funm
   keyword_undef
   keyword_begin
   keyword_rescue
@@ -1251,6 +1254,7 @@ reswords        : keyword__LINE__ | keyword__FILE__ | keyword__ENCODING__
                 | keyword_BEGIN | keyword_END
                 | keyword_alias | keyword_and | keyword_begin
                 | keyword_break | keyword_case | keyword_class | keyword_def
+                | keyword_defm | keyword_fun | keyword_funm
                 | keyword_defined | keyword_do | keyword_else | keyword_elsif
                 | keyword_end | keyword_ensure | keyword_false
                 | keyword_for | keyword_in | keyword_module | keyword_next
@@ -1887,6 +1891,60 @@ primary         : literal
                     in_def--;
                     cur_mid = $<id>3;
                   }
+                | k_defm fname
+                  {
+                    $<id>$ = cur_mid;
+                    cur_mid = $2;
+                    in_def++;
+                    local_push(0);
+                  }
+                  f_arglist
+                  bodystmt
+                  k_end
+                  {
+                    NODE* body = remove_begin($5);
+                    $$ = NEW_DEFNM($2, $4, body, NOEX_PRIVATE);
+                    nd_set_line($$, $<num>1);
+                    local_pop();
+                    in_def--;
+                    cur_mid = $<id>3;
+                  }
+                | k_fun fname
+                  {
+                    $<id>$ = cur_mid;
+                    cur_mid = $2;
+                    in_def++;
+                    local_push(0);
+                  }
+                  f_arglist
+                  bodystmt
+                  k_end
+                  {
+                    NODE* body = remove_begin($5);
+                    $$ = NEW_FUN($2, $4, body, NOEX_PRIVATE);
+                    nd_set_line($$, $<num>1);
+                    local_pop();
+                    in_def--;
+                    cur_mid = $<id>3;
+                  }
+                | k_funm fname
+                  {
+                    $<id>$ = cur_mid;
+                    cur_mid = $2;
+                    in_def++;
+                    local_push(0);
+                  }
+                  f_arglist
+                  bodystmt
+                  k_end
+                  {
+                    NODE* body = remove_begin($5);
+                    $$ = NEW_FUNM($2, $4, body, NOEX_PRIVATE);
+                    nd_set_line($$, $<num>1);
+                    local_pop();
+                    in_def--;
+                    cur_mid = $<id>3;
+                  }
                 | k_def singleton dot_or_colon {SET_LEX_STATE(EXPR_FNAME);} fname
                   {
                     $<num>4 = in_single;
@@ -1902,6 +1960,26 @@ primary         : literal
                   {
                     NODE* body = remove_begin($8);
                     $$ = NEW_DEFS($2, $5, $7, body);
+                    nd_set_line($$, $<num>1);
+                    local_pop();
+                    in_single = $<num>4 & 1;
+                    current_arg = $<id>6;
+                  }
+                | k_defm singleton dot_or_colon {SET_LEX_STATE(EXPR_FNAME);} fname
+                  {
+                    $<num>4 = in_single;
+                    in_single = 1;
+                    SET_LEX_STATE(EXPR_ENDFN | EXPR_LABEL); /* force for args */
+                    local_push(0);
+                    $<id>$ = current_arg;
+                    current_arg = 0;
+                  }
+                  f_arglist
+                  bodystmt
+                  k_end
+                  {
+                    NODE* body = remove_begin($8);
+                    $$ = NEW_DEFSM($2, $5, $7, body);
                     nd_set_line($$, $<num>1);
                     local_pop();
                     in_single = $<num>4 & 1;
@@ -1990,6 +2068,27 @@ k_module        : keyword_module
 k_def           : keyword_def
                   {
                     token_info_push("def");
+                    $<num>$ = sourceline;
+                  }
+                ;
+
+k_defm          : keyword_defm
+                  {
+                    token_info_push("defm");
+                    $<num>$ = sourceline;
+                  }
+                ;
+
+k_fun           : keyword_fun
+                  {
+                    token_info_push("fun");
+                    $<num>$ = sourceline;
+                  }
+                ;
+
+k_funm          : keyword_funm
+                  {
+                    token_info_push("funm");
                     $<num>$ = sourceline;
                   }
                 ;

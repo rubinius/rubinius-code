@@ -185,6 +185,39 @@ module CodeTools
       end
     end
 
+    class DefineFunction < Node
+      attr_accessor :name, :arguments
+
+      def initialize(line, name, block)
+        @line = line
+        @name = name
+        @arguments = block.extract_parameters
+        block.array << NilLiteral.new(line) if block.array.empty?
+        @body = block
+      end
+
+      def bytecode(g)
+        pos(g)
+
+        g.push_const :Kernel
+        g.push_literal sexp_name.to_s
+        g.push_literal " "
+        g.push_literal @name.to_s
+        g.string_build 3
+        g.send :puts, 1
+      end
+
+      def sexp_name
+        :fun
+      end
+    end
+
+    class DefineFunctionMulti < DefineFunction
+      def sexp_name
+        :funm
+      end
+    end
+
     class Define < ClosedScope
       attr_accessor :name, :arguments
 
@@ -238,6 +271,9 @@ module CodeTools
       end
     end
 
+    class DefineMulti < Define
+    end
+
     class DefineSingleton < Node
       attr_accessor :receiver, :body
 
@@ -257,6 +293,9 @@ module CodeTools
         [:defs, @receiver.to_sexp, @body.name,
           @body.arguments.to_sexp, [:scope, @body.body.to_sexp]]
       end
+    end
+
+    class DefineSingletonMulti < DefineSingleton
     end
 
     class DefineSingletonScope < Define

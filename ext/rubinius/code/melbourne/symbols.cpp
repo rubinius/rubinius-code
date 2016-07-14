@@ -34,7 +34,9 @@ namespace MELBOURNE {
   ID rb_sData;
   ID rb_sDefined;
   ID rb_sDefn;
+  ID rb_sDefnm;
   ID rb_sDefs;
+  ID rb_sDefsm;
   ID rb_sDot2;
   ID rb_sDot3;
   ID rb_sDRegx;
@@ -53,6 +55,8 @@ namespace MELBOURNE {
   ID rb_sFlip3;
   ID rb_sFloat;
   ID rb_sFor;
+  ID rb_sFun;
+  ID rb_sFunm;
   ID rb_sGAsgn;
   ID rb_sGVar;
   ID rb_sHash;
@@ -152,7 +156,9 @@ namespace MELBOURNE {
     rb_sData        = rb_intern("process_data");
     rb_sDefined     = rb_intern("process_defined");
     rb_sDefn        = rb_intern("process_defn");
+    rb_sDefnm       = rb_intern("process_defnm");
     rb_sDefs        = rb_intern("process_defs");
+    rb_sDefsm       = rb_intern("process_defsm");
     rb_sDot2        = rb_intern("process_dot2");
     rb_sDot3        = rb_intern("process_dot3");
     rb_sDRegx       = rb_intern("process_dregx");
@@ -171,6 +177,8 @@ namespace MELBOURNE {
     rb_sFlip3       = rb_intern("process_flip3");
     rb_sFloat       = rb_intern("process_float");
     rb_sFor         = rb_intern("process_for");
+    rb_sFun         = rb_intern("process_fun");
+    rb_sFunm        = rb_intern("process_funm");
     rb_sGAsgn       = rb_intern("process_gasgn");
     rb_sGVar        = rb_intern("process_gvar");
     rb_sHash        = rb_intern("process_hash");

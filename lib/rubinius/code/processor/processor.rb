@@ -198,8 +198,16 @@ module CodeTools
       AST::Define.new line, name, body
     end
 
+    def process_defnm(line, name, body)
+      AST::DefineMulti.new line, name, body
+    end
+
     def process_defs(line, receiver, name, body)
       AST::DefineSingleton.new line, receiver, name, body
+    end
+
+    def process_defsm(line, receiver, name, body)
+      AST::DefineSingletonMulti.new line, receiver, name, body
     end
 
     def process_dot2(line, start, finish)
@@ -300,6 +308,14 @@ module CodeTools
       send = AST::Send.new line, iter, :each
       send.block = AST::For.new line, arguments, body
       send
+    end
+
+    def process_fun(line, name, body)
+      AST::DefineFunction.new line, name, body
+    end
+
+    def process_funm(line, name, body)
+      AST::DefineFunctionMulti.new line, name, body
     end
 
     def process_gasgn(line, name, expr)

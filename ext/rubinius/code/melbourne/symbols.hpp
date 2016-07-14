@@ -33,7 +33,9 @@ namespace MELBOURNE {
   extern ID rb_sData;
   extern ID rb_sDefined;
   extern ID rb_sDefn;
+  extern ID rb_sDefnm;
   extern ID rb_sDefs;
+  extern ID rb_sDefsm;
   extern ID rb_sDot2;
   extern ID rb_sDot3;
   extern ID rb_sDRegx;
@@ -52,6 +54,8 @@ namespace MELBOURNE {
   extern ID rb_sFlip3;
   extern ID rb_sFloat;
   extern ID rb_sFor;
+  extern ID rb_sFun;
+  extern ID rb_sFunm;
   extern ID rb_sGAsgn;
   extern ID rb_sGVar;
   extern ID rb_sHash;

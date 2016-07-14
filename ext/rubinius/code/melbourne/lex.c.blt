@@ -28,18 +28,18 @@
 error "gperf generated tables don't work with this execution character set. Please report a bug to <bug-gnu-gperf@gnu.org>."
 #endif
 
-struct kwtable {const char *name; int id[2]; enum lex_state_e state;};
+struct kwtable {const char* name; int id[2]; enum lex_state_e state;};
 const struct kwtable *rb_reserved_word(const char *, unsigned int);
 static const struct kwtable *reserved_word(const char *, unsigned int);
 #define rb_reserved_word(str, len) reserved_word(str, len)
 struct kwtable;
 
-#define TOTAL_KEYWORDS 41
+#define TOTAL_KEYWORDS 44
 #define MIN_WORD_LENGTH 2
 #define MAX_WORD_LENGTH 12
-#define MIN_HASH_VALUE 8
+#define MIN_HASH_VALUE 7
 #define MAX_HASH_VALUE 50
-/* maximum key range = 43, duplicates = 0 */
+/* maximum key range = 44, duplicates = 0 */
 
 static inline unsigned int hash(register const char* str, register unsigned int len)
 {
@@ -51,13 +51,13 @@ static inline unsigned int hash(register const char* str, register unsigned int 
       51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
       51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
       51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 26, 51, 51, 14, 51, 16,  8,
-      11, 13, 51, 51, 51, 51, 10, 51, 13, 51,
+      51, 51, 51, 30, 51, 51, 15, 51, 18, 10,
+      12, 14, 51, 51, 51, 51, 11, 51, 14, 51,
       51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 51, 51, 11, 51, 13,  1, 26,
-       4,  1,  8, 28, 51, 23, 51,  1,  1, 27,
-       5, 19, 21, 51,  8,  3,  3, 11, 51, 21,
-      24, 16, 51, 51, 51, 51, 51, 51, 51, 51,
+      51, 51, 51, 51, 51, 12, 51,  6,  4, 35,
+      11,  1,  1, 29, 51, 27, 51,  3,  4, 20,
+       4, 10, 16, 51, 12,  1,  5,  8, 51, 12,
+      19, 18, 51, 51, 51, 51, 51, 51, 51, 51,
       51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
       51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
       51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
@@ -91,62 +91,62 @@ const struct kwtable* rb_reserved_word(register const char* str, register unsign
 {
   static const struct kwtable wordlist[] =
     {
-      {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""},
-      {"break", {keyword_break, keyword_break}, EXPR_MID},
+      {""}, {""}, {""}, {""}, {""}, {""}, {""},
       {"else", {keyword_else, keyword_else}, EXPR_BEG},
-      {"nil", {keyword_nil, keyword_nil}, EXPR_END},
-      {"ensure", {keyword_ensure, keyword_ensure}, EXPR_BEG},
-      {"end", {keyword_end, keyword_end}, EXPR_END},
-      {"then", {keyword_then, keyword_then}, EXPR_BEG},
-      {"not", {keyword_not, keyword_not}, EXPR_ARG},
-      {"false", {keyword_false, keyword_false}, EXPR_END},
-      {"self", {keyword_self, keyword_self}, EXPR_END},
       {"elsif", {keyword_elsif, keyword_elsif}, EXPR_VALUE},
-      {"rescue", {keyword_rescue, modifier_rescue}, EXPR_MID},
-      {"true", {keyword_true, keyword_true}, EXPR_END},
-      {"until", {keyword_until, modifier_until}, EXPR_VALUE},
-      {"unless", {keyword_unless, modifier_unless}, EXPR_VALUE},
-      {"return", {keyword_return, keyword_return}, EXPR_MID},
+      {"ensure", {keyword_ensure, keyword_ensure}, EXPR_BEG},
+      {"self", {keyword_self, keyword_self}, EXPR_END},
+      {"false", {keyword_false, keyword_false}, EXPR_END},
+      {"fun", {keyword_fun, keyword_fun}, EXPR_FNAME},
+      {"break", {keyword_break, keyword_break}, EXPR_MID},
+      {"then", {keyword_then, keyword_then}, EXPR_BEG},
+      {"nil", {keyword_nil, keyword_nil}, EXPR_END},
       {"def", {keyword_def, keyword_def}, EXPR_FNAME},
-      {"and", {keyword_and, keyword_and}, EXPR_VALUE},
-      {"do", {keyword_do, keyword_do}, EXPR_BEG},
-      {"yield", {keyword_yield, keyword_yield}, EXPR_ARG},
-      {"for", {keyword_for, keyword_for}, EXPR_VALUE},
-      {"undef", {keyword_undef, keyword_undef}, EXPR_FNAME},
-      {"or", {keyword_or, keyword_or}, EXPR_VALUE},
-      {"in", {keyword_in, keyword_in}, EXPR_VALUE},
+      {"not", {keyword_not, keyword_not}, EXPR_ARG},
+      {"true", {keyword_true, keyword_true}, EXPR_END},
+      {"unless", {keyword_unless, modifier_unless}, EXPR_VALUE},
+      {"rescue", {keyword_rescue, modifier_rescue}, EXPR_MID},
       {"when", {keyword_when, keyword_when}, EXPR_VALUE},
-      {"retry", {keyword_retry, keyword_retry}, EXPR_END},
+      {"until", {keyword_until, modifier_until}, EXPR_VALUE},
+      {"do", {keyword_do, keyword_do}, EXPR_BEG},
+      {"or", {keyword_or, keyword_or}, EXPR_VALUE},
+      {"undef", {keyword_undef, keyword_undef}, EXPR_FNAME},
+      {"end", {keyword_end, keyword_end}, EXPR_END},
+      {"return", {keyword_return, keyword_return}, EXPR_MID},
+      {"for", {keyword_for, keyword_for}, EXPR_VALUE},
+      {"funm", {keyword_funm, keyword_funm}, EXPR_FNAME},
       {"if", {keyword_if, modifier_if}, EXPR_VALUE},
-      {"case", {keyword_case, keyword_case}, EXPR_VALUE},
-      {"redo", {keyword_redo, keyword_redo}, EXPR_END},
+      {"and", {keyword_and, keyword_and}, EXPR_VALUE},
       {"next", {keyword_next, keyword_next}, EXPR_MID},
+      {"in", {keyword_in, keyword_in}, EXPR_VALUE},
       {"super", {keyword_super, keyword_super}, EXPR_ARG},
+      {"yield", {keyword_yield, keyword_yield}, EXPR_ARG},
+      {"defm", {keyword_defm, keyword_defm}, EXPR_FNAME},
+      {"redo", {keyword_redo, keyword_redo}, EXPR_END},
       {"module", {keyword_module, keyword_module}, EXPR_VALUE},
+      {"alias", {keyword_alias, keyword_alias}, EXPR_FNAME},
+      {"retry", {keyword_retry, keyword_retry}, EXPR_END},
+      {"case", {keyword_case, keyword_case}, EXPR_VALUE},
       {"begin", {keyword_begin, keyword_begin}, EXPR_BEG},
       {"__LINE__", {keyword__LINE__, keyword__LINE__}, EXPR_END},
       {"__FILE__", {keyword__FILE__, keyword__FILE__}, EXPR_END},
+      {"while", {keyword_while, modifier_while}, EXPR_VALUE},
       {"__ENCODING__", {keyword__ENCODING__, keyword__ENCODING__}, EXPR_END},
-      {"END", {keyword_END, keyword_END}, EXPR_END},
-      {"alias", {keyword_alias, keyword_alias}, EXPR_FNAME},
-      {"BEGIN", {keyword_BEGIN, keyword_BEGIN}, EXPR_END},
-      {"defined?", {keyword_defined, keyword_defined}, EXPR_ARG},
       {"class", {keyword_class, keyword_class}, EXPR_CLASS},
-      {""}, {""},
-      {"while", {keyword_while, modifier_while}, EXPR_VALUE}
+      {"BEGIN", {keyword_BEGIN, keyword_BEGIN}, EXPR_END},
+      {"END", {keyword_END, keyword_END}, EXPR_END},
+      {"defined?", {keyword_defined, keyword_defined}, EXPR_ARG}
     };
 
-  if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH)
-    {
-      register int key = hash(str, len);
+  if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH) {
+    register int key = hash(str, len);
 
-      if(key <= MAX_HASH_VALUE && key >= 0)
-        {
-          register const char *s = wordlist[key].name;
+    if(key <= MAX_HASH_VALUE && key >= 0) {
+      register const char *s = wordlist[key].name;
 
-          if(*str == *s && !strcmp(str + 1, s + 1))
-            return &wordlist[key];
-        }
+      if(*str == *s && !strcmp (str + 1, s + 1))
+        return &wordlist[key];
     }
+  }
   return 0;
 }
