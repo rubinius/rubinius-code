@@ -314,7 +314,7 @@ module CodeTools
     def self.construct_block(string, binding, file="(eval)", line=1)
       code = compile_eval string, binding.variables, file, line
 
-      code.scope = binding.constant_scope
+      code.scope = binding.lexical_scope
       code.name = binding.variables.method.name
 
       # This has to be setup so __FILE__ works in eval.
