@@ -450,6 +450,7 @@ static int scan_hex(const char *start, size_t len, size_t *retlen);
 %token
   keyword_class
   keyword_module
+  keyword_data
   keyword_def
   keyword_defm
   keyword_fun
@@ -1254,6 +1255,7 @@ reswords        : keyword__LINE__ | keyword__FILE__ | keyword__ENCODING__
                 | keyword_BEGIN | keyword_END
                 | keyword_alias | keyword_and | keyword_begin
                 | keyword_break | keyword_case | keyword_class | keyword_def
+                | keyword_data
                 | keyword_defm | keyword_fun | keyword_funm
                 | keyword_defined | keyword_do | keyword_else | keyword_elsif
                 | keyword_end | keyword_ensure | keyword_false
@@ -1873,6 +1875,22 @@ primary         : literal
                     local_pop();
                     class_nest--;
                   }
+                | k_data cpath
+                  {
+                    if(in_def || in_single)
+                      yy_error("data definition in method body");
+                    class_nest++;
+                    local_push(0);
+                    $<num>$ = sourceline;
+                  }
+                  bodystmt
+                  k_end
+                  {
+                    $$ = NEW_DATA($2, $4);
+                    nd_set_line($$, $<num>3);
+                    local_pop();
+                    class_nest--;
+                  }
                 | k_def fname
                   {
                     $<id>$ = cur_mid;
@@ -2062,6 +2080,12 @@ k_class         : keyword_class
 k_module        : keyword_module
                   {
                     token_info_push("module");
+                  }
+                ;
+
+k_data          : keyword_data
+                  {
+                    token_info_push("data");
                   }
                 ;
 

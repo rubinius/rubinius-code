@@ -190,6 +190,10 @@ module CodeTools
       AST::ClassVariableDeclaration.new line, name, value
     end
 
+    def process_data_type(line, name, body)
+      AST::DataType.new line, name, body
+    end
+
     def process_defined(line, expr)
       AST::Defined.new line, expr
     end

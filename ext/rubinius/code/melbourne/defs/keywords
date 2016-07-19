@@ -19,6 +19,7 @@ begin, {keyword_begin, keyword_begin}, EXPR_BEG
 break, {keyword_break, keyword_break}, EXPR_MID
 case, {keyword_case, keyword_case}, EXPR_VALUE
 class, {keyword_class, keyword_class}, EXPR_CLASS
+data, {keyword_data, keyword_data}, EXPR_DATA
 def, {keyword_def, keyword_def}, EXPR_FNAME
 defm, {keyword_defm, keyword_defm}, EXPR_FNAME
 fun, {keyword_fun, keyword_fun}, EXPR_FNAME

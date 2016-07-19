@@ -96,6 +96,7 @@ namespace MELBOURNE {
     "class\0"
     "module\0"
     "sclass\0"
+    "data\0"
     "colon2\0"
     "colon3\0"
     "dot2\0"
@@ -221,42 +222,43 @@ namespace MELBOURNE {
     560,
     567,
     574,
-    581,
-    588,
+    579,
+    586,
     593,
     598,
-    604,
-    610,
+    603,
+    609,
     615,
-    619,
+    620,
     624,
-    630,
-    638,
-    646,
-    654,
-    661,
-    669,
+    629,
+    635,
+    643,
+    651,
+    659,
+    666,
     674,
-    680,
+    679,
     685,
-    697,
-    706,
-    714,
-    721,
-    730,
+    690,
+    702,
+    711,
+    719,
+    726,
     735,
     740,
-    746,
-    753,
-    759,
-    768,
-    775,
-    784,
-    794
+    745,
+    751,
+    758,
+    764,
+    773,
+    780,
+    789,
+    799
   };
 
   const char *get_node_type_string(enum node_type node) {
-    if(node < 121) {
+    if(node < 122) {
       return node_types + node_types_offsets[node];
     } else {
 #define NODE_STRING_MESSAGE_LEN 20

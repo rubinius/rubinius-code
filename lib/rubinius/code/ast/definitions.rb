@@ -975,6 +975,59 @@ module CodeTools
       end
     end
 
+    class DataType < Node
+      attr_accessor :name, :body
+
+      def initialize(line, name, body)
+        @line = line
+
+        # TODO: nodes for data type name
+        case name
+        when Symbol
+          @name = ModuleName.new line, name
+        when ToplevelConstant
+          @name = ToplevelModuleName.new line, name
+        else
+          @name = ScopedModuleName.new line, name
+        end
+
+        if body
+          @body = ModuleScope.new line, @name, body
+        else
+          @body = EmptyBody.new line
+        end
+      end
+
+      def bytecode(g)
+        pos(g)
+
+        g.push_const :Kernel
+
+        # TODO: fix when data type name is implemented
+        case @name
+        when ModuleName
+          g.push_literal @name.name
+          g.send :to_s, 1
+        when ToplevelModuleName
+          g.push_literal @name.name
+          g.send :to_s, 1
+        when ScopedModuleName
+          g.push_literal @name.name
+          g.send :to_s, 1
+        else
+          g.push_literal "unknown data type name"
+        end
+        g.push_literal " "
+        g.push_literal @name.to_s
+        g.string_build 3
+        g.send :puts, 1
+      end
+
+      def to_sexp
+        [:data_type, @name.to_sexp, @body.to_sexp]
+      end
+    end
+
     class EmptyBody < Node
       def bytecode(g)
         g.pop

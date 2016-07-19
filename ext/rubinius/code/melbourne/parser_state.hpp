@@ -23,6 +23,7 @@ namespace MELBOURNE {
     EXPR_FNAME_BIT,     /* ignore newline, no reserved words. */
     EXPR_DOT_BIT,       /* right after `.' or `::', no reserved words. */
     EXPR_CLASS_BIT,     /* immediate after `class', no here document. */
+    EXPR_DATA_BIT,      /* immediate after `data', no here document. */
     EXPR_LABEL_BIT,     /* flag bit, label is allowed. */
     EXPR_LABELED_BIT,   /* flag bit, just after a label. */
     EXPR_FITEM_BIT,     /* symbol literal as FNAME. */
@@ -41,11 +42,12 @@ namespace MELBOURNE {
     EXPR(FNAME),
     EXPR(DOT),
     EXPR(CLASS),
+    EXPR(DATA),
     EXPR(LABEL),
     EXPR(LABELED),
     EXPR(FITEM),
     EXPR_VALUE    = EXPR_BEG,
-    EXPR_BEG_ANY  = (EXPR_BEG | EXPR_MID | EXPR_CLASS),
+    EXPR_BEG_ANY  = (EXPR_BEG | EXPR_MID | EXPR_CLASS | EXPR_DATA),
     EXPR_ARG_ANY  = (EXPR_ARG | EXPR_CMDARG),
     EXPR_END_ANY  = (EXPR_END | EXPR_ENDARG | EXPR_ENDFN)
   };

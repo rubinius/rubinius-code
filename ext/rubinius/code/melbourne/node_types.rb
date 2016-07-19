@@ -88,6 +88,7 @@ node_types = %w[
   class
   module
   sclass
+  data
   colon2
   colon3
   dot2

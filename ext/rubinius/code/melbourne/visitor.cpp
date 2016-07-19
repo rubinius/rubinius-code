@@ -750,6 +750,18 @@ namespace MELBOURNE {
       tree = rb_funcall(ptp, rb_sSClass, 3, line, recv, body);
       break;
     }
+    case NODE_DATA: {
+      VALUE name;
+
+      if (nd_type(node->nd_cpath) == NODE_COLON2 && !node->nd_cpath->nd_vid) {
+        name = ID2SYM((ID)node->nd_cpath->nd_mid);
+      } else {
+        name = process_parse_tree(parser_state, ptp, node->nd_cpath, locals);
+      }
+      VALUE body = process_parse_tree(parser_state, ptp, node->nd_body, locals);
+      tree = rb_funcall(ptp, rb_sDataType, 3, line, name, body);
+      break;
+    }
     case NODE_OPT_ARG: {
       VALUE args = rb_ary_new();
 

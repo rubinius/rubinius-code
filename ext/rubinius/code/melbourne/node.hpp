@@ -260,6 +260,7 @@ namespace MELBOURNE {
 #define NEW_CLASS(n,b,s)        NEW_NODE(NODE_CLASS,n,NEW_SCOPE(0,b),(s))
 #define NEW_SCLASS(r,b)         NEW_NODE(NODE_SCLASS,r,NEW_SCOPE(0,b),0)
 #define NEW_MODULE(n,b)         NEW_NODE(NODE_MODULE,n,NEW_SCOPE(0,b),0)
+#define NEW_DATA(n,b)           NEW_NODE(NODE_DATA,n,NEW_SCOPE(0,b),0)
 #define NEW_COLON2(c,i)         NEW_NODE(NODE_COLON2,c,i,0)
 #define NEW_COLON3(i)           NEW_NODE(NODE_COLON3,0,i,0)
 #define NEW_DOT2(b,e)           NEW_NODE(NODE_DOT2,b,e,0)

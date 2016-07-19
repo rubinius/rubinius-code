@@ -93,6 +93,7 @@ namespace MELBOURNE {
     NODE_CLASS,
     NODE_MODULE,
     NODE_SCLASS,
+    NODE_DATA,
     NODE_COLON2,
     NODE_COLON3,
     NODE_DOT2,
