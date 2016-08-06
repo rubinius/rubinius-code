@@ -2,6 +2,8 @@
 
 module Rubinius
   class InstructionSet
+    CALL_FLAG_CONCAT = 2
+
     opcode  0, :add_scope,                   :stack => [1, 0],     :args => [],                               :control_flow => :next
     opcode  1, :allow_private,               :stack => [0, 0],     :args => [],                               :control_flow => :next
     opcode  2, :cast_array,                  :stack => [1, 1],     :args => [],                               :control_flow => :next
