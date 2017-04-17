@@ -55,8 +55,6 @@ namespace MELBOURNE {
 #define lex_state_p(s)            lex_state_of_p(lex_state, s)
 #define lex_state_all_p(s)        lex_state_of_all_p(lex_state, s)
 
-typedef VALUE stack_type;
-
   struct StartPosition {
     int line;
     const char* kind;
@@ -158,8 +156,6 @@ typedef VALUE stack_type;
     char *sourcefile;
     int sourceline;
 
-    ID current_arg;
-
     rb_encoding *enc;
     rb_encoding *utf8;
   } rb_parser_state;
@@ -232,7 +228,6 @@ typedef VALUE stack_type;
 #define start_lines         PARSER_VAR(start_lines)
 #define sourcefile          PARSER_VAR(sourcefile)
 #define sourceline          PARSER_VAR(sourceline)
-#define current_arg         PARSER_VAR(current_arg)
 
 #define node_newnode(t, a, b, c)  \
   parser_node_newnode((rb_parser_state*)parser_state, t, a, b, c)

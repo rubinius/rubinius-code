@@ -8,6 +8,8 @@
 #endif
 
 namespace MELBOURNE {
+typedef VALUE stack_type;
+
   struct vtable {
     ID *tbl;
     int pos;
@@ -19,6 +21,7 @@ namespace MELBOURNE {
     struct vtable *args;
     struct vtable *vars;
     struct local_vars *prev;
+    stack_type cmdargs;
   };
 
   int vtable_size(const struct vtable* tbl);

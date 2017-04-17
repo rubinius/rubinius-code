@@ -1837,25 +1837,22 @@ primary         : literal
                   }
                 | k_class tLSHFT expr
                   {
-                    $<num>$ = in_def;
+                    $<num>$ = (in_def << 1) | in_single;
                     in_def = 0;
-                  }
-                  term
-                  {
-                    $<num>$ = in_single;
                     in_single = 0;
                     class_nest++;
                     local_push(0);
                   }
+                  term
                   bodystmt
                   k_end
                   {
-                    $$ = NEW_SCLASS($3, $7);
+                    $$ = NEW_SCLASS($3, $6);
                     fixpos($$, $3);
                     local_pop();
                     class_nest--;
-                    in_def = $<num>4;
-                    in_single = $<num>6;
+                    in_def = ($<num>4 >> 1) & 1;
+                    in_single = $<num>4 & 1;
                   }
                 | k_module cpath
                   {
@@ -1877,72 +1874,84 @@ primary         : literal
                   {
                     $<id>$ = cur_mid;
                     cur_mid = $2;
-                    in_def++;
                     local_push(0);
+                  }
+                  {
+                    $<num>$ = in_def;
+                    in_def = 1;
                   }
                   f_arglist
                   bodystmt
                   k_end
                   {
-                    NODE* body = remove_begin($5);
-                    $$ = NEW_DEFN($2, $4, body, NOEX_PRIVATE);
+                    NODE* body = remove_begin($6);
+                    $$ = NEW_DEFN($2, $5, body, NOEX_PRIVATE);
                     nd_set_line($$, $<num>1);
                     local_pop();
-                    in_def--;
+                    in_def = $<num>4 & 1;
                     cur_mid = $<id>3;
                   }
                 | k_defm fname
                   {
                     $<id>$ = cur_mid;
                     cur_mid = $2;
-                    in_def++;
                     local_push(0);
+                  }
+                  {
+                    $<num>$ = in_def;
+                    in_def = 1;
                   }
                   f_arglist
                   bodystmt
                   k_end
                   {
-                    NODE* body = remove_begin($5);
-                    $$ = NEW_DEFNM($2, $4, body, NOEX_PRIVATE);
+                    NODE* body = remove_begin($6);
+                    $$ = NEW_DEFNM($2, $5, body, NOEX_PRIVATE);
                     nd_set_line($$, $<num>1);
                     local_pop();
-                    in_def--;
+                    in_def = $<num>4 & 1;
                     cur_mid = $<id>3;
                   }
                 | k_fun fname
                   {
                     $<id>$ = cur_mid;
                     cur_mid = $2;
-                    in_def++;
                     local_push(0);
+                  }
+                  {
+                    $<num>$ = in_def;
+                    in_def = 1;
                   }
                   f_arglist
                   bodystmt
                   k_end
                   {
-                    NODE* body = remove_begin($5);
-                    $$ = NEW_FUN($2, $4, body, NOEX_PRIVATE);
+                    NODE* body = remove_begin($6);
+                    $$ = NEW_FUN($2, $5, body, NOEX_PRIVATE);
                     nd_set_line($$, $<num>1);
                     local_pop();
-                    in_def--;
+                    in_def = $<num>4 & 1;
                     cur_mid = $<id>3;
                   }
                 | k_funm fname
                   {
                     $<id>$ = cur_mid;
                     cur_mid = $2;
-                    in_def++;
                     local_push(0);
+                  }
+                  {
+                    $<num>$ = in_def;
+                    in_def = 1;
                   }
                   f_arglist
                   bodystmt
                   k_end
                   {
-                    NODE* body = remove_begin($5);
-                    $$ = NEW_FUNM($2, $4, body, NOEX_PRIVATE);
+                    NODE* body = remove_begin($6);
+                    $$ = NEW_FUNM($2, $5, body, NOEX_PRIVATE);
                     nd_set_line($$, $<num>1);
                     local_pop();
-                    in_def--;
+                    in_def = $<num>4 & 1;
                     cur_mid = $<id>3;
                   }
                 | k_def singleton dot_or_colon {SET_LEX_STATE(EXPR_FNAME);} fname
@@ -1951,8 +1960,6 @@ primary         : literal
                     in_single = 1;
                     SET_LEX_STATE(EXPR_ENDFN | EXPR_LABEL); /* force for args */
                     local_push(0);
-                    $<id>$ = current_arg;
-                    current_arg = 0;
                   }
                   f_arglist
                   bodystmt
@@ -1963,7 +1970,6 @@ primary         : literal
                     nd_set_line($$, $<num>1);
                     local_pop();
                     in_single = $<num>4 & 1;
-                    current_arg = $<id>6;
                   }
                 | k_defm singleton dot_or_colon {SET_LEX_STATE(EXPR_FNAME);} fname
                   {
@@ -1971,8 +1977,6 @@ primary         : literal
                     in_single = 1;
                     SET_LEX_STATE(EXPR_ENDFN | EXPR_LABEL); /* force for args */
                     local_push(0);
-                    $<id>$ = current_arg;
-                    current_arg = 0;
                   }
                   f_arglist
                   bodystmt
@@ -1983,7 +1987,6 @@ primary         : literal
                     nd_set_line($$, $<num>1);
                     local_pop();
                     in_single = $<num>4 & 1;
-                    current_arg = $<id>6;
                   }
                 | keyword_break
                   {
@@ -2350,10 +2353,16 @@ lambda          : {
                   {
                     $<num>$ = sourceline;
                   }
+                  {
+                    $<val>$ = cmdarg_stack;
+                    cmdarg_stack = 0;
+                  }
                   lambda_body
                   {
                     lpar_beg = $<num>2;
-                    $$ = NEW_LAMBDA($3, $5);
+                    cmdarg_stack = $<val>5;
+                    CMDARG_LEXPOP();
+                    $$ = NEW_LAMBDA($3, $6);
                     nd_set_line($$, $<num>4);
                     bv_pop($<vars>1);
                   }
@@ -3124,14 +3133,12 @@ f_arg_asgn      : f_norm_arg
                   {
                     ID id = get_id($1);
                     arg_var(id);
-                    current_arg = id;
                     $$ = $1;
                   }
                 ;
 
 f_arg_item      : f_arg_asgn
                   {
-                    current_arg = 0;
                     $$ = NEW_ARGS_AUX($1, 1);
                   }
                 | tLPAREN f_margs rparen
@@ -3157,20 +3164,17 @@ f_label         : tLABEL
                   {
                     ID id = get_id($1);
                     arg_var(formal_argument(id));
-                    current_arg = id;
                     $$ = $1;
                   }
                 ;
 
 f_kw            : f_label arg_value
                   {
-                    current_arg = 0;
                     $$ = assignable($1, $2);
                     $$ = NEW_KW_ARG(0, $$);
                   }
                 | f_label
                   {
-                    current_arg = 0;
                     $$ = assignable($1, NEW_REQ_KW);
                     $$ = NEW_KW_ARG(0, $$);
                   }
@@ -3236,7 +3240,6 @@ f_kwrest        : kwrest_mark tIDENTIFIER
 
 f_opt           : f_arg_asgn '=' arg_value
                   {
-                    current_arg = 0;
                     $$ = assignable($1, $3);
                     $$ = NEW_OPT_ARG(0, $$);
                   }
@@ -3244,7 +3247,6 @@ f_opt           : f_arg_asgn '=' arg_value
 
 f_block_opt     : f_arg_asgn '=' primary_value
                   {
-                    current_arg = 0;
                     $$ = assignable($1, $3);
                     $$ = NEW_OPT_ARG(0, $$);
                   }
@@ -7921,6 +7923,8 @@ parser_local_push(rb_parser_state* parser_state, int top)
   local->prev = locals_table;
   local->args = vtable_alloc(0);
   local->vars = vtable_alloc(0);
+  local->cmdargs = cmdarg_stack;
+  cmdarg_stack = 0;
   locals_table = local;
 }
 
@@ -7930,6 +7934,7 @@ parser_local_pop(rb_parser_state* parser_state)
   struct local_vars *local = locals_table->prev;
   vtable_free(locals_table->args);
   vtable_free(locals_table->vars);
+  cmdarg_stack = locals_table->cmdargs;
   xfree(locals_table);
   locals_table = local;
 }
