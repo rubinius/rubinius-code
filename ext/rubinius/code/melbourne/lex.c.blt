@@ -41,7 +41,7 @@ struct kwtable;
 #define MAX_HASH_VALUE 50
 /* maximum key range = 44, duplicates = 0 */
 
-static inline unsigned int hash(register const char* str, register unsigned int len)
+static inline unsigned int hash(const char* str, unsigned int len)
 {
   static const unsigned char asso_values[] =
     {
@@ -72,7 +72,7 @@ static inline unsigned int hash(register const char* str, register unsigned int 
       51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
       51, 51, 51, 51, 51, 51
     };
-  register int hval = len;
+  int hval = len;
 
   switch (hval)
     {
@@ -87,7 +87,7 @@ static inline unsigned int hash(register const char* str, register unsigned int 
   return hval + asso_values[(unsigned char)str[len - 1]];
 }
 
-const struct kwtable* rb_reserved_word(register const char* str, register unsigned int len)
+const struct kwtable* rb_reserved_word(const char* str, unsigned int len)
 {
   static const struct kwtable wordlist[] =
     {
@@ -139,10 +139,10 @@ const struct kwtable* rb_reserved_word(register const char* str, register unsign
     };
 
   if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH) {
-    register int key = hash(str, len);
+    int key = hash(str, len);
 
     if(key <= MAX_HASH_VALUE && key >= 0) {
-      register const char *s = wordlist[key].name;
+      const char *s = wordlist[key].name;
 
       if(*str == *s && !strcmp (str + 1, s + 1))
         return &wordlist[key];
