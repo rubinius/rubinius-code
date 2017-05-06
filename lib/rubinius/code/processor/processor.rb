@@ -35,7 +35,7 @@ module CodeTools
     end
 
     def process_andattrasgn(line, receiver, name, arguments)
-      AST::AttributeAssignment.new line, receiver, name, arguments
+      AST::AndAttributeAssignment.new line, receiver, name, arguments
     end
 
     def process_args(line, required, optional, splat, post, kwargs, kwrest, block)
