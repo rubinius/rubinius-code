@@ -595,129 +595,122 @@ module CodeTools
         @instruction = 71
       end
 
-      def run_exception
-        @stream << 72
-        @ip += 1
-        @current_block.add_stack(0, 0)
-        @instruction = 72
-      end
-
       def send_method(arg1)
         arg1 = find_literal(arg1)
-        @stream << 73 << arg1
+        @stream << 72 << arg1
         @ip += 2
         @current_block.add_stack(1, 1)
-        @instruction = 73
+        @instruction = 72
       end
 
       def send_stack(arg1, arg2)
         arg1 = find_literal(arg1)
         arg2 = Integer(arg2)
-        @stream << 74 << arg1 << arg2
+        @stream << 73 << arg1 << arg2
         @ip += 3
         @current_block.add_stack(arg2+1, 1)
-        @instruction = 74
+        @instruction = 73
       end
 
       def send_stack_with_block(arg1, arg2)
         arg1 = find_literal(arg1)
         arg2 = Integer(arg2)
-        @stream << 75 << arg1 << arg2
+        @stream << 74 << arg1 << arg2
         @ip += 3
         @current_block.add_stack(arg2+2, 1)
-        @instruction = 75
+        @instruction = 74
       end
 
       def send_stack_with_splat(arg1, arg2)
         arg1 = find_literal(arg1)
         arg2 = Integer(arg2)
-        @stream << 76 << arg1 << arg2
+        @stream << 75 << arg1 << arg2
         @ip += 3
         @current_block.add_stack(arg2+3, 1)
-        @instruction = 76
+        @instruction = 75
       end
 
       def send_super_stack_with_block(arg1, arg2)
         arg1 = find_literal(arg1)
         arg2 = Integer(arg2)
-        @stream << 77 << arg1 << arg2
+        @stream << 76 << arg1 << arg2
         @ip += 3
         @current_block.add_stack(arg2+1, 1)
-        @instruction = 77
+        @instruction = 76
       end
 
       def send_super_stack_with_splat(arg1, arg2)
         arg1 = find_literal(arg1)
         arg2 = Integer(arg2)
-        @stream << 78 << arg1 << arg2
+        @stream << 77 << arg1 << arg2
         @ip += 3
         @current_block.add_stack(arg2+2, 1)
-        @instruction = 78
+        @instruction = 77
       end
 
       def send_vcall(arg1)
         arg1 = find_literal(arg1)
-        @stream << 79 << arg1
+        @stream << 78 << arg1
         @ip += 2
         @current_block.add_stack(0, 1)
-        @instruction = 79
+        @instruction = 78
       end
 
       def set_call_flags(arg1)
-        @stream << 80 << arg1
+        @stream << 79 << arg1
         @ip += 2
         @current_block.add_stack(0, 0)
-        @instruction = 80
+        @instruction = 79
       end
 
       def set_const(arg1)
         arg1 = find_literal(arg1)
-        @stream << 81 << arg1
+        @stream << 80 << arg1
         @ip += 2
         @current_block.add_stack(1, 1)
-        @instruction = 81
+        @instruction = 80
       end
 
       def set_const_at(arg1)
         arg1 = find_literal(arg1)
-        @stream << 82 << arg1
+        @stream << 81 << arg1
         @ip += 2
         @current_block.add_stack(2, 1)
-        @instruction = 82
+        @instruction = 81
       end
 
       def set_ivar(arg1)
         arg1 = find_literal(arg1)
+        @stream << 82 << arg1
+        @ip += 2
+        @current_block.add_stack(1, 1)
+        @instruction = 82
+      end
+
+      def set_local(arg1)
         @stream << 83 << arg1
         @ip += 2
         @current_block.add_stack(1, 1)
         @instruction = 83
       end
 
-      def set_local(arg1)
-        @stream << 84 << arg1
-        @ip += 2
+      def set_local_depth(arg1, arg2)
+        @stream << 84 << arg1 << arg2
+        @ip += 3
         @current_block.add_stack(1, 1)
         @instruction = 84
       end
 
-      def set_local_depth(arg1, arg2)
-        @stream << 85 << arg1 << arg2
-        @ip += 3
+      def set_stack_local(arg1)
+        @stream << 85 << arg1
+        @ip += 2
         @current_block.add_stack(1, 1)
         @instruction = 85
       end
 
-      def set_stack_local(arg1)
-        @stream << 86 << arg1
-        @ip += 2
-        @current_block.add_stack(1, 1)
-        @instruction = 86
-      end
-
       def setup_unwind(arg1, arg2)
         location = @ip + 1
-        @stream << 87 << arg1 << arg2
+        @stream << 86 << arg1 << arg2
         @ip += 3
         arg1.used_at location
         @current_block.add_stack(0, 0)
@@ -726,49 +719,56 @@ module CodeTools
         block = new_basic_block
         @current_block.right = block
         @current_block = block
-        @instruction = 87
+        @instruction = 86
       end
 
       def shift_array
-        @stream << 88
+        @stream << 87
         @ip += 1
         @current_block.add_stack(1, 2)
-        @instruction = 88
+        @instruction = 87
       end
 
       def store_my_field(arg1)
-        @stream << 89 << arg1
+        @stream << 88 << arg1
         @ip += 2
         @current_block.add_stack(1, 1)
-        @instruction = 89
+        @instruction = 88
       end
 
       def string_append
-        @stream << 90
+        @stream << 89
         @ip += 1
         @current_block.add_stack(2, 1)
-        @instruction = 90
+        @instruction = 89
       end
 
       def string_build(arg1)
         arg1 = Integer(arg1)
-        @stream << 91 << arg1
+        @stream << 90 << arg1
         @ip += 2
         @current_block.add_stack(arg1, 1)
-        @instruction = 91
+        @instruction = 90
       end
 
       def string_dup
-        @stream << 92
+        @stream << 91
         @ip += 1
         @current_block.add_stack(1, 1)
-        @instruction = 92
+        @instruction = 91
       end
 
       def swap
-        @stream << 93
+        @stream << 92
         @ip += 1
         @current_block.add_stack(2, 2)
+        @instruction = 92
+      end
+
+      def unwind(arg1, arg2, arg3)
+        @stream << 93 << arg1 << arg2 << arg3
+        @ip += 4
+        @current_block.add_stack(0, 0)
         @instruction = 93
       end
 
