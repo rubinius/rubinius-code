@@ -765,10 +765,17 @@ module CodeTools
         @instruction = 92
       end
 
-      def unwind(arg1, arg2, arg3)
-        @stream << 93 << arg1 << arg2 << arg3
-        @ip += 4
+      def unwind(arg1)
+        location = @ip + 1
+        @stream << 93 << arg1
+        @ip += 2
+        arg1.used_at location
         @current_block.add_stack(0, 0)
+        @current_block.left = arg1.basic_block
+        @current_block.close
+        block = new_basic_block
+        @current_block.right = block
+        @current_block = block
         @instruction = 93
       end
 

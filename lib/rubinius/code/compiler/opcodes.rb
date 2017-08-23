@@ -98,7 +98,7 @@ module Rubinius
     opcode 90, :string_build,                :stack => [[0,1], 1], :args => [:count],                         :control_flow => :next
     opcode 91, :string_dup,                  :stack => [1, 1],     :args => [],                               :control_flow => :next
     opcode 92, :swap,                        :stack => [2, 2],     :args => [],                               :control_flow => :next
-    opcode 93, :unwind,                      :stack => [0, 0],     :args => [:ip,, :stack,, :type],              :control_flow => :next
+    opcode 93, :unwind,                      :stack => [0, 0],     :args => [:ip],                            :control_flow => :next
     opcode 94, :yield_debugger,              :stack => [0, 0],     :args => [],                               :control_flow => :next
     opcode 95, :yield_splat,                 :stack => [[1,1], 1], :args => [:count],                         :control_flow => :yield
     opcode 96, :yield_stack,                 :stack => [[0,1], 1], :args => [:count],                         :control_flow => :yield
