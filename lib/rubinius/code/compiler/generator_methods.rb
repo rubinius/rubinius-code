@@ -771,11 +771,6 @@ module CodeTools
         @ip += 2
         arg1.used_at location
         @current_block.add_stack(0, 0)
-        @current_block.left = arg1.basic_block
-        @current_block.close
-        block = new_basic_block
-        @current_block.right = block
-        @current_block = block
         @instruction = 93
       end
 

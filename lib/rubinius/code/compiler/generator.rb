@@ -32,13 +32,17 @@ module CodeTools
       attr_reader :used, :basic_block
       alias_method :used?, :used
 
-      def initialize(generator)
+      def initialize(generator, basic_block=true)
         @generator   = generator
-        @basic_block = generator.new_basic_block
+        @basic_block = basic_block ? generator.new_basic_block : nil
         @position    = nil
         @used        = false
         @location    = nil
         @locations   = nil
+      end
+
+      def place
+        @position = @generator.ip
       end
 
       def set!
@@ -446,6 +450,12 @@ module CodeTools
 
     def new_label
       Label.new(self)
+    end
+
+    def new_unwind_label
+      label = Label.new(self, false)
+      label.place
+      label
     end
 
     # Helpers
