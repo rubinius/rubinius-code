@@ -83,6 +83,7 @@ module CodeTools
 
         ex = g.new_label
         ok = g.new_label
+        g.state.push_unwind g.new_unwind_label
         g.setup_unwind ex, RescueType
 
         @parent.bytecode(g)
@@ -94,6 +95,7 @@ module CodeTools
         end
         g.invoke_primitive :vm_const_defined_under, 3
 
+        g.state.pop_unwind
         g.pop_unwind
         g.goto ok
 
@@ -169,6 +171,7 @@ module CodeTools
 
         ex = g.new_label
         ok = g.new_label
+        g.state.push_unwind g.new_unwind_label
         g.setup_unwind ex, RescueType
 
         g.push_cpath_top
@@ -176,6 +179,7 @@ module CodeTools
         g.push_false
         g.invoke_primitive :vm_const_defined_under, 3
 
+        g.state.pop_unwind
         g.pop_unwind
         g.goto ok
 
@@ -264,11 +268,13 @@ module CodeTools
 
         ex = g.new_label
         ok = g.new_label
+        g.state.push_unwind g.new_unwind_label
         g.setup_unwind ex, RescueType
 
         g.push_literal @name
         g.invoke_primitive :vm_const_defined, 1
 
+        g.state.pop_unwind
         g.pop_unwind
         g.goto ok
 

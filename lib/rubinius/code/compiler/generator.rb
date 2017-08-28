@@ -458,6 +458,10 @@ module CodeTools
       label
     end
 
+    def get_unwind_label
+      (state && state.unwind_label) || new_unwind_label
+    end
+
     # Helpers
 
     def new_basic_block
@@ -585,6 +589,158 @@ module CodeTools
       else
         send_super_stack_with_block meth, args
       end
+    end
+
+    # instructions that can cause stack unwinding
+
+    def cast_array
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def cast_for_multi_block_arg
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def cast_for_single_block_arg
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def cast_for_splat_block_arg
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def cast_multi_value
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def check_frozen
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def create_block(arg1)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def find_const(arg1)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def invoke_primitive(arg1, arg2)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def object_to_s(arg1)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def push_const(arg1)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def push_ivar(arg1)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def raise_break
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def send_method(arg1)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def send_stack(arg1, arg2)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def send_stack_with_block(arg1, arg2)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def send_stack_with_splat(arg1, arg2)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def send_super_stack_with_block(arg1, arg2)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def send_super_stack_with_splat(arg1, arg2)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def send_vcall(arg1)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def string_build(arg1)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def string_dup
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def yield_splat(arg1)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def yield_stack(arg1)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def zsuper(arg1)
+      uw = get_unwind_label
+      super
+      unwind uw
     end
   end
 end

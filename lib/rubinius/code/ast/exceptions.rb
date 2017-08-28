@@ -40,6 +40,7 @@ module CodeTools
 
         ok = g.new_label
         ex = g.new_label
+        g.state.push_unwind g.new_unwind_label
         g.setup_unwind ex, EnsureType
 
         # TODO: ?
@@ -65,6 +66,7 @@ module CodeTools
         g.break = old_break
         g.next = old_next
 
+        g.state.pop_unwind
         g.pop_unwind
         g.goto ok
 
@@ -214,6 +216,7 @@ module CodeTools
 
           this_retry.set!
           ex = g.new_label
+          g.state.push_unwind g.new_unwind_label
           g.setup_unwind ex, RescueType
 
           # TODO: ?
@@ -241,6 +244,7 @@ module CodeTools
           end
 
           @body.bytecode(g)
+          g.state.pop_unwind
           g.pop_unwind
           g.goto els
 

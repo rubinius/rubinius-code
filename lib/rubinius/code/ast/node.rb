@@ -285,6 +285,7 @@ module CodeTools
         @op_asgn = 0
         @rescue = []
         @name = []
+        @unwinds = []
         @check_for_locals = true
       end
 
@@ -402,6 +403,18 @@ module CodeTools
 
       def loop?
         @loop > 0
+      end
+
+      def push_unwind(label)
+        @unwinds << label
+      end
+
+      def pop_unwind
+        @unwinds.pop
+      end
+
+      def unwind_label
+        @unwinds.last
       end
     end
   end
