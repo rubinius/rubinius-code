@@ -515,22 +515,6 @@ module CodeTools
       emit_push_literal find_literal(literal)
     end
 
-    def push_local(idx)
-      if @detected_locals <= idx
-        @detected_locals = idx + 1
-      end
-
-      super
-    end
-
-    def set_local(idx)
-      if @detected_locals <= idx
-        @detected_locals = idx + 1
-      end
-
-      super
-    end
-
     # Minor meta operations that can be used to detect
     # the number of method arguments needed
     def push_arg(idx)
@@ -629,37 +613,83 @@ module CodeTools
       unwind uw
     end
 
-    def create_block(arg1)
+    def create_block(literal)
       uw = get_unwind_label
       super
       unwind uw
     end
 
-    def find_const(arg1)
+    def ensure_return
       uw = get_unwind_label
       super
       unwind uw
     end
 
-    def invoke_primitive(arg1, arg2)
+    def find_const(literal)
       uw = get_unwind_label
       super
       unwind uw
     end
 
-    def object_to_s(arg1)
+    def invoke_primitive(literal, count)
       uw = get_unwind_label
       super
       unwind uw
     end
 
-    def push_const(arg1)
+    def object_to_s(literal)
       uw = get_unwind_label
       super
       unwind uw
     end
 
-    def push_ivar(arg1)
+    def passed_arg(index)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def passed_blockarg(count)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def push_block_arg
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def push_const(literal)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def push_ivar(literal)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def push_local(index)
+      if @detected_locals <= index
+        @detected_locals = index + 1
+      end
+
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def push_local_depth(depth, index)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def push_proc
       uw = get_unwind_label
       super
       unwind uw
@@ -671,49 +701,89 @@ module CodeTools
       unwind uw
     end
 
-    def send_method(arg1)
+    def raise_exc
       uw = get_unwind_label
       super
       unwind uw
     end
 
-    def send_stack(arg1, arg2)
+    def raise_return
       uw = get_unwind_label
       super
       unwind uw
     end
 
-    def send_stack_with_block(arg1, arg2)
+    def reraise
       uw = get_unwind_label
       super
       unwind uw
     end
 
-    def send_stack_with_splat(arg1, arg2)
+    def send_method(literal)
       uw = get_unwind_label
       super
       unwind uw
     end
 
-    def send_super_stack_with_block(arg1, arg2)
+    def send_stack(literal, count)
       uw = get_unwind_label
       super
       unwind uw
     end
 
-    def send_super_stack_with_splat(arg1, arg2)
+    def send_stack_with_block(literal, count)
       uw = get_unwind_label
       super
       unwind uw
     end
 
-    def send_vcall(arg1)
+    def send_stack_with_splat(literal, count)
       uw = get_unwind_label
       super
       unwind uw
     end
 
-    def string_build(arg1)
+    def send_super_stack_with_block(literal, count)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def send_super_stack_with_splat(literal, count)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def send_vcall(literal)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def set_ivar(literal)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def set_local(index)
+      if @detected_locals <= index
+        @detected_locals = index + 1
+      end
+
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def set_local_depth(depth, index)
+      uw = get_unwind_label
+      super
+      unwind uw
+    end
+
+    def string_build(count)
       uw = get_unwind_label
       super
       unwind uw
@@ -725,19 +795,19 @@ module CodeTools
       unwind uw
     end
 
-    def yield_splat(arg1)
+    def yield_splat(count)
       uw = get_unwind_label
       super
       unwind uw
     end
 
-    def yield_stack(arg1)
+    def yield_stack(count)
       uw = get_unwind_label
       super
       unwind uw
     end
 
-    def zsuper(arg1)
+    def zsuper(literal)
       uw = get_unwind_label
       super
       unwind uw
