@@ -522,9 +522,25 @@ module CodeTools
       @detected_args = @detected_locals
     end
 
+    def push_local(index)
+      if @detected_locals <= index
+        @detected_locals = index + 1
+      end
+
+      super
+    end
+
     def set_arg(idx)
       set_local(idx)
       @detected_args = @detected_locals
+    end
+
+    def set_local(index)
+      if @detected_locals <= index
+        @detected_locals = index + 1
+      end
+
+      super
     end
 
     def last_match(mode, which)
@@ -673,16 +689,6 @@ module CodeTools
       unwind uw
     end
 
-    def push_local(index)
-      if @detected_locals <= index
-        @detected_locals = index + 1
-      end
-
-      uw = get_unwind_label
-      super
-      unwind uw
-    end
-
     def push_local_depth(depth, index)
       uw = get_unwind_label
       super
@@ -762,16 +768,6 @@ module CodeTools
     end
 
     def set_ivar(literal)
-      uw = get_unwind_label
-      super
-      unwind uw
-    end
-
-    def set_local(index)
-      if @detected_locals <= index
-        @detected_locals = index + 1
-      end
-
       uw = get_unwind_label
       super
       unwind uw
