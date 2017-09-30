@@ -578,9 +578,10 @@ module CodeTools
         @instruction = 69
       end
 
-      def ret
-        @stream << 70
-        @ip += 1
+      def ret(arg1)
+        arg1 = Integer(arg1)
+        @stream << 70 << arg1
+        @ip += 2
         @current_block.add_stack(1, 1)
         @current_block.close true
         @current_block = new_basic_block

@@ -591,6 +591,10 @@ module CodeTools
       end
     end
 
+    def ret
+      super 0
+    end
+
     # instructions that can cause stack unwinding
 
     def cast_array

@@ -75,7 +75,7 @@ module Rubinius
     opcode 67, :raise_return,                :stack => [1, 1],     :args => [],                               :control_flow => :raise
     opcode 68, :reraise,                     :stack => [0, 0],     :args => [],                               :control_flow => :raise
     opcode 69, :restore_exception_state,     :stack => [1, 0],     :args => [],                               :control_flow => :next
-    opcode 70, :ret,                         :stack => [1, 1],     :args => [],                               :control_flow => :return
+    opcode 70, :ret,                         :stack => [1, 1],     :args => [:index],                               :control_flow => :return
     opcode 71, :rotate,                      :stack => [[0,1], [0, 1, 1]],:args => [:count],                         :control_flow => :next
     opcode 72, :send_method,                 :stack => [1, 1],     :args => [:literal],                       :control_flow => :send
     opcode 73, :send_stack,                  :stack => [[1,2], 1], :args => [:literal, :count],               :control_flow => :send
