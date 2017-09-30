@@ -1,5 +1,5 @@
 module CodeTools
   module AST
-    VERSION = "3.9"
+    VERSION = "3.10"
   end
 end
