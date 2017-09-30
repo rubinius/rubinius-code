@@ -770,8 +770,6 @@ module CodeTools
         location = @ip + 1
         @stream << 93 << arg1
         @ip += 2
-        arg1.used_at location
-        @current_block.add_stack(0, 0)
         @instruction = 93
       end
 

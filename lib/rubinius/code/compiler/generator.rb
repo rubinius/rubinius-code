@@ -452,16 +452,6 @@ module CodeTools
       Label.new(self)
     end
 
-    def new_unwind_label
-      label = Label.new(self, false)
-      label.place
-      label
-    end
-
-    def get_unwind_label
-      (state && state.unwind_label) || new_unwind_label
-    end
-
     # Helpers
 
     def new_basic_block
@@ -598,219 +588,187 @@ module CodeTools
     # instructions that can cause stack unwinding
 
     def cast_array
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def cast_for_multi_block_arg
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def cast_for_single_block_arg
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def cast_for_splat_block_arg
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def cast_multi_value
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def check_frozen
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def create_block(literal)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def ensure_return
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def find_const(literal)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def invoke_primitive(literal, count)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def object_to_s(literal)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def passed_arg(index)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def passed_blockarg(count)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def push_block_arg
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def push_const(literal)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def push_ivar(literal)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def push_local_depth(depth, index)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def push_proc
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def raise_break
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def raise_exc
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def raise_return
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def reraise
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def send_method(literal)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def send_stack(literal, count)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def send_stack_with_block(literal, count)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def send_stack_with_splat(literal, count)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def send_super_stack_with_block(literal, count)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def send_super_stack_with_splat(literal, count)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def send_vcall(literal)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def set_ivar(literal)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def set_local_depth(depth, index)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def string_build(count)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def string_dup
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
+    end
+
+    def unwind
+      super 0
     end
 
     def yield_splat(count)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def yield_stack(count)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
 
     def zsuper(literal)
-      uw = get_unwind_label
       super
-      unwind uw
+      unwind
     end
   end
 end
