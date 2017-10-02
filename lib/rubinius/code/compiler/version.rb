@@ -1,5 +1,5 @@
 module CodeTools
   class Compiler
-    VERSION = "3.19"
+    VERSION = "3.20"
   end
 end
