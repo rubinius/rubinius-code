@@ -767,7 +767,6 @@ module CodeTools
       end
 
       def unwind(arg1)
-        location = @ip + 1
         @stream << 93 << arg1
         @ip += 2
         @instruction = 93
