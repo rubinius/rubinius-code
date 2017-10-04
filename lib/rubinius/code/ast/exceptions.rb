@@ -375,6 +375,7 @@ module CodeTools
         @next = nxt
         @splat = nil
         @assignment = nil
+        @conditions = nil
 
         case conditions
         when ArrayLiteral
