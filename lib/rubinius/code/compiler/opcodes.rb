@@ -103,5 +103,6 @@ module Rubinius
     opcode 95, :yield_splat,                 :stack => [[1,1], 1], :args => [:count],                         :control_flow => :yield
     opcode 96, :yield_stack,                 :stack => [[0,1], 1], :args => [:count],                         :control_flow => :yield
     opcode 97, :zsuper,                      :stack => [1, 1],     :args => [:literal],                       :control_flow => :next
+    opcode 98, :push_file,                   :stack => [0, 1],     :args => [],                               :control_flow => :next
   end
 end

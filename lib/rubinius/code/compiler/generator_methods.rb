@@ -803,5 +803,12 @@ module CodeTools
         @instruction = 97
       end
 
+      def push_file
+        @stream << 98
+        @ip += 1
+        @current_block.add_stack(0, 1)
+        @instruction = 98
+      end
+
   end
 end
