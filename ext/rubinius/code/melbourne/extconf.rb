@@ -1,6 +1,6 @@
 require 'rbconfig' unless defined?(RbConfig)
 
-path = File.expand_path "../namespace.h", __FILE__
+path = Dir.pwd + "/namespace.h"
 File.open path, "wb" do |f|
   melbourne = "melbourne_#{Time.now.to_i}"
 
@@ -10,7 +10,7 @@ File.open path, "wb" do |f|
 end
 
 unless File.exist? "Makefile" and
-    File.mtime("Makefile") > File.mtime(__FILE__)
+    File.mtime("Makefile") > File.mtime(Dir.pwd + "/extconf.rb")
   cxx = ENV["CXX"] || RbConfig::CONFIG["CXX"] || "g++"
   cxxflags = "#{ENV["CXXFLAGS"] || ENV["CPPFLAGS"] ||
              RbConfig::CONFIG["CXXFLAGS"] || RbConfig::CONFIG["CPPFLAGS"]} -fPIC"
