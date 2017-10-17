@@ -6,8 +6,8 @@ module CodeTools
       def bytecode(g)
         pos(g)
 
-        g.push_scope
-        g.send :active_path, 0
+        g.push_file
+        g.string_dup
       end
 
       def defined(g)
