@@ -34,43 +34,43 @@ static const struct kwtable *reserved_word(const char *, unsigned int);
 #define rb_reserved_word(str, len) reserved_word(str, len)
 struct kwtable;
 
-#define TOTAL_KEYWORDS 44
+#define TOTAL_KEYWORDS 42
 #define MIN_WORD_LENGTH 2
 #define MAX_WORD_LENGTH 12
-#define MIN_HASH_VALUE 7
-#define MAX_HASH_VALUE 50
-/* maximum key range = 44, duplicates = 0 */
+#define MIN_HASH_VALUE 4
+#define MAX_HASH_VALUE 46
+/* maximum key range = 43, duplicates = 0 */
 
 static inline unsigned int hash(const char* str, unsigned int len)
 {
   static const unsigned char asso_values[] =
     {
-      51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 30, 51, 51, 15, 51, 18, 10,
-      12, 14, 51, 51, 51, 51, 11, 51, 14, 51,
-      51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 51, 51, 12, 51,  6,  4, 35,
-      11,  1,  1, 29, 51, 27, 51,  3,  4, 20,
-       4, 10, 16, 51, 12,  1,  5,  8, 51, 12,
-      19, 18, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 51, 51, 51, 51, 51, 51, 51,
-      51, 51, 51, 51, 51, 51
+      47, 47, 47, 47, 47, 47, 47, 47, 47, 47,
+      47, 47, 47, 47, 47, 47, 47, 47, 47, 47,
+      47, 47, 47, 47, 47, 47, 47, 47, 47, 47,
+      47, 47, 47, 47, 47, 47, 47, 47, 47, 47,
+      47, 47, 47, 47, 47, 47, 47, 47, 47, 47,
+      47, 47, 47, 47, 47, 47, 47, 47, 47, 47,
+      47, 47, 47, 19, 47, 47, 14, 47, 16,  9,
+      11, 13, 47, 47, 47, 47, 10, 47, 13, 47,
+      47, 47, 47, 47, 47, 47, 47, 47, 47, 47,
+      47, 47, 47, 47, 47, 11, 47,  9, 16, 19,
+      15,  1,  4, 17, 47,  1, 47, 16,  1, 14,
+       1,  1, 21, 47,  5,  4,  9,  9, 47, 24,
+      18,  8, 47, 47, 47, 47, 47, 47, 47, 47,
+      47, 47, 47, 47, 47, 47, 47, 47, 47, 47,
+      47, 47, 47, 47, 47, 47, 47, 47, 47, 47,
+      47, 47, 47, 47, 47, 47, 47, 47, 47, 47,
+      47, 47, 47, 47, 47, 47, 47, 47, 47, 47,
+      47, 47, 47, 47, 47, 47, 47, 47, 47, 47,
+      47, 47, 47, 47, 47, 47, 47, 47, 47, 47,
+      47, 47, 47, 47, 47, 47, 47, 47, 47, 47,
+      47, 47, 47, 47, 47, 47, 47, 47, 47, 47,
+      47, 47, 47, 47, 47, 47, 47, 47, 47, 47,
+      47, 47, 47, 47, 47, 47, 47, 47, 47, 47,
+      47, 47, 47, 47, 47, 47, 47, 47, 47, 47,
+      47, 47, 47, 47, 47, 47, 47, 47, 47, 47,
+      47, 47, 47, 47, 47, 47
     };
   int hval = len;
 
@@ -91,60 +91,59 @@ const struct kwtable* rb_reserved_word(const char* str, unsigned int len)
 {
   static const struct kwtable wordlist[] =
     {
-      {""}, {""}, {""}, {""}, {""}, {""}, {""},
+      {""}, {""}, {""}, {""},
+      {"in", {keyword_in, keyword_in}, EXPR_VALUE},
+      {""},
+      {"nil", {keyword_nil, keyword_nil}, EXPR_END},
+      {"if", {keyword_if, modifier_if}, EXPR_VALUE},
+      {"or", {keyword_or, keyword_or}, EXPR_VALUE},
+      {"fun", {keyword_fun, keyword_fun}, EXPR_FNAME},
       {"else", {keyword_else, keyword_else}, EXPR_BEG},
-      {"elsif", {keyword_elsif, keyword_elsif}, EXPR_VALUE},
+      {"false", {keyword_false, keyword_false}, EXPR_END},
       {"ensure", {keyword_ensure, keyword_ensure}, EXPR_BEG},
       {"self", {keyword_self, keyword_self}, EXPR_END},
-      {"false", {keyword_false, keyword_false}, EXPR_END},
-      {"fun", {keyword_fun, keyword_fun}, EXPR_FNAME},
-      {"break", {keyword_break, keyword_break}, EXPR_MID},
+      {"elsif", {keyword_elsif, keyword_elsif}, EXPR_VALUE},
       {"then", {keyword_then, keyword_then}, EXPR_BEG},
-      {"nil", {keyword_nil, keyword_nil}, EXPR_END},
-      {"def", {keyword_def, keyword_def}, EXPR_FNAME},
+      {"rescue", {keyword_rescue, modifier_rescue}, EXPR_MID},
+      {"for", {keyword_for, keyword_for}, EXPR_VALUE},
+      {"do", {keyword_do, keyword_do}, EXPR_BEG},
+      {"alias", {keyword_alias, keyword_alias}, EXPR_FNAME},
+      {"unless", {keyword_unless, modifier_unless}, EXPR_VALUE},
+      {"return", {keyword_return, keyword_return}, EXPR_MID},
       {"not", {keyword_not, keyword_not}, EXPR_ARG},
       {"true", {keyword_true, keyword_true}, EXPR_END},
-      {"unless", {keyword_unless, modifier_unless}, EXPR_VALUE},
-      {"rescue", {keyword_rescue, modifier_rescue}, EXPR_MID},
-      {"when", {keyword_when, keyword_when}, EXPR_VALUE},
       {"until", {keyword_until, modifier_until}, EXPR_VALUE},
-      {"do", {keyword_do, keyword_do}, EXPR_BEG},
-      {"or", {keyword_or, keyword_or}, EXPR_VALUE},
-      {"undef", {keyword_undef, keyword_undef}, EXPR_FNAME},
-      {"end", {keyword_end, keyword_end}, EXPR_END},
-      {"return", {keyword_return, keyword_return}, EXPR_MID},
-      {"for", {keyword_for, keyword_for}, EXPR_VALUE},
-      {"funm", {keyword_funm, keyword_funm}, EXPR_FNAME},
-      {"if", {keyword_if, modifier_if}, EXPR_VALUE},
-      {"and", {keyword_and, keyword_and}, EXPR_VALUE},
-      {"next", {keyword_next, keyword_next}, EXPR_MID},
-      {"in", {keyword_in, keyword_in}, EXPR_VALUE},
-      {"super", {keyword_super, keyword_super}, EXPR_ARG},
-      {"yield", {keyword_yield, keyword_yield}, EXPR_ARG},
-      {"defm", {keyword_defm, keyword_defm}, EXPR_FNAME},
       {"redo", {keyword_redo, keyword_redo}, EXPR_END},
-      {"module", {keyword_module, keyword_module}, EXPR_VALUE},
-      {"alias", {keyword_alias, keyword_alias}, EXPR_FNAME},
+      {"def", {keyword_def, keyword_def}, EXPR_FNAME},
       {"retry", {keyword_retry, keyword_retry}, EXPR_END},
       {"case", {keyword_case, keyword_case}, EXPR_VALUE},
+      {"yield", {keyword_yield, keyword_yield}, EXPR_ARG},
+      {"when", {keyword_when, keyword_when}, EXPR_VALUE},
+      {"while", {keyword_while, modifier_while}, EXPR_VALUE},
+      {"next", {keyword_next, keyword_next}, EXPR_MID},
+      {"undef", {keyword_undef, keyword_undef}, EXPR_FNAME},
+      {"end", {keyword_end, keyword_end}, EXPR_END},
+      {"super", {keyword_super, keyword_super}, EXPR_ARG},
+      {"module", {keyword_module, keyword_module}, EXPR_VALUE},
+      {"class", {keyword_class, keyword_class}, EXPR_CLASS},
+      {"break", {keyword_break, keyword_break}, EXPR_MID},
       {"begin", {keyword_begin, keyword_begin}, EXPR_BEG},
       {"__LINE__", {keyword__LINE__, keyword__LINE__}, EXPR_END},
       {"__FILE__", {keyword__FILE__, keyword__FILE__}, EXPR_END},
-      {"while", {keyword_while, modifier_while}, EXPR_VALUE},
+      {"and", {keyword_and, keyword_and}, EXPR_VALUE},
       {"__ENCODING__", {keyword__ENCODING__, keyword__ENCODING__}, EXPR_END},
-      {"class", {keyword_class, keyword_class}, EXPR_CLASS},
-      {"BEGIN", {keyword_BEGIN, keyword_BEGIN}, EXPR_END},
       {"END", {keyword_END, keyword_END}, EXPR_END},
+      {"BEGIN", {keyword_BEGIN, keyword_BEGIN}, EXPR_END},
       {"defined?", {keyword_defined, keyword_defined}, EXPR_ARG}
     };
 
-  if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH) {
+  if(len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH) {
     int key = hash(str, len);
 
     if(key <= MAX_HASH_VALUE && key >= 0) {
       const char *s = wordlist[key].name;
 
-      if(*str == *s && !strcmp (str + 1, s + 1))
+      if (*str == *s && !strcmp (str + 1, s + 1))
         return &wordlist[key];
     }
   }

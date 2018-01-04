@@ -78,10 +78,7 @@ node_types = %w[
   block_pass
   defn
   defs
-  defnm
-  defsm
   fun
-  funm
   alias
   valias
   undef

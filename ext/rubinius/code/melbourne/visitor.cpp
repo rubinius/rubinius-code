@@ -670,15 +670,6 @@ namespace MELBOURNE {
       tree = rb_funcall(ptp, rb_sFun, 3, line, ID2SYM(node->nd_mid), body);
       break;
     }
-    case NODE_FUNM: {
-      VALUE body = Qnil;
-
-      if (node->nd_defn) {
-        body = process_parse_tree(parser_state, ptp, node->nd_defn, locals);
-      }
-      tree = rb_funcall(ptp, rb_sFunm, 3, line, ID2SYM(node->nd_mid), body);
-      break;
-    }
     case NODE_DEFN: {
       VALUE body = Qnil;
 
@@ -686,15 +677,6 @@ namespace MELBOURNE {
         body = process_parse_tree(parser_state, ptp, node->nd_defn, locals);
       }
       tree = rb_funcall(ptp, rb_sDefn, 3, line, ID2SYM(node->nd_mid), body);
-      break;
-    }
-    case NODE_DEFNM: {
-      VALUE body = Qnil;
-
-      if (node->nd_defn) {
-        body = process_parse_tree(parser_state, ptp, node->nd_defn, locals);
-      }
-      tree = rb_funcall(ptp, rb_sDefnm, 3, line, ID2SYM(node->nd_mid), body);
       break;
     }
     case NODE_DEFS: {
@@ -705,16 +687,6 @@ namespace MELBOURNE {
         body = process_parse_tree(parser_state, ptp, node->nd_defn, locals);
       }
       tree = rb_funcall(ptp, rb_sDefs, 4, line, recv, ID2SYM(node->nd_mid), body);
-      break;
-    }
-    case NODE_DEFSM: {
-      VALUE recv = Qnil, body = Qnil;
-
-      if (node->nd_defn) {
-        recv = process_parse_tree(parser_state, ptp, node->nd_recv, locals);
-        body = process_parse_tree(parser_state, ptp, node->nd_defn, locals);
-      }
-      tree = rb_funcall(ptp, rb_sDefsm, 4, line, recv, ID2SYM(node->nd_mid), body);
       break;
     }
     case NODE_CLASS: {

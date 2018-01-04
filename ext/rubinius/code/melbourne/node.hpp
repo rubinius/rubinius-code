@@ -170,10 +170,7 @@ namespace MELBOURNE {
 
 #define NEW_DEFN(i,a,d,p)       NEW_NODE(NODE_DEFN,0,i,NEW_SCOPE(a,d))
 #define NEW_DEFS(r,i,a,d)       NEW_NODE(NODE_DEFS,r,i,NEW_SCOPE(a,d))
-#define NEW_DEFNM(i,a,d,p)      NEW_NODE(NODE_DEFNM,0,i,NEW_SCOPE(a,d))
-#define NEW_DEFSM(r,i,a,d)      NEW_NODE(NODE_DEFSM,r,i,NEW_SCOPE(a,d))
 #define NEW_FUN(i,a,d,p)        NEW_NODE(NODE_FUN,0,i,NEW_SCOPE(a,d))
-#define NEW_FUNM(i,a,d,p)       NEW_NODE(NODE_FUNM,0,i,NEW_SCOPE(a,d))
 #define NEW_IFUNC(f,c)          NEW_NODE(NODE_IFUNC,f,c,0)
 #define NEW_SCOPE(a,b)          NEW_NODE(NODE_SCOPE,local_tbl(),b,a)
 #define NEW_BLOCK(a)            NEW_NODE(NODE_BLOCK,a,0,0)
