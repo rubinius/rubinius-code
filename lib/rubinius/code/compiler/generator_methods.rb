@@ -810,5 +810,154 @@ module CodeTools
         @instruction = 98
       end
 
+      def p_any(arg1)
+        @stream << 99 << arg1
+        @ip += 2
+        @instruction = 99
+      end
+
+      def p_call(arg1)
+        @stream << 100 << arg1
+        @ip += 2
+        @instruction = 100
+      end
+
+      def p_char(arg1)
+        @stream << 101 << arg1
+        @ip += 2
+        @instruction = 101
+      end
+
+      def p_char_set(arg1)
+        @stream << 102 << arg1
+        @ip += 2
+        @instruction = 102
+      end
+
+      def p_choice(arg1, arg2)
+        @stream << 103 << arg1 << arg2
+        @ip += 3
+        @instruction = 103
+      end
+
+      def p_commit(arg1)
+        @stream << 104 << arg1
+        @ip += 2
+        @instruction = 104
+      end
+
+      def p_commit_back(arg1)
+        @stream << 105 << arg1
+        @ip += 2
+        @instruction = 105
+      end
+
+      def p_commit_partial(arg2)
+        @stream << 106 << arg1
+        @ip += 2
+        @instruction = 106
+      end
+
+      def p_end
+        @stream << 107
+        @ip += 1
+        @instruction = 107
+      end
+
+      def p_fail
+        @stream << 108
+        @ip += 1
+        @instruction = 108
+      end
+
+      def p_fail_twice
+        @stream << 109
+        @ip += 1
+        @instruction = 109
+      end
+
+      def p_jump(arg1)
+        @stream << 110 << arg1
+        @ip += 2
+        @instruction = 110
+      end
+
+      def p_return
+        @stream << 111
+        @ip += 1
+        @instruction = 111
+      end
+
+      def p_span(arg1)
+        @stream << 112 << arg1
+        @ip += 2
+        @instruction = 112
+      end
+
+      def p_test_any(arg1, arg2)
+        @stream << 113 << arg1 << arg2
+        @ip += 3
+        @instruction = 113
+      end
+
+      def p_test_char(arg1, arg2)
+        @stream << 114 << arg1 << arg2
+        @ip += 3
+        @instruction = 114
+      end
+
+      def p_test_char_set(arg1, arg2)
+        @stream << 115 << arg1 << arg2
+        @ip += 3
+        @instruction = 115
+      end
+
+      def p_init(arg1, arg2)
+        @stream << 116 << arg1 << arg2
+        @ip += 3
+        @instruction = 116
+      end
+
+      def m_bytes(arg1)
+        @stream << 117 << arg1
+        @ip += 2
+        @instruction = 117
+      end
+
+      def m_counter(arg1)
+        @stream << 118 << arg1
+        @ip += 2
+        @instruction = 118
+      end
+
+      def m_sum(arg1, arg2)
+        @stream << 119 << arg1 << arg2
+        @ip += 3
+        @instruction = 119
+      end
+
+      def m_value(arg1, arg2)
+        @stream << 120 << arg1 << arg2
+        @ip += 3
+        @instruction = 120
+      end
+
+      def m_time_stamp(arg1)
+        @stream << 121 << arg1
+        @ip += 2
+        @instruction = 121
+      end
+
+      def m_timer_start(arg1)
+        @stream << 122 << arg1
+        @ip += 2
+        @instruction = 122
+      end
+
+      def m_timer_stop(arg1)
+        @stream << 123 << arg1
+        @ip += 2
+        @instruction = 123
+      end
   end
 end
