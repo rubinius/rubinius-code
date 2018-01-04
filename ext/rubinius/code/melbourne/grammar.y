@@ -390,6 +390,10 @@ static int scan_hex(const char *start, size_t len, size_t *retlen);
 #define RE_OPTION_MULTILINE          (4)
 #endif
 
+#ifndef RE_OPTION_PEG
+#define RE_OPTION_PEG                (8)
+#endif
+
 /* Must match up with options/kcode definitions in regexp.rb and regexp.cpp */
 #define RE_OPTION_DONT_CAPTURE_GROUP (128)
 #define RE_OPTION_CAPTURE_GROUP      (256)
@@ -4064,6 +4068,9 @@ static int parser_regx_options(rb_parser_state* parser_state) {
         break;
       case 'o':
         options |= RE_OPTION_ONCE;
+        break;
+      case 'p':
+        options |= RE_OPTION_PEG;
         break;
       case 'G':
         options |= RE_OPTION_CAPTURE_GROUP;
