@@ -918,9 +918,9 @@ module CodeTools
         @instruction = 116
       end
 
-      def m_bytes(arg1)
-        @stream << 117 << arg1
-        @ip += 2
+      def m_bytes(arg1, arg2)
+        @stream << 117 << arg1 << arg2
+        @ip += 3
         @instruction = 117
       end
 
@@ -942,9 +942,9 @@ module CodeTools
         @instruction = 120
       end
 
-      def m_time_stamp(arg1)
-        @stream << 121 << arg1
-        @ip += 2
+      def m_time_stamp(arg1, arg2)
+        @stream << 121 << arg1 << arg2
+        @ip += 3
         @instruction = 121
       end
 
@@ -954,9 +954,9 @@ module CodeTools
         @instruction = 122
       end
 
-      def m_timer_stop(arg1)
-        @stream << 123 << arg1
-        @ip += 2
+      def m_timer_stop(arg1, arg2)
+        @stream << 123 << arg1 << arg2
+        @ip += 3
         @instruction = 123
       end
   end
