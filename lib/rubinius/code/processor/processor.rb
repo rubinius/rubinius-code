@@ -198,16 +198,8 @@ module CodeTools
       AST::Define.new line, name, body
     end
 
-    def process_defnm(line, name, body)
-      AST::DefineMulti.new line, name, body
-    end
-
     def process_defs(line, receiver, name, body)
       AST::DefineSingleton.new line, receiver, name, body
-    end
-
-    def process_defsm(line, receiver, name, body)
-      AST::DefineSingletonMulti.new line, receiver, name, body
     end
 
     def process_dot2(line, start, finish)
@@ -312,10 +304,6 @@ module CodeTools
 
     def process_fun(line, name, body)
       AST::DefineFunction.new line, name, body
-    end
-
-    def process_funm(line, name, body)
-      AST::DefineFunctionMulti.new line, name, body
     end
 
     def process_gasgn(line, name, expr)
@@ -518,8 +506,14 @@ module CodeTools
       AST::Redo.new line
     end
 
+    REGEXP_OPTION_PEG = 8
+
     def process_regex(line, str, flags)
-      AST::RegexLiteral.new line, str, flags
+      if flags == REGEXP_OPTION_PEG
+        AST::PEGLiteral.new line, str
+      else
+        AST::RegexLiteral.new line, str, flags
+      end
     end
 
     def process_resbody(line, conditions, body, nxt)
