@@ -104,5 +104,30 @@ module Rubinius
     opcode 96, :yield_stack,                 :stack => [[0,1], 1], :args => [:count],                         :control_flow => :yield
     opcode 97, :zsuper,                      :stack => [1, 1],     :args => [:literal],                       :control_flow => :next
     opcode 98, :push_file,                   :stack => [0, 1],     :args => [],                               :control_flow => :next
+    opcode 99, :p_any,                       :stack => [0, 0],     :args => [:r0],                            :control_flow => :next
+    opcode 100, :p_call,                     :stack => [0, 0],     :args => [:ip],                            :control_flow => :next
+    opcode 101, :p_char,                     :stack => [0, 0],     :args => [:chr],                           :control_flow => :next
+    opcode 102, :p_char_set,                 :stack => [0, 0],     :args => [:chr_set],                       :control_flow => :next
+    opcode 103, :p_choice,                   :stack => [0, 0],     :args => [:ip, :r0],                       :control_flow => :next
+    opcode 104, :p_commit,                   :stack => [0, 0],     :args => [:ip],                            :control_flow => :next
+    opcode 105, :p_commit_back,              :stack => [0, 0],     :args => [:ip],                            :control_flow => :next
+    opcode 106, :p_commit_partial,           :stack => [0, 0],     :args => [:ip],                            :control_flow => :next
+    opcode 107, :p_end,                      :stack => [0, 0],     :args => [],                               :control_flow => :next
+    opcode 108, :p_fail,                     :stack => [0, 0],     :args => [],                               :control_flow => :next
+    opcode 109, :p_fail_twice,               :stack => [0, 0],     :args => [],                               :control_flow => :next
+    opcode 110, :p_jump,                     :stack => [0, 0],     :args => [:ip],                            :control_flow => :next
+    opcode 111, :p_return,                   :stack => [0, 0],     :args => [],                               :control_flow => :next
+    opcode 112, :p_span,                     :stack => [0, 0],     :args => [:chr_set],                       :control_flow => :next
+    opcode 113, :p_test_any,                 :stack => [0, 0],     :args => [:n, :ip],                        :control_flow => :next
+    opcode 114, :p_test_char,                :stack => [0, 0],     :args => [:chr, :ip],                      :control_flow => :next
+    opcode 115, :p_test_char_set,            :stack => [0, 0],     :args => [:chr_set, :ip],                  :control_flow => :next
+    opcode 116, :p_init,                     :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 117, :m_bytes,                    :stack => [0, 0],     :args => [:value, :r0],                    :control_flow => :next
+    opcode 118, :m_counter,                  :stack => [0, 0],     :args => [:value],                         :control_flow => :next
+    opcode 119, :m_sum,                      :stack => [0, 0],     :args => [:value, :r0],                    :control_flow => :next
+    opcode 120, :m_value,                    :stack => [0, 0],     :args => [:value, :r0],                    :control_flow => :next
+    opcode 121, :m_time_stamp,               :stack => [0, 0],     :args => [:value, :flag],                  :control_flow => :next
+    opcode 122, :m_timer_start,              :stack => [0, 0],     :args => [:timer],                         :control_flow => :next
+    opcode 123, :m_timer_stop,               :stack => [0, 0],     :args => [:ip, :flag],                     :control_flow => :next
   end
 end
