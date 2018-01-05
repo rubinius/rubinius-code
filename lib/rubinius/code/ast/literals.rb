@@ -350,6 +350,37 @@ module CodeTools
       end
     end
 
+    class PEGLiteral < Node
+      attr_accessor :source
+
+      def initialize(line, str)
+        @line = line
+        @source = str
+      end
+
+      def bytecode(g)
+        pos(g)
+        build = g.new_label
+        done = g.new_label
+
+        g.push_nil
+
+        build.set!
+        g.push_memo nil
+        g.dup
+        g.goto_if_not_nil done
+
+        g.pop
+        g.push_rubinius
+        g.find_const :PEG
+        g.push_literal @source
+        g.send :compile, 1
+        g.goto build
+
+        done.set!
+      end
+    end
+
     class RegexLiteral < Node
       attr_accessor :source, :options
 

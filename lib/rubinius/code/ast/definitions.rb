@@ -212,12 +212,6 @@ module CodeTools
       end
     end
 
-    class DefineFunctionMulti < DefineFunction
-      def sexp_name
-        :funm
-      end
-    end
-
     class Define < ClosedScope
       attr_accessor :name, :arguments
 
@@ -271,9 +265,6 @@ module CodeTools
       end
     end
 
-    class DefineMulti < Define
-    end
-
     class DefineSingleton < Node
       attr_accessor :receiver, :body
 
@@ -293,9 +284,6 @@ module CodeTools
         [:defs, @receiver.to_sexp, @body.name,
           @body.arguments.to_sexp, [:scope, @body.body.to_sexp]]
       end
-    end
-
-    class DefineSingletonMulti < DefineSingleton
     end
 
     class DefineSingletonScope < Define
