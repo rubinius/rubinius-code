@@ -324,6 +324,7 @@ module CodeTools
           str.append marshal(val.iseq)
           str.append marshal(val.stack_size)
           str.append marshal(val.local_count)
+          str.append marshal(val.registers)
           str.append marshal(val.required_args)
           str.append marshal(val.post_args)
           str.append marshal(val.total_args)

@@ -54,6 +54,7 @@ module CodeTools
         print "Locals:      #{code.local_count}"
         print code.local_count > 0 ? ": #{code.local_names.join ", "}\n" : "\n"
         puts "Stack size:  #{code.stack_size}"
+        puts "Registers:   #{code.registers}"
         literals = code.literals.collect do |literal|
           case literal
           when Rubinius::CompiledCode

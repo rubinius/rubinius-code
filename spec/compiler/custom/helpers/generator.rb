@@ -93,7 +93,7 @@ module Rubinius
     attr_accessor :stream, :ip, :redo, :break, :next, :retry,
                   :name, :file, :line, :primitive, :for_block, :for_module_body,
                   :required_args, :post_args, :total_args, :splat_index,
-                  :local_count, :local_names, :block_index
+                  :local_count, :local_names, :block_index, :registers
 
 
     def initialize
@@ -104,6 +104,7 @@ module Rubinius
       @g      = self
       @state = []
       @stack_locals = 0
+      @registers = 0
     end
 
     def new_stack_local
@@ -169,6 +170,10 @@ module Rubinius
     def new_label_id
       @lbl += 1
       @lbl
+    end
+
+    def new_register
+      (@registers += 1) - 1
     end
 
     def dup
