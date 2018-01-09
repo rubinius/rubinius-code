@@ -104,6 +104,8 @@ module Rubinius
     opcode 96, :yield_stack,                 :stack => [[0,1], 1], :args => [:count],                         :control_flow => :yield
     opcode 97, :zsuper,                      :stack => [1, 1],     :args => [:literal],                       :control_flow => :next
     opcode 98, :push_file,                   :stack => [0, 1],     :args => [],                               :control_flow => :next
+
+    # Parsing Expression Grammar instructions
     opcode 99, :p_any,                       :stack => [0, 0],     :args => [:r0],                            :control_flow => :next
     opcode 100, :p_call,                     :stack => [0, 0],     :args => [:ip],                            :control_flow => :next
     opcode 101, :p_char,                     :stack => [0, 0],     :args => [:chr],                           :control_flow => :next
@@ -122,6 +124,8 @@ module Rubinius
     opcode 114, :p_test_char,                :stack => [0, 0],     :args => [:chr, :ip],                      :control_flow => :next
     opcode 115, :p_test_char_set,            :stack => [0, 0],     :args => [:chr_set, :ip],                  :control_flow => :next
     opcode 116, :p_init,                     :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+
+    # Instrumentation instructions
     opcode 117, :m_bytes,                    :stack => [0, 0],     :args => [:value, :r0],                    :control_flow => :next
     opcode 118, :m_counter,                  :stack => [0, 0],     :args => [:value],                         :control_flow => :next
     opcode 119, :m_sum,                      :stack => [0, 0],     :args => [:value, :r0],                    :control_flow => :next
@@ -129,5 +133,40 @@ module Rubinius
     opcode 121, :m_time_stamp,               :stack => [0, 0],     :args => [:value, :flag],                  :control_flow => :next
     opcode 122, :m_timer_start,              :stack => [0, 0],     :args => [:timer],                         :control_flow => :next
     opcode 123, :m_timer_stop,               :stack => [0, 0],     :args => [:ip, :flag],                     :control_flow => :next
+
+    # Branching instructions
+    opcode 124, :b_if_serial,                :stack => [0, 0],     :args => [:r0, :r1, :ip],                 :control_flow => :branch
+    opcode 125, :b_if_int,                   :stack => [0, 0],     :args => [:r0, :r1, :ip],                    :control_flow => :branch
+    opcode 126, :b_if,                       :stack => [0, 0],     :args => [:r0, :ip],                    :control_flow => :branch
+
+    # Register movement instructions
+    opcode 127, :r_load_local,               :stack => [0, 0],     :args => [:r0, :local],                    :control_flow => :next
+    opcode 128, :r_store_local,              :stack => [0, 0],     :args => [:r0, :local],                    :control_flow => :next
+    opcode 129, :r_load_local_depth,         :stack => [0, 0],     :args => [:r0, :local, :depth],            :control_flow => :next
+    opcode 130, :r_store_local_depth,        :stack => [0, 0],     :args => [:r0, :local, :depth],            :control_flow => :next
+    opcode 131, :r_load_stack,               :stack => [0, 0],     :args => [:r0],                            :control_flow => :next
+    opcode 132, :r_store_stack,              :stack => [0, 1],     :args => [:r0],                            :control_flow => :next
+    opcode 133, :r_load_literal,             :stack => [0, 0],     :args => [:r0, :literal],                  :control_flow => :next
+    opcode 134, :r_load_int,                 :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 135, :r_store_int,                :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 136, :r_copy,                     :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+
+    # Native signed integer instructions
+    opcode 137, :n_iadd,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 138, :n_isub,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 139, :n_imul,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 140, :n_idiv,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 141, :n_iadd_o,                   :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 142, :n_isub_o,                   :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 143, :n_imul_o,                   :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 144, :n_idiv_o,                   :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 145, :n_ieq,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 146, :n_ine,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 147, :n_ilt,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 148, :n_ile,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 149, :n_igt,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 150, :n_ige,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 151, :n_ipopcnt,                  :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+
   end
 end

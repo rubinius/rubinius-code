@@ -274,6 +274,7 @@ module CodeTools
       @keywords = nil
       @kwrest_index = nil
       @local_count = 0
+      @registers = 0
 
       @state = []
       @generators = []
@@ -450,6 +451,10 @@ module CodeTools
 
     def new_label
       Label.new(self)
+    end
+
+    def new_register
+      (@registers += 1) - 1
     end
 
     # Helpers

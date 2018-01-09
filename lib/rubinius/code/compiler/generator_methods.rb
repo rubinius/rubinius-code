@@ -810,6 +810,7 @@ module CodeTools
         @instruction = 98
       end
 
+      # Parsing Expression Grammar instructions
       def p_any(arg1)
         @stream << 99 << arg1
         @ip += 2
@@ -918,6 +919,7 @@ module CodeTools
         @instruction = 116
       end
 
+      # Instrumentation instructions
       def m_bytes(arg1, arg2)
         @stream << 117 << arg1 << arg2
         @ip += 3
@@ -959,5 +961,178 @@ module CodeTools
         @ip += 3
         @instruction = 123
       end
+
+      # Branching instructions
+      def b_if_serial(arg1, arg2, arg3)
+        @stream << 124 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 124
+      end
+
+      def b_if_int(arg1, arg2, arg3)
+        @stream << 125 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 125
+      end
+
+      def b_if(arg1, arg2)
+        @stream << 126 << arg1 << arg2
+        @ip += 3
+        @instruction = 126
+      end
+
+      # Register movement instructions
+      def r_load_local(arg1, arg2)
+        @stream << 127 << arg1 << arg2
+        @ip += 3
+        @instructions = 127
+      end
+
+      def r_store_local(arg1, arg2)
+        @stream << 128 << arg1 << arg2
+        @ip += 3
+        @instructions = 128
+      end
+
+      def r_load_local_depth(arg1, arg2, arg3)
+        @stream << 129 << arg1 << arg2 << arg3
+        @ip += 4
+        @instructions = 129
+      end
+
+      def r_store_local_depth(arg1, arg2, arg3)
+        @stream << 130 << arg1 << arg2 << arg3
+        @ip += 4
+        @instructions = 130
+      end
+
+      def r_load_stack(arg1)
+        @stream << 131 << arg1
+        @ip += 2
+        @instructions = 131
+      end
+
+      def r_store_stack(arg1)
+        @stream << 132 << arg1
+        @ip += 2
+        @current_block.add_stack(0, 1)
+        @instructions = 132
+      end
+
+      def r_load_literal(arg1, arg2)
+        @stream << 133 << arg1 << arg2
+        @ip += 3
+        @instruction = 133
+      end
+
+      def r_load_int(arg1, arg2)
+        @stream << 134 << arg1 << arg2
+        @ip += 3
+        @instruction = 134
+      end
+
+      def r_store_int(arg1, arg2)
+        @stream << 135 << arg1 << arg2
+        @ip += 3
+        @instruction = 135
+      end
+
+      def r_copy(arg1, arg2)
+        @stream << 136 << arg1 << arg2
+        @ip += 3
+        @instruction = 136
+      end
+
+      # Native signed integer instructions
+      def n_iadd(arg1, arg2, arg3)
+        @stream << 137 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 137
+      end
+
+      def n_isub(arg1, arg2, arg3)
+        @stream << 138 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 138
+      end
+
+      def n_imul(arg1, arg2, arg3)
+        @stream << 139 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 139
+      end
+
+      def n_idiv(arg1, arg2, arg3)
+        @stream << 140 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 140
+      end
+
+      def n_iadd_o(arg1, arg2, arg3)
+        @stream << 141 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 141
+      end
+
+      def n_isub_o(arg1, arg2, arg3)
+        @stream << 142 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 142
+      end
+
+      def n_imul_o(arg1, arg2, arg3)
+        @stream << 143 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 143
+      end
+
+      def n_idiv_o(arg1, arg2, arg3)
+        @stream << 144 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 144
+      end
+
+      def n_ieq(arg1, arg2, arg3)
+        @stream << 145 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 145
+      end
+
+      def n_ine(arg1, arg2, arg3)
+        @stream << 146 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 146
+      end
+
+      def n_ilt(arg1, arg2, arg3)
+        @stream << 147 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 147
+      end
+
+      def n_ile(arg1, arg2, arg3)
+        @stream << 148 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 148
+      end
+
+      def n_igt(arg1, arg2, arg3)
+        @stream << 149 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 149
+      end
+
+      def n_ige(arg1, arg2, arg3)
+        @stream << 150 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 150
+      end
+
+      def n_ipopcnt(arg1, arg2)
+        @stream << 151 << arg1 << arg2
+        @ip += 3
+        @instruction = 151
+      end
+
   end
 end
