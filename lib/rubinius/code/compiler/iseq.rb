@@ -127,6 +127,8 @@ module Rubinius
           stream << [op, @iseq[offset+1]]
         when 2
           stream << [op, @iseq[offset+1], @iseq[offset+2]]
+        when 3
+          stream << [op, @iseq[offset+1], @iseq[offset+2], @iseq[offset+3]]
         end
 
         offset += op.width
