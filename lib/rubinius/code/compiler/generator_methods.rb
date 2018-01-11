@@ -966,18 +966,36 @@ module CodeTools
       def b_if_serial(arg1, arg2, arg3)
         @stream << 124 << arg1 << arg2 << arg3
         @ip += 4
+        arg3.used_at location
+        @current_block.left = arg3.basic_block
+        @current_block.close
+        block = new_basic_block
+        @current_block.right = block
+        @current_block = block
         @instruction = 124
       end
 
       def b_if_int(arg1, arg2, arg3)
         @stream << 125 << arg1 << arg2 << arg3
         @ip += 4
+        arg3.used_at location
+        @current_block.left = arg3.basic_block
+        @current_block.close
+        block = new_basic_block
+        @current_block.right = block
+        @current_block = block
         @instruction = 125
       end
 
       def b_if(arg1, arg2)
         @stream << 126 << arg1 << arg2
         @ip += 3
+        arg2.used_at location
+        @current_block.left = arg2.basic_block
+        @current_block.close
+        block = new_basic_block
+        @current_block.right = block
+        @current_block = block
         @instruction = 126
       end
 
