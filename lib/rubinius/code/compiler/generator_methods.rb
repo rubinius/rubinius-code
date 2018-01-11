@@ -964,6 +964,7 @@ module CodeTools
 
       # Branching instructions
       def b_if_serial(arg1, arg2, arg3)
+        location = @ip + 1
         @stream << 124 << arg1 << arg2 << arg3
         @ip += 4
         arg3.used_at location
@@ -976,6 +977,7 @@ module CodeTools
       end
 
       def b_if_int(arg1, arg2, arg3)
+        location = @ip + 1
         @stream << 125 << arg1 << arg2 << arg3
         @ip += 4
         arg3.used_at location
@@ -988,6 +990,7 @@ module CodeTools
       end
 
       def b_if(arg1, arg2)
+        location = @ip + 1
         @stream << 126 << arg1 << arg2
         @ip += 3
         arg2.used_at location
