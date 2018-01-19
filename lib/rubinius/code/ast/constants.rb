@@ -85,17 +85,14 @@ module CodeTools
         ok = g.new_label
         g.setup_unwind ex, RescueType
 
+        g.push_type
         @parent.bytecode(g)
         g.push_literal @name
-        if const_missing
-          g.push_true
-        else
-          g.push_false
-        end
-        g.invoke_primitive :vm_const_defined_under, 3
-
-        g.pop_unwind
-        g.goto ok
+        g.send :constant_path_defined?, 2
+        g.dup
+        g.goto_if_not_undefined ok
+        g.pop
+        g.goto f
 
         ex.set!
         g.clear_exception
@@ -171,13 +168,14 @@ module CodeTools
         ok = g.new_label
         g.setup_unwind ex, RescueType
 
+        g.push_type
         g.push_cpath_top
         g.push_literal @name
-        g.push_false
-        g.invoke_primitive :vm_const_defined_under, 3
-
-        g.pop_unwind
-        g.goto ok
+        g.send :constant_path_defined?, 2
+        g.dup
+        g.goto_if_not_undefined ok
+        g.pop
+        g.goto f
 
         ex.set!
         g.clear_exception
@@ -266,11 +264,14 @@ module CodeTools
         ok = g.new_label
         g.setup_unwind ex, RescueType
 
+        g.push_type
+        g.push_scope
         g.push_literal @name
-        g.invoke_primitive :vm_const_defined, 1
-
-        g.pop_unwind
-        g.goto ok
+        g.send :constant_scope_defined?, 2
+        g.dup
+        g.goto_if_not_undefined ok
+        g.pop
+        g.goto f
 
         ex.set!
         g.clear_exception
