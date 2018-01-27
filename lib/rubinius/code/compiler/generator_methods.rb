@@ -1155,5 +1155,179 @@ module CodeTools
         @instruction = 151
       end
 
+      def m_log(arg1)
+        @stream << 152 << arg1
+        @ip += 2
+        @instruction = 152
+      end
+
+      def m_debug
+        @stream << 153
+        @ip += 1
+        @instruction = 153
+      end
+
+      def e_cache_method_p(arg1, arg2, arg3)
+        @stream << 154 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 154
+      end
+
+      def e_cache_function_p(arg1, arg2, arg3)
+        @stream << 155 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 155
+      end
+
+      def e_cache_value_p(arg1, arg2)
+        @stream << 156 << arg1 << arg2
+        @ip += 3
+        @instruction = 156
+      end
+
+      def e_cache_method(arg1, arg2)
+        @stream << 157 << arg1 << arg2
+        @ip += 3
+        @instruction = 157
+      end
+
+      def e_cache_function(arg1, arg2)
+        @stream << 158 << arg1 << arg2
+        @ip += 3
+        @instruction = 158
+      end
+
+      def e_cache_value(arg1, arg2)
+        @stream << 159 << arg1 << arg2
+        @ip += 3
+        @instruction = 159
+      end
+
+      def e_resolve_method(arg1, arg2, arg3)
+        @stream << 160 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 160
+      end
+
+      def e_resolve_receiver_method(arg1, arg2, arg3)
+        @stream << 161 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 161
+      end
+
+      def e_resolve_function(arg1, arg2, arg3)
+        @stream << 162 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 162
+      end
+
+      def e_resolve_scope_constant(arg1, arg2)
+        @stream << 163 << arg1 << arg2
+        @ip += 3
+        @instruction = 163
+      end
+
+      def e_resolve_path_constant(arg1, arg2)
+        @stream << 164 << arg1 << arg2
+        @ip += 3
+        @instruction = 164
+      end
+
+      def e_signature(arg1)
+        @stream << 165 << arg1
+        @ip += 2
+        @instruction = 165
+      end
+
+      def e_check_signature(arg1, arg2)
+        @stream << 166 << arg1 << arg2
+        @ip += 3
+        @instruction = 166
+      end
+
+      def e_invoke_method(arg1, arg2)
+        @stream << 167 << arg1 << arg2
+        @ip += 3
+        @instruction = 167
+      end
+
+      def e_invoke_function(arg1, arg2)
+        @stream << 168 << arg1 << arg2
+        @ip += 3
+        @instruction = 168
+      end
+
+      def a_instance(arg1, arg2)
+        @stream << 169 << arg1 << arg2
+        @ip += 3
+        @instruction = 169
+      end
+
+      def a_kind(arg1, arg2)
+        @stream << 170 << arg1 << arg2
+        @ip += 3
+        @instruction = 170
+      end
+
+      def a_method(arg1, arg2)
+        @stream << 171 << arg1 << arg2
+        @ip += 3
+        @instruction = 171
+      end
+
+      def a_receiver_method(arg1, arg2)
+        @stream << 172 << arg1 << arg2
+        @ip += 3
+        @instruction = 172
+      end
+
+      def a_type(arg1, arg2)
+        @stream << 173 << arg1 << arg2
+        @ip += 3
+        @instruction = 173
+      end
+
+      def a_function(arg1, arg2)
+        @stream << 174 << arg1 << arg2
+        @ip += 3
+        @instruction = 174
+      end
+
+      def a_equal(arg1, arg2)
+        @stream << 175 << arg1 << arg2
+        @ip += 3
+        @instruction = 175
+      end
+
+      def a_not_equal(arg1, arg2)
+        @stream << 176 << arg1 << arg2
+        @ip += 3
+        @instruction = 176
+      end
+
+      def a_less(arg1, arg2)
+        @stream << 177 << arg1 << arg2
+        @ip += 3
+        @instruction = 177
+      end
+
+      def a_less_equal(arg1, arg2)
+        @stream << 178 << arg1 << arg2
+        @ip += 3
+        @instruction = 178
+      end
+
+      def a_greater(arg1, arg2)
+        @stream << 179 << arg1 << arg2
+        @ip += 3
+        @instruction = 179
+      end
+
+      def a_greater_equal(arg1, arg2)
+        @stream << 180 << arg1 << arg2
+        @ip += 3
+        @instruction = 180
+      end
+
   end
 end

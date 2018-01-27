@@ -168,5 +168,39 @@ module Rubinius
     opcode 150, :n_ige,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
     opcode 151, :n_ipopcnt,                  :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
 
+    # More instrumentation instructions
+    opcode 152, :m_log,                      :stack => [0, 0],     :args => [:r0],                            :control_flow => :next
+    opcode 153, :m_debug,                    :stack => [0, 0],     :args => [],                               :control_flow => :next
+
+    # Code execution instructions
+    opcode 154, :e_cache_method_p,           :stack => [0, 0],     :args => [:r0, :r1, :ip],                  :control_flow => :next
+    opcode 155, :e_cache_function_p,         :stack => [0, 0],     :args => [:r0, :r1, :ip],                  :control_flow => :next
+    opcode 156, :e_cache_value_p,            :stack => [0, 0],     :args => [:r0, :ip],                       :control_flow => :next
+    opcode 157, :e_cache_method,             :stack => [0, 0],     :args => [:r0, :ip],                       :control_flow => :next
+    opcode 158, :e_cache_function,           :stack => [0, 0],     :args => [:r0, :ip],                       :control_flow => :next
+    opcode 159, :e_cache_value,              :stack => [0, 0],     :args => [:r0, :ip],                       :control_flow => :next
+    opcode 160, :e_resolve_method,           :stack => [0, 0],     :args => [:r0, :r1, :ip],                  :control_flow => :next
+    opcode 161, :e_resolve_receiver_method,  :stack => [0, 0],     :args => [:r0, :r1, :ip],                  :control_flow => :next
+    opcode 162, :e_resolve_function,         :stack => [0, 0],     :args => [:r0, :r1, :ip],                  :control_flow => :next
+    opcode 163, :e_resolve_scope_constant,   :stack => [0, 0],     :args => [:r0, :ip],                       :control_flow => :next
+    opcode 164, :e_resolve_path_constant,    :stack => [0, 0],     :args => [:r0, :ip],                       :control_flow => :next
+    opcode 165, :e_signature,                :stack => [0, 0],     :args => [:r0],                            :control_flow => :next
+    opcode 166, :e_check_signature,          :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 167, :e_invoke_method,            :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 168, :e_invoke_function,          :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+
+    # Assertion instructions
+    opcode 169, :a_instance,                 :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 170, :a_kind,                     :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 171, :a_method,                   :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 172, :a_receiver_method,          :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 173, :a_type,                     :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 174, :a_function,                 :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 175, :a_equal,                    :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 176, :a_not_equal,                :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 177, :a_less,                     :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 178, :a_less_equal,               :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 179, :a_greater,                  :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 180, :a_greater_equal,            :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
   end
 end
