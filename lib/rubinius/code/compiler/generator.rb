@@ -508,7 +508,11 @@ module CodeTools
     end
 
     def push_literal(literal)
-      emit_push_literal find_literal(literal)
+      super find_literal(literal)
+    end
+
+    def r_load_literal(reg, literal)
+      super reg, find_literal(literal)
     end
 
     # Minor meta operations that can be used to detect

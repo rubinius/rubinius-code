@@ -422,6 +422,8 @@ module CodeTools
         @instruction = 48
       end
 
+      alias_method :push_literal, :emit_push_literal
+
       def push_local(arg1)
         @stream << 49 << arg1
         @ip += 2
