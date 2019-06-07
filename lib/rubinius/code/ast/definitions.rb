@@ -185,7 +185,7 @@ module CodeTools
       end
     end
 
-    class DefineFunction < Node
+    class DefineFunction < ClosedScope
       attr_accessor :name, :arguments
 
       def initialize(line, name, block)
@@ -196,19 +196,43 @@ module CodeTools
         @body = block
       end
 
+      def compile_body(g)
+        function = new_generator(g, @name, @arguments)
+
+        function.push_state self
+        function.state.push_super self
+        function.definition_line(@line)
+
+        function.state.push_name @name
+
+        @arguments.bytecode(function)
+        @body.bytecode(function)
+
+        function.state.pop_name
+
+        function.local_count = local_count
+        function.local_names = local_names
+
+        function.ret
+        function.close
+        function.pop_state
+
+        return function
+      end
+
       def bytecode(g)
         pos(g)
 
-        g.push_const :Kernel
-        g.push_literal sexp_name.to_s
-        g.push_literal " "
-        g.push_literal @name.to_s
-        g.string_build 3
-        g.send :puts, 1
+        g.push_rubinius
+        g.push_literal @name
+        g.push_generator compile_body(g)
+        g.push_scope
+
+        g.send :add_function, 3
       end
 
       def sexp_name
-        :fun
+        [:fun, @name, @arguments.to_sexp, [:scope, @body.to_sexp]]
       end
     end
 
