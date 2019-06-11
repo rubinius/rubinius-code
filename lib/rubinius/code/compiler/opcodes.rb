@@ -202,5 +202,15 @@ module Rubinius
     opcode 178, :a_less_equal,               :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
     opcode 179, :a_greater,                  :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
     opcode 180, :a_greater_equal,            :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 181, :goto_past,                  :stack => [0, 0],     :args => [:location],                      :control_flow => :branch
+    opcode 182, :goto_future,                :stack => [0, 0],     :args => [:location],                      :control_flow => :branch
+    opcode 183, :r_load_0,                   :stack => [0, 0],     :args => [:r0],                            :control_flow => :next
+    opcode 184, :r_load_1,                   :stack => [0, 0],     :args => [:r0],                            :control_flow => :next
+    opcode 185, :r_load_nil,                 :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 186, :r_load_false,               :stack => [0, 0],     :args => [:r0],                            :control_flow => :next
+    opcode 187, :r_load_true,                :stack => [0, 0],     :args => [:r0],                            :control_flow => :next
+    opcode 188, :call_send,                  :stack => [[1,2], 1], :args => [:literal, :count],               :control_flow => :send
+    opcode 189, :call,                       :stack => [[1,2], 1], :args => [:literal, :count],               :control_flow => :send
+    opcode 190, :call_0,                     :stack => [0, 1],     :args => [:literal],                       :control_flow => :send
   end
 end

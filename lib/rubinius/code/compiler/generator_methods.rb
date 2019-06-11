@@ -1331,5 +1331,72 @@ module CodeTools
         @instruction = 180
       end
 
+      def goto_past(arg1)
+        @stream << 181 << arg1
+        @ip += 2
+        @instruction = 181
+      end
+
+      def goto_future(arg1)
+        @stream << 182 << arg1
+        @ip += 2
+        @instruction = 182
+      end
+
+      def r_load_0(arg1)
+        @stream << 183 << arg1
+        @ip += 2
+        @instruction = 183
+      end
+
+      def r_load_1(arg1)
+        @stream << 184 << arg1
+        @ip += 2
+        @instruction = 184
+      end
+
+      def r_load_nil(arg1, arg2)
+        @stream << 185 << arg1 << arg2
+        @ip += 3
+        @instruction = 185
+      end
+
+      def r_load_false(arg1)
+        @stream << 186 << arg1
+        @ip += 2
+        @instruction = 186
+      end
+
+      def r_load_true(arg1)
+        @stream << 187 << arg1
+        @ip += 2
+        @instruction = 187
+      end
+
+      def call_send(arg1, arg2)
+        arg1 = find_literal(arg1)
+        arg2 = Integer(arg2)
+        @stream << 188 << arg1 << arg2
+        @ip += 3
+        @current_block.add_stack(arg2+1, 1)
+        @instruction = 188
+      end
+
+      def call(arg1, arg2)
+        arg1 = find_literal(arg1)
+        arg2 = Integer(arg2)
+        @stream << 189 << arg1 << arg2
+        @ip += 3
+        @current_block.add_stack(arg2+1, 1)
+        @instruction = 189
+      end
+
+      def call_0(arg1)
+        arg1 = find_literal(arg1)
+        @stream << 190 << arg1
+        @ip += 2
+        @current_block.add_stack(0, 1)
+        @instruction = 190
+      end
   end
 end
