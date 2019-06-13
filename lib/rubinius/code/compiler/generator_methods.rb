@@ -1332,14 +1332,26 @@ module CodeTools
       end
 
       def goto_past(arg1)
+        location = @ip + 1
         @stream << 181 << arg1
         @ip += 2
+        arg1.used_at location
+        @current_block.add_stack(0, 0)
+        @current_block.left = arg1.basic_block
+        @current_block.close
+        @current_block = new_basic_block
         @instruction = 181
       end
 
       def goto_future(arg1)
+        location = @ip + 1
         @stream << 182 << arg1
         @ip += 2
+        arg1.used_at location
+        @current_block.add_stack(0, 0)
+        @current_block.left = arg1.basic_block
+        @current_block.close
+        @current_block = new_basic_block
         @instruction = 182
       end
 
