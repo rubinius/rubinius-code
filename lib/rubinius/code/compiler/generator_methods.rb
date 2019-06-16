@@ -1410,5 +1410,12 @@ module CodeTools
         @current_block.add_stack(0, 1)
         @instruction = 190
       end
+
+      def push_tagged_nil(arg1)
+        @stream << 191 << arg1
+        @ip += 2
+        @current_block.add_stack(0, 1)
+        @instruction = 191
+      end
   end
 end

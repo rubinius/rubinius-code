@@ -212,5 +212,6 @@ module Rubinius
     opcode 188, :call_send,                  :stack => [[1,2], 1], :args => [:literal, :count],               :control_flow => :send
     opcode 189, :call,                       :stack => [[1,2], 1], :args => [:literal, :count],               :control_flow => :send
     opcode 190, :call_0,                     :stack => [0, 1],     :args => [:literal],                       :control_flow => :send
+    opcode 191, :push_tagged_nil,            :stack => [0, 1],     :args => [:nil],                           :control_flow => :next
   end
 end
