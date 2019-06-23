@@ -410,7 +410,7 @@ module CodeTools
         g.set_line 0
 
         bottom.set!
-        g.push_nil
+        g.push_tagged_nil 0
         g.break.set!
 
         g.pop_modifiers
@@ -571,7 +571,7 @@ module CodeTools
           jump_error g, :break
         end
 
-        g.push_nil if g.state.top_level_ensure?
+        g.push_tagged_nil 0 if g.state.top_level_ensure?
       end
 
       def defined(g)
@@ -610,7 +610,7 @@ module CodeTools
         if @value
           @value.bytecode(g)
         else
-          g.push_nil
+          g.push_tagged_nil 0
         end
 
         if g.state.loop?
@@ -627,7 +627,7 @@ module CodeTools
           jump_error g, :next
         end
 
-        g.push_nil if g.state.top_level_ensure?
+        g.push_tagged_nil 0 if g.state.top_level_ensure?
       end
 
       def sexp_name
@@ -701,7 +701,7 @@ module CodeTools
         elsif @value
           @value.bytecode(g)
         else
-          g.push_nil
+          g.push_tagged_nil 0
         end
 
         if lcl = g.state.rescue?

@@ -100,7 +100,7 @@ module CodeTools
         g.push_int @line
         g.send :unrecognized_defined, 2
         g.pop
-        g.push_nil
+        g.push_tagged_nil 0
       end
 
       def value_defined(g, f)

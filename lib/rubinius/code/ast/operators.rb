@@ -92,7 +92,7 @@ module CodeTools
         g.goto done
 
         f.set!
-        g.push_nil
+        g.push_tagged_nil 0
 
         done.set!
       end
@@ -134,7 +134,7 @@ module CodeTools
         # @arguments.size will be 1
 
         if @arguments.splat?
-          g.push_nil
+          g.push_tagged_nil 0
           g.send_with_splat :[], @arguments.size
         else
           g.send :[], @arguments.size
@@ -174,7 +174,7 @@ module CodeTools
           new_break.set!
           if old_break
             g.pop_many recv_stack + 1
-            g.push_nil
+            g.push_tagged_nil 0
             g.goto old_break
           end
 
@@ -188,7 +188,7 @@ module CodeTools
 
           if @arguments.splat?
             g.send :push, 1
-            g.push_nil
+            g.push_tagged_nil 0
             g.send_with_splat :[]=, @arguments.size
           else
             g.send :[]=, @arguments.size + 1
@@ -222,7 +222,7 @@ module CodeTools
           new_break.set!
           if old_break
             g.pop_many recv_stack + 2
-            g.push_nil
+            g.push_tagged_nil 0
             g.goto old_break
           end
 
@@ -247,7 +247,7 @@ module CodeTools
           # X: Call []=(:a, 5) on h
           if @arguments.splat?
             g.send :push, 1
-            g.push_nil
+            g.push_tagged_nil 0
             g.send_with_splat :[]=, @arguments.size
           else
             g.send :[]=, @arguments.size + 1
@@ -326,7 +326,7 @@ module CodeTools
           new_break.set!
           if old_break
             g.pop_many 2
-            g.push_nil
+            g.push_tagged_nil 0
             g.goto old_break
           end
 
@@ -365,7 +365,7 @@ module CodeTools
           new_break.set!
           if old_break
             g.pop_many 3
-            g.push_nil
+            g.push_tagged_nil 0
             g.goto old_break
           end
 

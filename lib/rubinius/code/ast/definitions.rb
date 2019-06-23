@@ -990,7 +990,7 @@ module CodeTools
     class EmptyBody < Node
       def bytecode(g)
         g.pop
-        g.push_nil
+        g.push_tagged_nil 0
       end
 
       def to_sexp
@@ -1128,7 +1128,7 @@ module CodeTools
           attach_and_call g, :__metaclass_init__, true, true
         else
           g.pop
-          g.push_nil
+          g.push_tagged_nil 0
         end
       end
     end

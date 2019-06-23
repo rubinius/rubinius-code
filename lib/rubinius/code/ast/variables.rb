@@ -50,7 +50,7 @@ module CodeTools
         g.goto done
 
         f.set!
-        g.push_nil
+        g.push_tagged_nil 0
 
         done.set!
       end
@@ -91,7 +91,7 @@ module CodeTools
         g.goto done
 
         f.set!
-        g.push_nil
+        g.push_tagged_nil 0
 
         done.set!
       end
@@ -188,7 +188,7 @@ module CodeTools
         g.goto done
 
         f.set!
-        g.push_nil
+        g.push_tagged_nil 0
 
         done.set!
       end
@@ -297,7 +297,7 @@ module CodeTools
         g.goto done
 
         f.set!
-        g.push_nil
+        g.push_tagged_nil 0
 
         done.set!
       end
@@ -443,7 +443,7 @@ module CodeTools
         g.goto done
 
         f.set!
-        g.push_nil
+        g.push_tagged_nil 0
 
         done.set!
       end

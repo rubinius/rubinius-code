@@ -96,7 +96,7 @@ module CodeTools
         g.goto done
 
         f.set!
-        g.push_nil
+        g.push_tagged_nil 0
 
         done.set!
       end
@@ -162,7 +162,7 @@ module CodeTools
         pos(g)
 
         if @arguments.splat?
-          @block ? @block.bytecode(g) : g.push_nil
+          @block ? @block.bytecode(g) : g.push_tagged_nil(0)
           g.send_with_splat @name, @arguments.size, @privately, false
         elsif @block
           @block.bytecode(g)
@@ -230,7 +230,7 @@ module CodeTools
           if @arguments.splat?
             g.move_down @arguments.size + 2
             g.swap
-            g.push_nil
+            g.push_tagged_nil 0
             g.send_with_splat @name, @arguments.size, @privately, true
           else
             g.move_down @arguments.size + 1
@@ -311,7 +311,7 @@ module CodeTools
             flag = false
           end
 
-          g.push_nil
+          g.push_tagged_nil 0
           g.send_with_splat @name, @arguments.size, @privately, flag
         else
           g.move_down @arguments.size + 1
@@ -1036,7 +1036,7 @@ module CodeTools
         g.goto done
 
         nope.set!
-        g.push_nil
+        g.push_tagged_nil 0
 
         done.set!
       end
@@ -1088,7 +1088,7 @@ module CodeTools
 
         g.push_block
         g.goto_if_true t
-        g.push_nil
+        g.push_tagged_nil 0
         g.goto f
 
         t.set!

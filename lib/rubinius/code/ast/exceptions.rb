@@ -193,7 +193,7 @@ module CodeTools
         if @body.nil?
           if @else.nil?
             # Stupid. No body and no else.
-            g.push_nil
+            g.push_tagged_nil 0
           else
             # Only an else, run it.
             @else.bytecode(g)

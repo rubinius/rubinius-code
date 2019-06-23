@@ -30,7 +30,7 @@ module CodeTools
         g.push_literal "expression"
         g.goto done
         not_found.set!
-        g.push_nil
+        g.push_tagged_nil 0
         g.goto done
 
         done.set!
@@ -225,7 +225,7 @@ module CodeTools
       def bytecode(g)
         pos(g)
 
-        g.push_nil
+        g.push_tagged_nil 0
       end
 
       def defined(g)
@@ -363,7 +363,7 @@ module CodeTools
         build = g.new_label
         done = g.new_label
 
-        g.push_nil
+        g.push_tagged_nil 0
 
         build.set!
         g.push_memo nil
@@ -396,7 +396,7 @@ module CodeTools
         build = g.new_label
         done = g.new_label
 
-        g.push_nil
+        g.push_tagged_nil 0
 
         build.set!
         g.push_memo nil
@@ -604,7 +604,7 @@ module CodeTools
         build = g.new_label
         done = g.new_label
 
-        g.push_nil
+        g.push_tagged_nil 0
 
         build.set!
         g.push_memo nil
