@@ -373,7 +373,6 @@ module CodeTools
         # computation should be put here.
         lbl.set!
         g.pop
-        g.check_interrupts
       end
 
       def bytecode(g, use_gif=true)
@@ -404,7 +403,7 @@ module CodeTools
           condition_bytecode(g, bottom, use_gif)
         end
 
-        g.goto top
+        g.goto_past top
 
         # See other set_line(0) comments
         g.set_line 0
@@ -614,10 +613,10 @@ module CodeTools
         end
 
         if g.state.loop?
-          g.goto g.next
+          g.goto_past g.next
         elsif g.state.block?
           if g.next
-            g.goto g.next
+            g.goto_past g.next
           else
             g.ret
           end
@@ -644,8 +643,7 @@ module CodeTools
         pos(g)
 
         if g.redo
-          g.check_interrupts
-          g.goto g.redo
+          g.goto_past g.redo
         else
           jump_error g, :redo
         end
@@ -665,7 +663,7 @@ module CodeTools
         pos(g)
 
         if g.retry
-          g.goto g.retry
+          g.goto_past g.retry
         else
           jump_error g, :retry
         end
