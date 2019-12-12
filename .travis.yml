@@ -1,10 +1,17 @@
-language: ruby
-dist: trusty
+language: cpp
+os:
+- linux
+compiler:
+- clang
+script:
+- echo Ready to build archive
+after_success:
+- "./scripts/build_support.sh archive_stdlib"
 env:
-- RUBYLIB=lib:.
-script: bundle exec rake
-rvm:
-- rbx-3
+  global:
+  - RUBYLIB=lib:.
+  - secure: iXy/Pyy6gPMPKmeMhvRPFWOy0sBoezvZc8cs02NZLLtXGTGSFKJd/iLVA9zLnc5RID1XG15B62ggijqy8SCYSQpEf1aPmcvY4OD/psvB94o4lkizrQBT1Zar2YoqxpJG/VNdeMbfCxe8/4sOZp/yE/i/XVjMGc9A7b54EmauVjjFtIOPJxRIi7AJ022BxThXuYCifFKLs6NBDm5llvXCXJ4GYCBummt48w8rR0Zn4fgOLhFTN9XS6uo6RO3c+5X9Ixq2EokKkIqI6BAHHUs4Xb5sm7EqTcjdCqg9C0aoZGs0s2vneHiG1vZ6HDDCgRPIbGphiBZ1vaPJg9rK9P67y8xDdjRVnL2yulA7Z/zwLBJrqQbZ4iQ1EhUOHIb256soEbZHiyLudyiVe6E78SOeeyIviYgFmQyc3XLcW5fWpvG124ZSffxMOGqMz9cHGkjhuWGTmQ6FSW3y8Jop2biUkaRv4SLs7dHv1UIjuXtEoyY96Iddm4d1As2v0hMTQM//64981JXWPR9guDOWqeWmFc1ZLMx7lrJVmSnts0PThbpc9uIzjmOU9mdWTcrtzlwgnQ0Uy5tbm4F+3jRz95Efd6NetLS04mmgcd6Fov4i6/LUEc6id4K6pzfTYqK/1bxQgk70JPXjQwZwwDmNQ9310MBFoHOrqo/8nCt7HHpPm8I=
+  - secure: BrQYnw32JPN18gxdYxg6QdSNMyS3zakWqMhxy+i89JWsUjKJoXnPy5Owwt23ZV+jbxAxBHm6sBOOmS8hw1YxZ0TI0yO/AI4M7D3Eq4nYrZ8/u2cYOY5rbxSeZW0yk2kIRHUA09hfID+xZm1SKmAng2EiuJYUYrym+4ZHfXG1OMUfD7msLw41atv+Dg4Ckt0twWoAdR+dTvlM+PLRcMw+PlpvAgiyk2gw+SYwWd0Cl65LJb0cm+lMzdADYdF7uwbb88tsP3syMEvVoRPbQ283UM2FMunRJKkSVRwkZNpvtQfBjb5SaJQbd1BglrErvzJOMC+EogUu4JTw0A8RWHSH634P2ZGvhI0zYBDfZ8zAgZ0wE2oHp8GaK0AzEp7MS2thOi1QyhWe/VMMTaJsi0Sxha/vLeYfcjWKKk6XR4mfprs7OlIkOpl3Wy2fIu3GNKRSUwgb+ztwCw6foNKh0yIMncO+1dUSj6PWV2Pby2RGXCZ90z+uMicU21i7R983+yVLejZX7Ji3YVGi6joObUzDoem2yEyaZPXl5IFVmWMjrzWq6X9dLy+O71+ngGmYcNTSrWvm6VPqtK6mr7AtN/w3zwyq/7SJBf+YZ7Z7TuZScRMXVWiD3Od/Os5iItGGPx5OVYt8qeezwYz9rJyczFKuSsKp2A2SF8/aYnon1jejiVU=
 notifications:
   email: false
   webhooks:
