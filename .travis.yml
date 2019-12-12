@@ -6,7 +6,7 @@ compiler:
 script:
 - echo Ready to build archive
 after_success:
-- "./scripts/build_support.sh archive_stdlib"
+- "./scripts/build_support.sh archive_codetools"
 env:
   global:
   - RUBYLIB=lib:.
