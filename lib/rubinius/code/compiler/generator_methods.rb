@@ -1417,5 +1417,29 @@ module CodeTools
         @current_block.add_stack(0, 1)
         @instruction = 191
       end
+
+      def r_load_bool(arg1)
+        @stream << 192 << arg1
+        @ip += 2
+        @instruction = 192
+      end
+
+      def r_load_m_binops(arg1, arg2)
+        @stream << 193 << arg1 << arg2
+        @ip += 3
+        @instruction = 193
+      end
+
+      def r_load_bool(arg1, arg2)
+        @stream << 194 << arg1 << arg2
+        @ip += 3
+        @instruction = 194
+      end
+
+      def r_ret(arg1)
+        @stream << 195 << arg1
+        @ip += 2
+        @instruction = 195
+      end
   end
 end

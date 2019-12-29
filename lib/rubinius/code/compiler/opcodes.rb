@@ -75,8 +75,8 @@ module Rubinius
     opcode 67, :raise_return,                :stack => [1, 1],     :args => [],                               :control_flow => :raise
     opcode 68, :reraise,                     :stack => [0, 0],     :args => [],                               :control_flow => :raise
     opcode 69, :restore_exception_state,     :stack => [1, 0],     :args => [],                               :control_flow => :next
-    opcode 70, :ret,                         :stack => [1, 1],     :args => [:index],                               :control_flow => :return
-    opcode 71, :rotate,                      :stack => [[0,1], [0, 1, 1]],:args => [:count],                         :control_flow => :next
+    opcode 70, :ret,                         :stack => [1, 1],     :args => [:index],                         :control_flow => :return
+    opcode 71, :rotate,                      :stack => [[0,1], [0, 1, 1]],:args => [:count],                  :control_flow => :next
     opcode 72, :send_method,                 :stack => [1, 1],     :args => [:literal],                       :control_flow => :send
     opcode 73, :send_stack,                  :stack => [[1,2], 1], :args => [:literal, :count],               :control_flow => :send
     opcode 74, :send_stack_with_block,       :stack => [[2,2], 1], :args => [:literal, :count],               :control_flow => :send
@@ -213,5 +213,9 @@ module Rubinius
     opcode 189, :call,                       :stack => [[1,2], 1], :args => [:literal, :count],               :control_flow => :send
     opcode 190, :call_0,                     :stack => [0, 1],     :args => [:literal],                       :control_flow => :send
     opcode 191, :push_tagged_nil,            :stack => [0, 1],     :args => [:nil],                           :control_flow => :next
+    opcode 192, :r_load_bool,                :stack => [0, 0],     :args => [:r0],                            :control_flow => :next
+    opcode 193, :r_load_m_binops,            :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 194, :r_load_f_binops,            :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 195, :r_ret,                      :stack => [0, 0],     :args => [:r0],                            :control_flow => :return
   end
 end
