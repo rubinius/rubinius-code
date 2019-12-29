@@ -1418,9 +1418,9 @@ module CodeTools
         @instruction = 191
       end
 
-      def r_load_bool(arg1)
-        @stream << 192 << arg1
-        @ip += 2
+      def r_load_bool(arg1, arg2)
+        @stream << 192 << arg1 << arg2
+        @ip += 3
         @instruction = 192
       end
 
@@ -1430,7 +1430,7 @@ module CodeTools
         @instruction = 193
       end
 
-      def r_load_bool(arg1, arg2)
+      def r_load_f_binops(arg1, arg2)
         @stream << 194 << arg1 << arg2
         @ip += 3
         @instruction = 194
