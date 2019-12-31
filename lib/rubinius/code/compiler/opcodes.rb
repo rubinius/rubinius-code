@@ -217,5 +217,17 @@ module Rubinius
     opcode 193, :r_load_m_binops,            :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
     opcode 194, :r_load_f_binops,            :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
     opcode 195, :r_ret,                      :stack => [0, 0],     :args => [:r0],                            :control_flow => :return
+    opcode 196, :n_imod,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 197, :n_ineg,                     :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 198, :n_inot,                     :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 199, :n_iand,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 200, :n_ior,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 201, :n_ixor,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 202, :n_ishl,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 203, :n_ishr,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 204, :n_imod_o,                   :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 205, :n_ineg_o,                   :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 206, :n_ishl_o,                   :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 207, :n_ishr_o,                   :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
   end
 end

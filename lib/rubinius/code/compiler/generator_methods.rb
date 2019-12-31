@@ -1441,5 +1441,77 @@ module CodeTools
         @ip += 2
         @instruction = 195
       end
+
+      def n_imod(arg1, arg2, arg3)
+        @stream << 196 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 196
+      end
+
+      def n_ineg(arg1, arg2)
+        @stream << 197 << arg1 << arg2
+        @ip += 3
+        @instruction = 197
+      end
+
+      def n_inot(arg1, arg2)
+        @stream << 198 << arg1 << arg2
+        @ip += 3
+        @instruction = 198
+      end
+
+      def n_iand(arg1, arg2, arg3)
+        @stream << 199 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 199
+      end
+
+      def n_ior(arg1, arg2, arg3)
+        @stream << 200 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 200
+      end
+
+      def n_ixor(arg1, arg2, arg3)
+        @stream << 201 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 201
+      end
+
+      def n_ishl(arg1, arg2, arg3)
+        @stream << 202 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 202
+      end
+
+      def n_ishr(arg1, arg2, arg3)
+        @stream << 203 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 203
+      end
+
+      def n_imod_o(arg1, arg2, arg3)
+        @stream << 204 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 204
+      end
+
+      def n_ineg_o(arg1, arg2)
+        @stream << 205 << arg1 << arg2
+        @ip += 3
+        @instruction = 205
+      end
+
+      def n_ishl_o(arg1, arg2, arg3)
+        @stream << 206 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 206
+      end
+
+      def n_ishr_o(arg1, arg2, arg3)
+        @stream << 207 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 207
+      end
   end
 end
