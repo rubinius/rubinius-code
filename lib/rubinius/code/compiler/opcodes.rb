@@ -229,5 +229,42 @@ module Rubinius
     opcode 205, :n_ineg_o,                   :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
     opcode 206, :n_ishl_o,                   :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
     opcode 207, :n_ishr_o,                   :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+
+    opcode 208, :n_promote,                  :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+
+    # Native signed extended integer instructions
+    opcode 209, :n_eadd,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 210, :n_esub,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 211, :n_emul,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 212, :n_ediv,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 213, :n_emod,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 214, :n_eneg,                     :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 215, :n_enot,                     :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 216, :n_eand,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 217, :n_eor,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 218, :n_exor,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 219, :n_eshl,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 220, :n_eshr,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 221, :n_epopcnt,                  :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 222, :n_eeq,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 223, :n_ene,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 224, :n_elt,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 225, :n_ele,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 226, :n_egt,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 227, :n_ege,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+
+    # Native signed double floating point instructions
+    opcode 228, :n_dadd,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 229, :n_dsub,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 230, :n_dmul,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 231, :n_ddiv,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 232, :n_dmod,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 233, :n_dneg,                     :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 234, :n_deq,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 235, :n_dne,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 236, :n_dlt,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 237, :n_dle,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 238, :n_dgt,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 239, :n_dge,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
   end
 end

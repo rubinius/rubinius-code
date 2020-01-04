@@ -1513,5 +1513,199 @@ module CodeTools
         @ip += 4
         @instruction = 207
       end
+
+      def n_promote(arg1, arg2, arg3)
+        @stream << 208 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 208
+      end
+
+      # Native signed extended integer instructions
+      def n_eadd(arg1, arg2, arg3)
+        @stream << 209 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 209
+      end
+
+      def n_esub(arg1, arg2, arg3)
+        @stream << 210 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 210
+      end
+
+      def n_emul(arg1, arg2, arg3)
+        @stream << 211 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 211
+      end
+
+      def n_ediv(arg1, arg2, arg3)
+        @stream << 212 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 212
+      end
+
+      def n_emod(arg1, arg2, arg3)
+        @stream << 213 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 213
+      end
+
+      def n_eneg(arg1, arg2)
+        @stream << 214 << arg1 << arg2
+        @ip += 3
+        @instruction = 214
+      end
+
+      def n_enot(arg1, arg2)
+        @stream << 215 << arg1 << arg2
+        @ip += 3
+        @instruction = 215
+      end
+
+      def n_eand(arg1, arg2, arg3)
+        @stream << 216 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 216
+      end
+
+      def n_eor(arg1, arg2, arg3)
+        @stream << 217 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 217
+      end
+
+      def n_exor(arg1, arg2, arg3)
+        @stream << 218 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 218
+      end
+
+      def n_eshl(arg1, arg2, arg3)
+        @stream << 219 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 219
+      end
+
+      def n_eshr(arg1, arg2, arg3)
+        @stream << 220 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 220
+      end
+
+      def n_epopcnt(arg1, arg2)
+        @stream << 221 << arg1 << arg2
+        @ip += 3
+        @instruction = 221
+      end
+
+      def n_eeq(arg1, arg2, arg3)
+        @stream << 222 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 222
+      end
+
+      def n_ene(arg1, arg2, arg3)
+        @stream << 223 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 223
+      end
+
+      def n_elt(arg1, arg2, arg3)
+        @stream << 224 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 224
+      end
+
+      def n_ele(arg1, arg2, arg3)
+        @stream << 225 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 225
+      end
+
+      def n_egt(arg1, arg2, arg3)
+        @stream << 226 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 226
+      end
+
+      def n_ege(arg1, arg2, arg3)
+        @stream << 227 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 227
+      end
+
+      # Native signed double floating point instructions
+      def n_dadd(arg1, arg2, arg3)
+        @stream << 228 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 228
+      end
+
+      def n_dsub(arg1, arg2, arg3)
+        @stream << 229 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 229
+      end
+
+      def n_dmul(arg1, arg2, arg3)
+        @stream << 230 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 230
+      end
+
+      def n_ddiv(arg1, arg2, arg3)
+        @stream << 231 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 231
+      end
+
+      def n_dmod(arg1, arg2, arg3)
+        @stream << 232 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 232
+      end
+
+      def n_dneg(arg1, arg2)
+        @stream << 233 << arg1 << arg2
+        @ip += 3
+        @instruction = 233
+      end
+
+      def n_deq(arg1, arg2, arg3)
+        @stream << 234 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 234
+      end
+
+      def n_dne(arg1, arg2, arg3)
+        @stream << 235 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 235
+      end
+
+      def n_dlt(arg1, arg2, arg3)
+        @stream << 236 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 236
+      end
+
+      def n_dle(arg1, arg2, arg3)
+        @stream << 237 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 237
+      end
+
+      def n_dgt(arg1, arg2, arg3)
+        @stream << 238 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 238
+      end
+
+      def n_dge(arg1, arg2, arg3)
+        @stream << 239 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 239
+      end
   end
 end
