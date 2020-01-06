@@ -266,5 +266,8 @@ module Rubinius
     opcode 237, :n_dle,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
     opcode 238, :n_dgt,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
     opcode 239, :n_dge,                      :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+
+    opcode 240, :r_load_float,               :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 241, :r_store_float,              :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
   end
 end

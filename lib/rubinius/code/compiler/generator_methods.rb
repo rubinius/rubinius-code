@@ -1707,5 +1707,17 @@ module CodeTools
         @ip += 4
         @instruction = 239
       end
+
+      def r_load_float(arg1, arg2)
+        @stream << 240 << arg1 << arg2
+        @ip += 3
+        @instruction = 240
+      end
+
+      def r_store_float(arg1, arg2)
+        @stream << 241 << arg1 << arg2
+        @ip += 3
+        @instruction = 241
+      end
   end
 end
