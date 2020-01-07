@@ -1719,5 +1719,67 @@ module CodeTools
         @ip += 3
         @instruction = 241
       end
+
+      def b_if_eint(arg1, arg2, arg3)
+        location = @ip + 3
+        @stream << 242 << arg1 << arg2 << arg3
+        @ip += 4
+        arg3.used_at location
+        @current_block.left = arg3.basic_block
+        @current_block.close
+        block = new_basic_block
+        @current_block.right = block
+        @current_block = block
+        @instruction = 242
+      end
+
+      def b_if_float(arg1, arg2, arg3)
+        location = @ip + 3
+        @stream << 243 << arg1 << arg2 << arg3
+        @ip += 4
+        arg3.used_at location
+        @current_block.left = arg3.basic_block
+        @current_block.close
+        block = new_basic_block
+        @current_block.right = block
+        @current_block = block
+        @instruction = 243
+      end
+
+      def r_load_2(arg1)
+        @stream << 244 << arg1
+        @ip += 2
+        @instruction = 244
+      end
+
+      def r_load_neg1(arg1)
+        @stream << 245 << arg1
+        @ip += 2
+        @instruction = 245
+      end
+
+      def n_iinc(arg1, arg2)
+        @stream << 246 << arg1 << arg2
+        @ip += 3
+        @instruction = 246
+      end
+
+      def n_idec(arg1, arg2)
+        @stream << 247 << arg1 << arg2
+        @ip += 3
+        @instruction = 247
+      end
+
+      def n_isize(arg1, arg2)
+        @stream << 248 << arg1 << arg2
+        @ip += 3
+        @instruction = 248
+      end
+
+      def n_esize(arg1, arg2)
+        @stream << 249 << arg1 << arg2
+        @ip += 3
+        @instruction = 249
+      end
   end
 end

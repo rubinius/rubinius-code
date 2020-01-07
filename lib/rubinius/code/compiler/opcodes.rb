@@ -269,5 +269,17 @@ module Rubinius
 
     opcode 240, :r_load_float,               :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
     opcode 241, :r_store_float,              :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+
+    opcode 242, :b_if_eint,                  :stack => [0, 0],     :args => [:r0, :r1, :ip],                    :control_flow => :branch
+    opcode 243, :b_if_float,                 :stack => [0, 0],     :args => [:r0, :r1, :ip],                    :control_flow => :branch
+
+    opcode 244, :r_load_2,                   :stack => [0, 0],     :args => [:r0],                            :control_flow => :next
+    opcode 245, :r_load_neg1,                :stack => [0, 0],     :args => [:r0],                            :control_flow => :next
+
+    opcode 246, :n_iinc,                     :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 247, :n_idec,                     :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+
+    opcode 248, :n_isize,                    :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 249, :n_esize,                    :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
   end
 end
