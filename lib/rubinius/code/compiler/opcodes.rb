@@ -283,5 +283,7 @@ module Rubinius
     opcode 249, :n_esize,                    :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
     opcode 250, :n_ibits,                    :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
     opcode 251, :n_ebits,                    :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+
+    opcode 252, :r_load_self,                :stack => [0, 0],     :args => [:r0],                            :control_flow => :next
   end
 end

@@ -1793,5 +1793,11 @@ module CodeTools
         @ip += 3
         @instruction = 251
       end
+
+      def r_load_self(arg1)
+        @stream << 252 << arg1
+        @ip += 2
+        @instruction = 252
+      end
   end
 end
