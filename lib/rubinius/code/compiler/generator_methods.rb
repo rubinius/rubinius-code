@@ -1799,5 +1799,65 @@ module CodeTools
         @ip += 2
         @instruction = 252
       end
+
+      def n_istr(arg1, arg2, arg3)
+        @stream << 253 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 253
+      end
+
+      def n_iflt(arg1, arg2)
+        @stream << 254 << arg1 << arg2
+        @ip += 3
+        @instruction = 254
+      end
+
+      def n_icmp(arg1, arg2, arg3)
+        @stream << 255 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 255
+      end
+
+      def n_idivmod(arg1, arg2, arg3)
+        @stream << 256 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 256
+      end
+
+      def n_ipow_o(arg1, arg2, arg3)
+        @stream << 257 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 257
+      end
+
+      def n_estr(arg1, arg2, arg3)
+        @stream << 258 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 258
+      end
+
+      def n_eflt(arg1, arg2)
+        @stream << 259 << arg1 << arg2
+        @ip += 3
+        @instruction = 259
+      end
+
+      def n_ecmp(arg1, arg2, arg3)
+        @stream << 260 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 260
+      end
+
+      def n_edivmod(arg1, arg2, arg3)
+        @stream << 261 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 261
+      end
+
+      def n_epow(arg1, arg2, arg3)
+        @stream << 262 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 262
+      end
   end
 end

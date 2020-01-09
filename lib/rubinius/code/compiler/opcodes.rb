@@ -285,5 +285,17 @@ module Rubinius
     opcode 251, :n_ebits,                    :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
 
     opcode 252, :r_load_self,                :stack => [0, 0],     :args => [:r0],                            :control_flow => :next
+
+    opcode 253, :n_istr,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 254, :n_iflt,                     :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 255, :n_icmp,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 256, :n_idivmod,                  :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 257, :n_ipow_o,                   :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+
+    opcode 258, :n_estr,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 259, :n_eflt,                     :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 260, :n_ecmp,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 261, :n_edivmod,                  :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 262, :n_epow,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
   end
 end
