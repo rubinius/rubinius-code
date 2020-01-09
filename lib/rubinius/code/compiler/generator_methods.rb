@@ -1781,5 +1781,17 @@ module CodeTools
         @ip += 3
         @instruction = 249
       end
+
+      def n_ibits(arg1, arg2)
+        @stream << 250 << arg1 << arg2
+        @ip += 3
+        @instruction = 250
+      end
+
+      def n_ebits(arg1, arg2)
+        @stream << 251 << arg1 << arg2
+        @ip += 3
+        @instruction = 251
+      end
   end
 end
