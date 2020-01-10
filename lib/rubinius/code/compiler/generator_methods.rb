@@ -1859,5 +1859,35 @@ module CodeTools
         @ip += 4
         @instruction = 262
       end
+
+      def n_dstr(arg1, arg2, arg3)
+        @stream << 263 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 263
+      end
+
+      def n_dcmp(arg1, arg2, arg3)
+        @stream << 264 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 264
+      end
+
+      def n_ddivmod(arg1, arg2, arg3)
+        @stream << 265 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 265
+      end
+
+      def n_dpow(arg1, arg2, arg3)
+        @stream << 266 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 266
+      end
+
+      def n_demote(arg1, arg2, arg3)
+        @stream << 267 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 267
+      end
   end
 end

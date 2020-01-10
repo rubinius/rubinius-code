@@ -297,5 +297,12 @@ module Rubinius
     opcode 260, :n_ecmp,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
     opcode 261, :n_edivmod,                  :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
     opcode 262, :n_epow,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+
+    opcode 263, :n_dstr,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 264, :n_dcmp,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 265, :n_ddivmod,                  :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 266, :n_dpow,                     :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+
+    opcode 267, :n_demote,                   :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
   end
 end
