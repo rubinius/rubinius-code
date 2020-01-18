@@ -64,7 +64,7 @@ module CodeTools
     ##
     # Emits instructions for typical math and bitwise operators
     class SendMath < SendWithArguments
-      transform :kernel, :math, "Use instructions for math and bitwise operators"
+      transform :experimental, :math, "Use instructions for math and bitwise operators"
 
       Operators = {
         :+    => :n_iadd_o,
@@ -84,7 +84,7 @@ module CodeTools
       }
 
       def self.match?(line, receiver, name, arguments, privately)
-        if op = Operators[name] and arguments.body.size == 1
+        if op = Operators[name] and arguments&.body.size == 1
           node = new line, receiver, name, arguments
           node.operator = op
           node
@@ -96,18 +96,24 @@ module CodeTools
       def bytecode(g)
         pos(g)
 
-        @receiver.bytecode(g)
-        @arguments.bytecode(g)
-
         int = g.new_label
         done = g.new_label
 
         r0 = g.new_register
         r1 = g.new_register
 
-        g.r_load_m_binops r0, r1
+        @receiver.bytecode(g)
+        g.r_load_stack r0
+        g.pop
+
+        @arguments.bytecode(g)
+        g.r_load_stack r1
+        g.pop
 
         g.b_if_int r0, r1, int
+
+        g.r_store_stack r0
+        g.r_store_stack r1
 
         # This is copied from the superclass. If we want to super, we need to
         # make that method aware of it.
@@ -123,7 +129,7 @@ module CodeTools
         g.goto done
 
         int.set!
-        g.add @operator, r0, r0, r1
+        g.ruby_send @operator, r0, r0, r1
         g.r_store_stack r0
 
         done.set!

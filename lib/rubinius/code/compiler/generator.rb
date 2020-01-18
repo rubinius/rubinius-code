@@ -549,6 +549,8 @@ module CodeTools
       invoke_primitive :regexp_last_match_result, 2
     end
 
+    alias_method :ruby_send, :send
+
     def send(meth, count, priv=false)
       allow_private if priv
 
