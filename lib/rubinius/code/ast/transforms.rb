@@ -62,9 +62,9 @@ module CodeTools
     end
 
     ##
-    # Emits instructions for typical math and bitwise operators
+    # Emits instructions for typical math operators.
     class SendMath < SendWithArguments
-      transform :experimental, :math, "Use instructions for math and bitwise operators"
+      transform :experimental, :math, "Use instructions for math operators"
 
       Operators = {
         :+    => :n_iadd_o,
@@ -72,12 +72,67 @@ module CodeTools
         :*    => :n_imul_o,
         :/    => :n_idiv_o,
         :%    => :n_imod_o,
-        :==   => :n_ieq,
-        :!=   => :n_ine,
-        :<    => :n_ilt,
-        :<=   => :n_ile,
-        :>    => :n_igt,
-        :>=   => :n_ige,
+      }
+
+      def self.match?(line, receiver, name, arguments, privately)
+        if op = Operators[name] and arguments&.body.size == 1
+          node = new line, receiver, name, arguments
+          node.operator = op
+          node
+        end
+      end
+
+      attr_accessor :operator
+
+      def bytecode(g)
+        pos(g)
+
+        int = g.new_label
+        done = g.new_label
+
+        r0 = g.new_register
+        r1 = g.new_register
+
+        @receiver.bytecode(g)
+        g.r_load_stack r0
+        g.pop
+
+        @arguments.bytecode(g)
+        g.r_load_stack r1
+        g.pop
+
+        g.b_if_int r0, r1, int
+
+        g.r_store_stack r0
+        g.r_store_stack r1
+
+        # This is copied from the superclass. If we want to super, we need to
+        # make that method aware of it.
+        if @arguments.splat?
+          @block ? @block.bytecode(g) : g.push_tagged_nil(0)
+          g.send_with_splat @name, @arguments.size, @privately, false
+        elsif @block
+          @block.bytecode(g)
+          g.send_with_block @name, @arguments.size, @privately
+        else
+          g.send @name, @arguments.size, @privately
+        end
+        g.goto done
+
+        int.set!
+        g.ruby_send @operator, r0, r0, r1
+        g.r_store_stack r0
+
+        done.set!
+      end
+    end
+
+    ##
+    # Emits instructions for typical bitwise operators.
+    class SendBitwise < SendWithArguments
+      transform :experimental, :bitwise, "Use instructions for bitwise operators"
+
+      Operators = {
         :&    => :n_iand,
         :|    => :n_ior,
         :^    => :n_ixor,
@@ -129,7 +184,78 @@ module CodeTools
         g.goto done
 
         int.set!
+        g.r_load_int r0, r0
+        g.r_load_int r1, r1
         g.ruby_send @operator, r0, r0, r1
+        g.r_store_int r0
+        g.r_store_stack r0
+
+        done.set!
+      end
+    end
+
+    ##
+    # Emits instructions for typical relational operators.
+    class SendRelational < SendWithArguments
+      transform :experimental, :relational, "Use instructions for relational operators"
+
+      Operators = {
+        :==   => :n_ieq,
+        :!=   => :n_ine,
+        :<    => :n_ilt,
+        :<=   => :n_ile,
+        :>    => :n_igt,
+        :>=   => :n_ige,
+      }
+
+      def self.match?(line, receiver, name, arguments, privately)
+        if op = Operators[name] and arguments&.body.size == 1
+          node = new line, receiver, name, arguments
+          node.operator = op
+          node
+        end
+      end
+
+      attr_accessor :operator
+
+      def bytecode(g)
+        pos(g)
+
+        int = g.new_label
+        done = g.new_label
+
+        r0 = g.new_register
+        r1 = g.new_register
+
+        @receiver.bytecode(g)
+        g.r_load_stack r0
+        g.pop
+
+        @arguments.bytecode(g)
+        g.r_load_stack r1
+        g.pop
+
+        g.b_if_int r0, r1, int
+
+        g.r_store_stack r0
+        g.r_store_stack r1
+
+        # This is copied from the superclass. If we want to super, we need to
+        # make that method aware of it.
+        if @arguments.splat?
+          @block ? @block.bytecode(g) : g.push_tagged_nil(0)
+          g.send_with_splat @name, @arguments.size, @privately, false
+        elsif @block
+          @block.bytecode(g)
+          g.send_with_block @name, @arguments.size, @privately
+        else
+          g.send @name, @arguments.size, @privately
+        end
+        g.goto done
+
+        int.set!
+        g.ruby_send @operator, r0, r0, r1
+        g.r_load_bool r0, r0
         g.r_store_stack r0
 
         done.set!
