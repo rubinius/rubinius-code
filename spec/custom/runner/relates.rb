@@ -77,6 +77,16 @@ class SpecDataRelation
       ruby.should compile_as(generator, *plugins)
     end
   end
+
+  # Creates spec example blocks if the parse process is enabled.
+  def parse(&block)
+    return unless self.class.enabled? :parser
+
+    ruby = @ruby
+    it "is parsed from #{format ruby}" do
+      ruby.should parse_as(block.call)
+    end
+  end
 end
 
 class Object

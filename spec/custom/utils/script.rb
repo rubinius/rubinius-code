@@ -1,3 +1,5 @@
+require 'mspec/utils/script'
+
 # Registers custom actions, etc. for all MSpec scripts
 #
 class MSpecScript
@@ -19,7 +21,7 @@ end
 
 # Custom options for mspec-run
 #
-class MSpecRun
+class MSpecRun < MSpecScript
   def custom_options(options)
     options.compiler
     options.parser_19

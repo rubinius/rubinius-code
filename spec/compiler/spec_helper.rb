@@ -7,6 +7,6 @@ Rubinius::ToolSets.create :spec do
   require "rubinius/code/compiler"
   require "rubinius/code/ast"
 
-  require 'spec/compiler/custom/matchers/compile_as'
-  require 'spec/compiler/custom/runner/relates'
+  require 'spec/custom/matchers/compile_as'
+  require 'spec/custom/runner/relates'
 end

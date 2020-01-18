@@ -1,4 +1,4 @@
-require 'spec/compiler/custom/helpers/generator'
+require 'spec/custom/helpers/generator'
 
 # The CompileAsMatcher wraps the logic for checking that a string of Ruby code
 # is converted to the expected bytecode. It is combined with the #compile_as
