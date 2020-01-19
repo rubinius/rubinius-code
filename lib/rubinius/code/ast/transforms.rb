@@ -187,7 +187,7 @@ module CodeTools
         g.r_load_int r0, r0
         g.r_load_int r1, r1
         g.ruby_send @operator, r0, r0, r1
-        g.r_store_int r0
+        g.r_store_int r0, r0
         g.r_store_stack r0
 
         done.set!
