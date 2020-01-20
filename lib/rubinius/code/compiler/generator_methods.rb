@@ -1901,5 +1901,11 @@ module CodeTools
         @ip += 3
         @instruction = 269
       end
+
+      def n_dclass(arg1, arg2)
+        @stream << 270 << arg1 << arg2
+        @ip += 3
+        @instruction = 270
+      end
   end
 end
