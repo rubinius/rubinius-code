@@ -308,5 +308,6 @@ module Rubinius
     opcode 268, :n_dinf,                     :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
     opcode 269, :n_dnan,                     :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
     opcode 270, :n_dclass,                   :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 271, :n_dsign,                    :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
   end
 end

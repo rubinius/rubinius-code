@@ -1907,5 +1907,11 @@ module CodeTools
         @ip += 3
         @instruction = 270
       end
+
+      def n_dsign(arg1, arg2)
+        @stream << 271 << arg1 << arg2
+        @ip += 3
+        @instruction = 271
+      end
   end
 end
