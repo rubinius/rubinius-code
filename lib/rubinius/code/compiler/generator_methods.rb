@@ -1889,5 +1889,17 @@ module CodeTools
         @ip += 4
         @instruction = 267
       end
+
+      def n_dinf(arg1, arg2)
+        @stream << 268 << arg1 << arg2
+        @ip += 3
+        @instruction = 268
+      end
+
+      def n_dnan(arg1, arg2)
+        @stream << 269 << arg1 << arg2
+        @ip += 3
+        @instruction = 269
+      end
   end
 end
