@@ -1913,5 +1913,74 @@ module CodeTools
         @ip += 3
         @instruction = 271
       end
+
+      def r_load_ref_addr(arg1, arg2)
+        @stream << 272 << arg1 << arg2
+        @ip += 3
+        @instruction = 272
+      end
+
+      def r_load_byte_addr(arg1, arg2)
+        @stream << 273 << arg1 << arg2
+        @ip += 3
+        @instruction = 273
+      end
+
+      def r_load_ref(arg1, arg2, arg3)
+        @stream << 274 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 274
+      end
+
+      def r_store_ref(arg1, arg2, arg3)
+        @stream << 275 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 275
+      end
+
+      def r_load_byte(arg1, arg2, arg3)
+        @stream << 276 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 276
+      end
+
+      def r_store_byte(arg1, arg2, arg3)
+        @stream << 277 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 277
+      end
+
+      def r_load_handle(arg1, arg2)
+        @stream << 278 << arg1 << arg2
+        @ip += 3
+        @instruction = 278
+      end
+
+      def r_store_handle(arg1, arg2)
+        @stream << 279 << arg1 << arg2
+        @ip += 3
+        @instruction = 279
+      end
+
+      def r_load_ivar(arg1, arg2, arg3)
+        arg3 = find_literal(arg3)
+        @stream << 280 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 280
+      end
+
+      def r_store_ivar(arg1, arg2, arg3)
+        arg3 = find_literal(arg3)
+        @stream << 281 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 281
+      end
+
+      def r_load_index(arg1, arg2, arg3)
+        arg3 = find_literal(arg3)
+        @stream << 282 << arg1 << arg2 << arg3
+        @ip += 4
+        @instruction = 282
+      end
   end
 end
