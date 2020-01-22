@@ -310,8 +310,8 @@ module Rubinius
     opcode 270, :n_dclass,                   :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
     opcode 271, :n_dsign,                    :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
 
-    opcode 272, :r_load_ref_addr,            :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
-    opcode 273, :r_load_byte_addr,           :stack => [0, 0],     :args => [:r0, :r1],                       :control_flow => :next
+    opcode 272, :r_load_ref_addr,            :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
+    opcode 273, :r_load_byte_addr,           :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
     opcode 274, :r_load_ref,                 :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
     opcode 275, :r_store_ref,                :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next
     opcode 276, :r_load_byte,                :stack => [0, 0],     :args => [:r0, :r1, :r2],                  :control_flow => :next

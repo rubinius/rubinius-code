@@ -1914,15 +1914,15 @@ module CodeTools
         @instruction = 271
       end
 
-      def r_load_ref_addr(arg1, arg2)
-        @stream << 272 << arg1 << arg2
-        @ip += 3
+      def r_load_ref_addr(arg1, arg2, arg3)
+        @stream << 272 << arg1 << arg2 << arg3
+        @ip += 4
         @instruction = 272
       end
 
-      def r_load_byte_addr(arg1, arg2)
-        @stream << 273 << arg1 << arg2
-        @ip += 3
+      def r_load_byte_addr(arg1, arg2, arg3)
+        @stream << 273 << arg1 << arg2 << arg3
+        @ip += 4
         @instruction = 273
       end
 
