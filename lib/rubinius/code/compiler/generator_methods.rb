@@ -1982,5 +1982,17 @@ module CodeTools
         @ip += 4
         @instruction = 282
       end
+
+      def r_refcnt_inc(arg1)
+        @stream << 283 << arg1
+        @ip += 2
+        @instruction = 283
+      end
+
+      def r_refcnt_dec(arg1)
+        @stream << 284 << arg1
+        @ip += 2
+        @instruction = 284
+      end
   end
 end

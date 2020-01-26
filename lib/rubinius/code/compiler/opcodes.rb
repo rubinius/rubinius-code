@@ -322,5 +322,7 @@ module Rubinius
     opcode 281, :r_store_ivar,               :stack => [0, 0],     :args => [:r0, :r1, :literal],             :control_flow => :next
     opcode 282, :r_load_index,               :stack => [0, 0],     :args => [:r0, :r1, :literal],             :control_flow => :next
 
+    opcode 283, :r_refcnt_inc,               :stack => [0, 0],     :args => [:r0],                            :control_flow => :next
+    opcode 284, :r_refcnt_dec,               :stack => [0, 0],     :args => [:r0],                            :control_flow => :next
   end
 end
