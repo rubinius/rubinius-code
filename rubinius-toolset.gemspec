@@ -23,7 +23,7 @@ the Rubinius code tools as are suitable for that language.
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 1.3"
-  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rake", "~> 12.3"
   spec.add_development_dependency "mspec", "~> 1.5"
   spec.add_development_dependency "rubinius-bridge", "~> 1.0"
 end
