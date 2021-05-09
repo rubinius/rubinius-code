@@ -9,7 +9,7 @@ PLATFORMS
 
 DEPENDENCIES
   mspec (~> 1.9)
-  rake (~> 10)
+  rake (>= 12.3.3)
 
 BUNDLED WITH
    1.11.2
