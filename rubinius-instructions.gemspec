@@ -20,5 +20,5 @@ the bytecode interpreter and JIT compiler.
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 1.5"
-  spec.add_development_dependency "rake"
+  spec.add_development_dependency "rake", ">= 12.3.3"
 end
